@@ -38,3 +38,18 @@ func test_layout_dimensions() -> void:
 		eq(l.height, inner.y + 3, size + " height")
 		# every room fits on the 640x360 screen
 		check(l.width * 16 <= 640 and l.height * 16 <= 360, size + " fits the screen")
+
+
+func test_real_floor_rooms_have_all_doors() -> void:
+	for s in 40:
+		for depth in [1, 2, 3]:
+			var biome := Database.biome_for_depth(depth)
+			var f := DungeonGenerator.generate(s * 101 + 7, depth, biome.get("layout", {}))
+			for k in f.rooms:
+				var info: Dictionary = f.rooms[k]
+				var rng := RunRng.make(int(info.seed), "layout")
+				var l := RoomLayout.create(str(info.size), str(info.type), info.doors, info.secret_doors, rng)
+				for d in info.doors:
+					check(l.door_spawn.has(d), "seed %d depth %d room %s (%s) missing door %s; spawns %s" % [s, depth, k, info.type, d, str(l.door_spawn.keys())])
+				for d in info.secret_doors:
+					check(l.door_spawn.has(d), "room %s missing secret door %s" % [k, d])

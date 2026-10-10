@@ -174,6 +174,8 @@ func _build_doors() -> void:
 		var kind := str(ninfo.get("type", "normal"))
 		if kind in ["combat", "start", "event"]:
 			kind = "normal"
+		if bool(ninfo.get("dark", false)):
+			kind = "dark"
 		if is_secret:
 			var opened: Array = state.get("secret_open", [])
 			var r := _cells_rect(cells)
@@ -213,11 +215,16 @@ func _on_secret_revealed(dir: String) -> void:
 	Events.toast.emit(tr("TOAST_SECRET"), UITheme.SPECTRAL)
 
 
+func is_dark() -> bool:
+	return bool(info.get("dark", false))
+
+
 func _on_brazier_lit(b: Brazier) -> void:
 	var lit: Array = state.get("lit", [])
 	if not lit.has(b.index):
 		lit.append(b.index)
 	state["lit"] = lit
+	_content.on_brazier_lit(b)
 	if all_braziers_lit() and braziers.size() > 0 and state.get("cleared", false) and not state.get("lit_bonus", false):
 		_grant_lit_bonus()
 
@@ -263,6 +270,10 @@ func enter(p: Player, from_dir: String) -> void:
 	p.global_position = global_position + spawn
 	p.velocity = Vector2.ZERO
 	Lights.ambient = float(biome.get("ambient", 0.0))
+	if is_dark():
+		Lights.ambient -= 0.3
+		if not state.get("cleared", false):
+			Events.toast.emit(tr("TOAST_DARK_ROOM"), UITheme.CURSE)
 	state["visited"] = true
 	_content.on_enter()
 	if room_type in ["combat", "elite"] and not state.get("cleared", false):
@@ -348,6 +359,8 @@ func _on_cleared() -> void:
 		drop_embers(center + Vector2(0, -20), int(Database.balance_value("rooms.clear_embers", 2)) + (2 if room_type == "elite" else 0))
 		if room_type == "elite":
 			_content.spawn_elite_reward()
+		if is_dark():
+			drop_spark(center + Vector2(0, -24), 2)
 		if all_braziers_lit() and braziers.size() > 0 and not state.get("lit_bonus", false):
 			_grant_lit_bonus()
 	for p in get_tree().get_nodes_in_group("pickups"):
@@ -359,10 +372,11 @@ func _on_cleared() -> void:
 
 # --- drops / hazards ----------------------------------------------------------
 
-func drop_embers(world_pos: Vector2, count: int) -> void:
+func drop_embers(world_pos: Vector2, count: int, reach_bonus: float = 0.0) -> void:
 	var val := float(Database.balance_value("drops.ember_value", 3.0))
 	for i in count:
 		var p := Pickup.ember(world_pos - global_position, val)
+		p.reach_bonus = reach_bonus
 		entities.add_child.call_deferred(p)
 
 

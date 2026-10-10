@@ -114,7 +114,7 @@ func _attack_process(a: String, delta: float) -> bool:
 					var victim: Brazier = lit[randi() % lit.size()]
 					_extinguish(victim)
 				ring(12, 60.0, 8.0, randf() * TAU)
-				_snuff_cd = 9.0
+				_snuff_cd = 12.0
 			if attack_t > 1.4:
 				sprite.play("idle")
 				return true
@@ -162,7 +162,7 @@ func _damage_taken_mult(info: Dictionary) -> float:
 	if phase == 2:
 		var lit := Lights.static_light_at(global_position + Vector2(0, -16)) > 0.25
 		if not lit and info.get("kind", "") != "flare":
-			return 0.15
+			return 0.25
 	return 1.0
 
 

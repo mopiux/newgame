@@ -41,6 +41,10 @@ func _ready() -> void:
 	light.enabled = is_lit
 	add_child(light)
 	cost = float(Database.balance_value("brazier.cost", 8.0))
+	# relighting is part of guardian fights: cheaper so it is a tactic, not a tax
+	var room := get_parent().get_parent() if get_parent() else null
+	if room is Room and (room as Room).room_type == "boss":
+		cost *= float(Database.balance_value("brazier.boss_cost_mult", 0.5))
 
 
 func can_interact(_p) -> bool:

@@ -34,7 +34,7 @@
     "damage_taken_mult": 1.0,
     "crit_chance": 0.05
   },
-  "brazier": {"cost": 8, "radius": 84},
+  "brazier": {"cost": 8, "radius": 84, "boss_cost_mult": 0.5},
   "drops": {
     "ember_value": 3.0,
     "spark_chance": 0.04,

@@ -13,7 +13,7 @@
     "mimic_chance": 0.0,
     "boss": "moth_mother",
     "boss_sparks": 8,
-    "layout": {"rooms_min": 8, "rooms_max": 10, "extra_event_chance": 0.5,
+    "layout": {"rooms_min": 8, "rooms_max": 10, "extra_event_chance": 0.5, "dark_chance": 0.12,
                "combat_sizes": {"std": 6, "wide": 2, "tall": 2, "big": 1}}
   },
   {
@@ -30,7 +30,7 @@
     "mimic_chance": 0.18,
     "boss": "great_snuffer",
     "boss_sparks": 12,
-    "layout": {"rooms_min": 10, "rooms_max": 12, "extra_event_chance": 0.6,
+    "layout": {"rooms_min": 10, "rooms_max": 12, "extra_event_chance": 0.6, "dark_chance": 0.18,
                "combat_sizes": {"std": 5, "wide": 2, "tall": 2, "big": 2}}
   },
   {
@@ -47,7 +47,7 @@
     "mimic_chance": 0.25,
     "boss": "penumbra",
     "boss_sparks": 20,
-    "layout": {"rooms_min": 11, "rooms_max": 13, "extra_event_chance": 0.6,
+    "layout": {"rooms_min": 11, "rooms_max": 13, "extra_event_chance": 0.6, "dark_chance": 0.25,
                "combat_sizes": {"std": 4, "wide": 2, "tall": 2, "big": 3}}
   }
 ]

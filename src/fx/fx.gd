@@ -110,6 +110,9 @@ static func damage_number(parent: Node, pos: Vector2, amount: float, kind: Strin
 			col = Color("d46aa6")
 		"light":
 			col = Color("9fe0e6")
+		"immune":
+			col = Color("6b6a86")
+			lbl.text = "·" + lbl.text + "·"
 	lbl.add_theme_color_override("font_color", col)
 	lbl.add_theme_color_override("font_outline_color", Color("0b0a12"))
 	lbl.add_theme_constant_override("outline_size", 2)

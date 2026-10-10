@@ -85,7 +85,7 @@ static func _try(rng: RandomNumberGenerator, depth: int, cfg: Dictionary) -> Dic
 	RunRng.shuffle(rng, rest)
 	types[rest[0]] = "treasure"
 	types[rest[1]] = "shop"
-	var specials := ["event", "event", "elite"]
+	var specials := ["event", "trial", "elite", "event"]
 	for i in range(2, rest.size()):
 		types[rest[i]] = specials[(i - 2) % specials.size()]
 	# an extra event somewhere along the main path on larger floors
@@ -133,10 +133,12 @@ static func _try(rng: RandomNumberGenerator, depth: int, cfg: Dictionary) -> Dic
 		elif t == "combat" or t == "elite":
 			size = RunRng.weighted_pick(rng, sizes.keys(), sizes.values())
 		var doors: Array = _neighbors(cells, p)
+		# some combat rooms swallow light: less radius, guaranteed spark
+		var dark: bool = t == "combat" and int(dist[p]) >= 2 and rng.randf() < float(cfg.get("dark_chance", 0.15))
 		rooms[key(p)] = {
 			"pos": [p.x, p.y], "type": t, "size": size,
 			"doors": doors, "secret_doors": [],
-			"dist": dist[p], "seed": rng.randi(),
+			"dist": dist[p], "seed": rng.randi(), "dark": dark,
 		}
 	if best_score >= 0:
 		var sd := []

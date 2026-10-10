@@ -82,8 +82,8 @@ func _build(size_id: String, room_type: String, door_dirs: Array, secret_dirs: A
 			_obstacles(style, rng)
 			_place_braziers(rng, rng.randi_range(1, 3) if size_id == "std" else rng.randi_range(2, 4))
 			_place_pots(rng, rng.randi_range(0, 4))
-		"boss":
-			style = "boss"
+		"boss", "trial":
+			style = room_type
 			# four braziers near the corners: lighting them is part of every fight
 			var r := interior_rect()
 			for c in [Vector2i(r.position.x + 3, r.position.y + 2), Vector2i(r.end.x - 4, r.position.y + 2),

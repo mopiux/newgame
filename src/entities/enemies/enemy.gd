@@ -175,9 +175,14 @@ func take_hit(info: Dictionary) -> void:
 	var dmg: float = info.get("damage", 1.0)
 	if in_brazier_light:
 		dmg *= 1.0 + light_weakness
-	dmg *= _damage_taken_mult(info)
+	var resist := _damage_taken_mult(info)
+	dmg *= resist
 	var kind := "normal"
-	if info.get("crit", false):
+	if resist < 0.5:
+		# shrugged off: make it obvious so the player changes approach
+		kind = "immune"
+		Audio.sfx("deflect", -10.0, 0.05, 1.6)
+	elif info.get("crit", false):
 		kind = "crit"
 	elif in_brazier_light and light_weakness >= 0.4:
 		kind = "light"

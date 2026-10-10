@@ -25,6 +25,8 @@ func setup(r: Room) -> void:
 			_setup_event()
 		"secret":
 			_setup_secret()
+		"trial":
+			_setup_trial()
 		"boss":
 			if room.state.get("cleared", false):
 				_spawn_boss_rewards(false)
@@ -198,6 +200,65 @@ func _setup_secret() -> void:
 	if not data.has("offer"):
 		data["offer"] = RelicPool.roll(room.run, _rng("secret_relic"), 1, ["rare", "legendary"])
 	_place_choice(data.offer, "loot_taken")
+
+
+# --- brazier trial ------------------------------------------------------------
+# Four unlit braziers around a sealed reliquary: light them all (paying flame)
+# and it opens with a rare relic. A pure decision: power now vs. flame now.
+
+var _reliquary: Sprite2D
+
+
+func _setup_trial() -> void:
+	_reliquary = Sprite2D.new()
+	_reliquary.centered = false
+	_reliquary.offset = Vector2(-12, -20)
+	_reliquary.position = center()
+	room.entities.add_child(_reliquary)
+	var body := StaticBody2D.new()
+	body.collision_layer = Layers.WORLD
+	var cs := CollisionShape2D.new()
+	var r := RectangleShape2D.new()
+	r.size = Vector2(20, 8)
+	cs.shape = r
+	cs.position = Vector2(0, -3)
+	body.add_child(cs)
+	_reliquary.add_child(body)
+	if data.get("trial_done", false):
+		_reliquary.texture = SpriteLib.texture("reliquary_open")
+		if not room.state.get("loot_taken", false):
+			_trial_reward()
+	else:
+		_reliquary.texture = SpriteLib.texture("reliquary")
+
+
+func on_brazier_lit(_b: Brazier) -> void:
+	if room.room_type != "trial" or data.get("trial_done", false):
+		return
+	if room.all_braziers_lit():
+		data["trial_done"] = true
+		_reliquary.texture = SpriteLib.texture("reliquary_open")
+		Fx.burst(room.entities, _reliquary.position + Vector2(0, -12), "embers", 3.0)
+		Fx.shake(3.0, 0.3)
+		Audio.sfx("secret", -2.0, 0.0)
+		Events.toast.emit(tr("TOAST_TRIAL_DONE"), UITheme.FLAME)
+		_trial_reward()
+	else:
+		var lit := 0
+		for b in room.braziers:
+			if b.is_lit:
+				lit += 1
+		Events.toast.emit(tr("TOAST_TRIAL") % [lit, room.braziers.size()], UITheme.BRASS_LIGHT)
+
+
+func _trial_reward() -> void:
+	if not data.has("offer"):
+		data["offer"] = RelicPool.roll(room.run, _rng("trial"), 1, ["rare", "legendary"])
+	var p := Interactables.RelicPedestal.new()
+	p.relic_id = data.offer[0] if not (data.offer as Array).is_empty() else "lens"
+	p.position = center() + Vector2(0, 30)
+	p.taken.connect(func(_t): room.state["loot_taken"] = true)
+	room.entities.add_child(p)
 
 
 # --- elite ---------------------------------------------------------------------

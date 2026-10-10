@@ -58,6 +58,14 @@ No hay GPU en el entorno: **no se ha medido en un PC real**. Que el render por s
 
 **Exportación**: `tools/export.sh` genera `build/linux/Lumbre.x86_64` (77 MB) y `build/windows/Lumbre.exe` (103 MB). El ejecutable de Linux se probó: el autopiloto completó una expedición hasta la profundidad 3 y el recorrido de pantallas capturó las 19 pantallas sin errores. El de Windows se generó pero **no se ha podido ejecutar** aquí (no hay Windows/Wine).
 
+### 2026-10-10 — salas especiales y tercera pasada de equilibrio
+- Nuevas salas: cámaras de braseros y salas sin luz (prueba `test_special_rooms_appear`); nueva prueba `test_real_floor_rooms_have_all_doors` (360 plantas reales).
+- Diagnóstico con el autopiloto: las muertes ante los guardianes se producían con muy poco daño recibido → **agotamiento de llama**:
+  - Madre Polilla: el bot no recogía las ascuas que ella suelta → las ascuas de guardián se atraen desde +70 px; el bot las recoge con poca llama.
+  - Penumbra (Velo): el bot gastaba llama disparando a un objetivo casi inmune → aviso visual/sonoro de inmunidad, braseros a mitad de precio en salas de jefe, Velo al 25% (antes 15%) y menos apagados (cada 12 s).
+- Resultado (10 partidas, `bot19.log`): **4 victorias**, 3 muertes en la profundidad 3, 1 en la 2 y 2 en la 1. Guardianes vencidos por el bot en 14–38 s (Madre Polilla, Gran Apagador) y 33–49 s (Penumbra).
+- `tools/test.sh`: **30 pruebas, 39 620 comprobaciones, 0 fallos**.
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.

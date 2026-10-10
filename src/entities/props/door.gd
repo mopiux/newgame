@@ -122,6 +122,10 @@ class DoorBars extends Node2D:
 				accent = Color("d9622b")
 			"secret":
 				accent = Color("9fe0e6")
+			"trial":
+				accent = Color("4f9bb0")
+			"dark":
+				accent = Color("2b1838")
 		# frame posts
 		var dark := Color("0b0a12")
 		if dir in ["n", "s"]:

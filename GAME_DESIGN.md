@@ -19,7 +19,7 @@ La ciudad de Velaluz se apagó: la **Penumbra** inunda su subsuelo y se ha traga
 
 **Sala (≈30–60 s)**: entras a oscuras; las puertas se cierran; 1–3 oleadas. ¿Gastas llama en encender braseros para pelear con ventaja? Al despejar: ascuas, y si encendiste todos los braseros, una chispa.
 
-**Profundidad (≈5–8 min)**: plano procedural con sala de tesoro (elige 1 de 3 reliquias), tienda del Cerero (reliquias por **llama**, consumibles por **chispas**), sucesos con decisiones, sala élite, sala secreta tras un muro agrietado y el guardián. Tras vencerlo: reliquia (1 de 2) y trampilla de descenso.
+**Profundidad (≈5–8 min)**: plano procedural con sala de tesoro (elige 1 de 3 reliquias), tienda del Cerero (reliquias por **llama**, consumibles por **chispas**), sucesos con decisiones, sala élite, **cámara de braseros** (enciende sus 4 braseros —≈32 de llama— y el relicario se abre con una reliquia rara), **salas sin luz** (la oscuridad resta luz; si sobrevives, 2 chispas), sala secreta tras un muro agrietado y el guardián. Tras vencerlo: reliquia (1 de 2) y trampilla de descenso.
 
 **Expedición (≈15–25 min)**: 3 profundidades (Cloacas → Catacumbas de Cera → Fundición Fría) y 3 guardianes. Victoria o muerte, las chispas recogidas vuelven a la plaza.
 
@@ -38,6 +38,8 @@ La ciudad de Velaluz se apagó: la **Penumbra** inunda su subsuelo y se ha traga
 
 ### Llama
 - Máximo base 100. Disparo: −1 (modificable). Ascua: +3 × multiplicador.
+- Los guardianes sueltan 1 ascua por cada 4% de vida perdida (con mayor radio de atracción): acertar sostiene la pelea; fallar la desangra.
+- Disparar a un objetivo inmune muestra números grises entre puntos y un «ting» metálico: señal clara de cambiar de táctica.
 - Radio de luz = `light_min + (light_max − light_min) · ratio^0.7` × multiplicador.
 - Por debajo del 25%: latido, parpadeo de la barra, farol "bajo".
 - Llama 0 → te apagas (salvo Fénix de Sebo).

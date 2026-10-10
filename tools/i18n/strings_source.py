@@ -97,7 +97,10 @@ S = {
     "END_SPARKS": ("+%d chispas para la plaza", "+%d sparks for the plaza"),
     "END_ASCENSION_UNLOCK": ("Nueva dificultad disponible: Noche %d", "New difficulty available: Night %d"),
     "END_TO_PLAZA": ("Volver a la plaza", "Back to the plaza"),
-    "MAP_LEGEND": ("Ámbar: estás aquí · Rosa: guardián · Oro: tesoro · Verde: Cerero · Violeta: suceso · Naranja: élite", "Amber: you · Pink: guardian · Gold: treasure · Green: Chandler · Violet: event · Orange: elite"),
+    "MAP_LEGEND": ("Ámbar: estás aquí · Rosa: guardián · Oro: tesoro · Verde: Cerero · Violeta: suceso · Naranja: élite · Turquesa: cámara de braseros", "Amber: you · Pink: guardian · Gold: treasure · Green: Chandler · Violet: event · Orange: elite · Teal: brazier chamber"),
+    "TOAST_DARK_ROOM": ("Sala sin luz: la oscuridad devora tu llama", "Lightless room: the dark devours your flame"),
+    "TOAST_TRIAL": ("Braseros encendidos: %d / %d", "Braziers lit: %d / %d"),
+    "TOAST_TRIAL_DONE": ("¡El relicario se abre!", "The reliquary opens!"),
     # --- events ui ---------------------------------------------------------------------
     "EVENT_CANT_AFFORD": ("No puedes permitírtelo.", "You can't afford it."),
     "EVENT_DONE": ("Hecho.", "Done."),

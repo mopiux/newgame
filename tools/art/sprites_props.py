@@ -366,3 +366,29 @@ def build_plaza_props():
         "statue": statue(),
     }
     return out
+
+
+def reliquary(opened):
+    c = Canvas(24, 22)
+    # stone plinth
+    c.rect(2, 16, 22, 21, "4")
+    c.hline(2, 21, 16, "6")
+    c.rect(2, 20, 22, 21, "3")
+    # brass-bound casket
+    c.rect(4, 8, 20, 16, "B")
+    c.rect(4, 8, 20, 10, "n")
+    for x in (4, 11, 12, 19):
+        c.vline(x, 8, 15, "k")
+    c.hline(4, 19, 12, "h")
+    if opened:
+        c.rect(5, 3, 19, 8, "b")
+        c.hline(5, 18, 3, "n")
+        c.rect(7, 8, 17, 10, "Y")
+        c.hline(8, 16, 8, "l")
+    else:
+        c.rect(4, 5, 20, 8, "n")
+        c.hline(4, 19, 5, "N")
+        c.rect(10, 10, 14, 14, "h")
+        c.set(11, 11, "0")
+        c.set(12, 12, "0")
+    return c.outlined()

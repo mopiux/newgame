@@ -41,6 +41,7 @@ func _ready() -> void:
 			_jump_to_room_type("treasure")],
 		["shop_room", 2.0, func(): _jump_to_room_type("shop")],
 		["combat_room", 4.0, func(): _jump_to_room_type("combat")],
+		["trial_room", 2.0, func(): _jump_to_room_type("trial")],
 		["boss_room", 5.0, func():
 			Game.run.flame = 100
 			_jump_to_room_type("boss")],

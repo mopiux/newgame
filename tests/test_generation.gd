@@ -57,7 +57,7 @@ func _validate(f: Dictionary, label: String) -> void:
 	eq(rooms[f.boss].doors.size(), 1, label + " boss is a dead end")
 	check(int(seen.get(boss, 0)) >= 3, label + " boss too close to start")
 	for k in rooms:
-		if rooms[k].type in ["treasure", "shop"]:
+		if rooms[k].type in ["treasure", "shop", "trial"]:
 			eq(rooms[k].doors.size(), 1, "%s %s is a dead end" % [label, rooms[k].type])
 		if rooms[k].type == "secret":
 			check(rooms[k].doors.size() >= 2, label + " secret touches >= 2 rooms")
@@ -65,6 +65,21 @@ func _validate(f: Dictionary, label: String) -> void:
 				var n2: Vector2i = DungeonGenerator.parse_key(k) + DungeonGenerator.DIRS[d]
 				var t2: String = rooms[DungeonGenerator.key(n2)].type
 				check(t2 != "boss" and t2 != "start", label + " secret next to " + t2)
+
+
+func test_special_rooms_appear() -> void:
+	var trials := 0
+	var darks := 0
+	for s in 60:
+		var f := _floor(s, 2)
+		for k in f.rooms:
+			if f.rooms[k].type == "trial":
+				trials += 1
+			if f.rooms[k].get("dark", false):
+				darks += 1
+				eq(f.rooms[k].type, "combat", "only combat rooms are dark")
+	check(trials > 10, "brazier chambers appear (%d)" % trials)
+	check(darks > 10, "lightless rooms appear (%d)" % darks)
 
 
 func test_generation_is_deterministic() -> void:

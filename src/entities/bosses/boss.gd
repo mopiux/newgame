@@ -79,7 +79,7 @@ func _apply_damage(dmg: float, kind: String, info) -> void:
 	var step := max_hp * float(data.get("ember_every", 0.04))
 	while _ember_acc >= step and room and not dead:
 		_ember_acc -= step
-		room.drop_embers(global_position + Vector2(0, -body_height * 0.5), 1)
+		room.drop_embers(global_position + Vector2(0, -body_height * 0.5), 1, 70.0)
 	Events.boss_health_changed.emit(clampf(hp / max_hp, 0.0, 1.0))
 	var ratio := hp / max_hp
 	while phase - 1 < phase_thresholds.size() and ratio <= float(phase_thresholds[phase - 1]) and not dead:

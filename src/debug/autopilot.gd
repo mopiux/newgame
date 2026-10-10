@@ -249,6 +249,18 @@ func _decide(p: Player) -> Dictionary:
 		p.aim_dir = to.normalized()
 		var los := room.has_line_of_sight(p.global_position + Vector2(0, -6), e.global_position + Vector2(0, -4))
 		out.shoot = los and p.run.flame > p.stats.get_stat("shot_cost") + 6.0
+		# a guardian that shrugs off bolts: light braziers instead of wasting flame
+		var boss := _boss(enemies)
+		if boss and boss._damage_taken_mult({}) < 0.5:
+			out.shoot = false
+			var unlit := _nearest_unlit_brazier(room, p.global_position)
+			if unlit and p.run.flame > 16.0:
+				if p.focus_interactable == unlit:
+					out.interact = true
+				out.move = _path_to(room, unlit.global_position + Vector2(0, 8))
+				out.move = _unstick(p, out.move)
+				_last_move = out.move
+				return out
 		if d < 34.0:
 			out.melee = true
 		var move := Vector2.ZERO
@@ -270,6 +282,17 @@ func _decide(p: Player) -> Dictionary:
 					out.dash = true
 					move = Vector2(-rel.y, rel.x).normalized()
 				break
+		# low on flame: grab nearby embers like a person would
+		if flame_ratio < 0.5:
+			var best_e: Node2D = null
+			var best_d := 90.0
+			for k in p.get_tree().get_nodes_in_group("pickups"):
+				var dd: float = k.global_position.distance_to(p.global_position)
+				if dd < best_d and room.is_ancestor_of(k):
+					best_d = dd
+					best_e = k
+			if best_e and d > 40.0:
+				move = (best_e.global_position - p.global_position).normalized() + move * 0.3
 		var close := 0
 		for o in enemies:
 			if o.global_position.distance_to(p.global_position) < 85.0:
@@ -289,8 +312,28 @@ func _decide(p: Player) -> Dictionary:
 	return out
 
 
+func _boss(enemies: Array) -> Boss:
+	for e in enemies:
+		if e is Boss:
+			return e
+	return null
+
+
+func _nearest_unlit_brazier(room: Room, pos: Vector2) -> Brazier:
+	var best: Brazier = null
+	var bd := INF
+	for b in room.braziers:
+		if not b.is_lit and b.global_position.distance_to(pos) < bd:
+			bd = b.global_position.distance_to(pos)
+			best = b
+	return best
+
+
 func _wants(n: Node) -> bool:
 	if n is Brazier:
+		var r: Room = Game.level.room if Game.level else null
+		if r and r.room_type == "trial":
+			return _player.run.flame > 50.0
 		return _player.flame_ratio() > 0.45
 	if n is Interactables.RelicPedestal:
 		var ped := n as Interactables.RelicPedestal
@@ -353,6 +396,9 @@ func _explore(p: Player, room: Room) -> Vector2:
 	# 4) next room
 	var dir := _next_door(room)
 	if dir == "":
+		return Vector2.ZERO
+	if not room.layout.door_spawn.has(dir):
+		print("BOT_DEBUG missing door %s in %s type=%s doors=%s spawns=%s" % [dir, room.key, room.room_type, str(room.info.get("doors")), str(room.layout.door_spawn.keys())])
 		return Vector2.ZERO
 	var spawn: Vector2 = room.layout.door_spawn[dir] * Room.T
 	var outward: Vector2 = DungeonGenerator.DIRS[dir]

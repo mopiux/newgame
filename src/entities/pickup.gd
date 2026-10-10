@@ -9,6 +9,7 @@ var kind := Kind.EMBER
 var value := 3.0
 var vel := Vector2.ZERO
 var magnet := false
+var reach_bonus := 0.0          # boss embers are easier to grab mid-fight
 var _age := 0.0
 var _z := 0.0
 var _vz := 0.0
@@ -62,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	sprite.position.y = -_z - 2.0 + sin(_age * 4.0) * 0.8
 	if player == null or not player.is_alive():
 		return
-	var reach := player.stats.get_stat("magnet_radius") if player.stats else 40.0
+	var reach := (player.stats.get_stat("magnet_radius") if player.stats else 40.0) + reach_bonus
 	var d := global_position.distance_to(player.global_position + Vector2(0, -6))
 	# outside combat everything drifts to the lamplighter (no loot left behind walls)
 	if _age > 0.9 and not Game.in_combat():

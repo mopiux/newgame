@@ -64,6 +64,8 @@ def collect():
     images["notice_board"] = sprites_props.notice_board()
     images["icon"] = make_icon()
     images.update(sprites_props.build_plaza_props())
+    images["reliquary"] = sprites_props.reliquary(False)
+    images["reliquary_open"] = sprites_props.reliquary(True)
     return sheets, images, {"tilesets": tile_meta}
 
 
