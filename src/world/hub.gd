@@ -59,8 +59,9 @@ func _ready() -> void:
 		lamps.append(lp)
 		if lp.lit:
 			lit_count += 1
-	Lights.ambient = 0.04 + 0.015 * lit_count
-	_decorate(ents, lit_count)
+	Lights.ambient = _plaza_ambient()
+	# the Great Lighthouse is the final goal: once lit, all of Velaluz shines
+	_decorate(ents, 99 if SaveManager.has_lamp("lighthouse") else lit_count)
 	var well := Well.new()
 	well.hub = self
 	well.position = Vector2(19 * 16, 12 * 16)
@@ -209,7 +210,14 @@ func _toast(text: String, color: Color) -> void:
 	tw.tween_interval(2.8)
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(l.queue_free)
-	Lights.ambient = 0.04 + 0.015 * SaveManager.profile.lamps.size()
+	Lights.ambient = _plaza_ambient()
+
+
+func _plaza_ambient() -> float:
+	var a: float = 0.04 + 0.015 * (SaveManager.profile.lamps as Array).size()
+	if SaveManager.has_lamp("lighthouse"):
+		a += 0.3
+	return a
 
 
 func _process(_delta: float) -> void:

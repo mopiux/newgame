@@ -64,6 +64,8 @@ func interact(_player: Player) -> void:
 	SaveManager.save_profile()
 	set_lit(true)
 	Events.toast.emit(tr("TOAST_LAMP_LIT") % tr(str(lamp.get("name", ""))), UITheme.FLAME)
+	if str(lamp.get("id", "")) == "lighthouse":
+		Events.toast.emit(tr("TOAST_LIGHTHOUSE"), UITheme.FLAME)
 	Events.sparks_changed.emit(SaveManager.profile.sparks)
 
 

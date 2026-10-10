@@ -145,6 +145,7 @@ S = {
     "TOAST_RELIC_LOST": ("Pierdes: %s", "Lost: %s"),
     "TOAST_LAMP_LOCKED": ("Aún no puede encenderse", "It cannot be lit yet"),
     "TOAST_LAMP_LIT": ("%s vuelve a brillar", "%s shines again"),
+    "TOAST_LIGHTHOUSE": ("El Gran Faro barre la noche: Velaluz vuelve a ser la ciudad de la luz.", "The Great Lighthouse sweeps the night: Velaluz is the city of light once more."),
     # --- tutorial chalk --------------------------------------------------------------------
     "HINT_MOVE": ("%s  mover", "%s  move"),
     "HINT_SHOOT": ("%s  disparar luz (gasta llama)", "%s  shoot light (costs flame)"),
