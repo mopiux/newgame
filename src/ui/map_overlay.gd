@@ -7,12 +7,12 @@ func _ready() -> void:
 	dim_background(0.8)
 	var title := UITheme.title_label(tr(str(Database.biome_for_depth(level.run.depth).get("name", ""))), 30)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	title.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	title.offset_top = 14
 	add_child(title)
 	var m := BigMap.new()
 	m.run = level.run
-	m.set_anchors_preset(Control.PRESET_FULL_RECT)
+	m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	m.offset_left = 60
 	m.offset_right = -60
 	m.offset_top = 56
@@ -20,7 +20,7 @@ func _ready() -> void:
 	add_child(m)
 	var legend := UITheme.label(tr("MAP_LEGEND"), 12, UITheme.TEXT_DIM)
 	legend.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	legend.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	legend.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	legend.offset_top = -40
 	legend.offset_bottom = -24
 	add_child(legend)

@@ -33,6 +33,10 @@ var _target_t := 0.0
 var _given_up: Array = []
 
 
+var shots_dir := ""
+var _shot_queue: Array = []
+var _shot_n := 0
+var _shot_timer := 0.0
 var _damage_by := {}
 var _boss_t0 := {}
 var _spent := {"shots": 0.0, "braziers": 0}
@@ -58,9 +62,19 @@ func _ready() -> void:
 	i = args.find("--bot-timeout")
 	if i >= 0 and i + 1 < args.size():
 		run_timeout = float(args[i + 1])
+	i = args.find("--shots")
+	if i >= 0 and i + 1 < args.size():
+		shots_dir = args[i + 1]
+		DirAccess.make_dir_recursive_absolute(shots_dir)
+	Events.room_entered.connect(func(r: Node):
+		_shot_queue.append({"t": 2.5, "tag": "room_%s" % str(r.get("room_type"))}))
+	Events.boss_started.connect(func(_b: Node):
+		_shot_queue.append({"t": 3.0, "tag": "boss_a"})
+		_shot_queue.append({"t": 12.0, "tag": "boss_b"}))
 
 
 func _process(delta: float) -> void:
+	_screenshots(delta)
 	var level: Level = Game.level
 	if level == null:
 		if Game.main and Game.run == null and not _ending and runs_left > 0 and get_tree().current_scene != null:
@@ -101,6 +115,23 @@ func _process(delta: float) -> void:
 		if _run_t > run_timeout and Game.run:
 			print("BOT_TIMEOUT room=%s depth=%d" % [Game.run.current_room, Game.run.depth])
 			Game.finish_run(false)
+
+
+func _screenshots(delta: float) -> void:
+	if shots_dir == "" or DisplayServer.get_name() == "headless":
+		return
+	_shot_timer += delta
+	if _shot_timer > 15.0:
+		_shot_timer = 0.0
+		_shot_queue.append({"t": 0.0, "tag": "periodic"})
+	for q in _shot_queue:
+		q.t -= delta
+	var ready := _shot_queue.filter(func(q): return q.t <= 0.0)
+	_shot_queue = _shot_queue.filter(func(q): return q.t > 0.0)
+	for q in ready:
+		_shot_n += 1
+		var img := get_viewport().get_texture().get_image()
+		img.save_png("%s/%03d_%s.png" % [shots_dir, _shot_n, q.tag])
 
 
 func _start_next() -> void:

@@ -28,11 +28,11 @@
    "orb_speed": 70, "orb_damage": 9, "flying": true, "light_weakness": 0.45, "death_fx": "cold"},
   {"id": "moth_mother", "order": 20, "name": "BOSS_MOTH", "title": "BOSS_MOTH_TITLE", "lore": "BOSS_MOTH_LORE", "behavior": "boss", "sprite": "moth_mother", "anim": "fly",
    "hp": 760, "speed": 50, "contact_damage": 10, "radius": 14, "height": 24, "embers": 0, "cost": 0,
-   "flying": true, "knockback_mult": 0.05, "stun_mult": 0.0, "light_weakness": 0.0, "music": "boss", "death_fx": "dust"},
+   "flying": true, "knockback_mult": 0.05, "stun_mult": 0.0, "light_weakness": 0.0, "music": "boss", "death_fx": "dust", "aura_radius": 80, "aura_energy": 0.6, "aura_color": "#ffcf96"},
   {"id": "great_snuffer", "order": 21, "name": "BOSS_SNUFFER", "title": "BOSS_SNUFFER_TITLE", "lore": "BOSS_SNUFFER_LORE", "behavior": "boss", "sprite": "great_snuffer", "anim": "walk",
    "hp": 1000, "speed": 30, "contact_damage": 12, "radius": 14, "height": 30, "embers": 0, "cost": 0,
-   "knockback_mult": 0.0, "stun_mult": 0.0, "light_weakness": 0.15, "music": "boss", "death_fx": "wisps"},
+   "knockback_mult": 0.0, "stun_mult": 0.0, "light_weakness": 0.15, "music": "boss", "death_fx": "wisps", "aura_radius": 74, "aura_energy": 0.5, "aura_color": "#d6a6ff"},
   {"id": "penumbra", "order": 22, "name": "BOSS_PENUMBRA", "title": "BOSS_PENUMBRA_TITLE", "lore": "BOSS_PENUMBRA_LORE", "behavior": "boss", "sprite": "penumbra", "anim": "idle",
    "hp": 1500, "speed": 34, "contact_damage": 12, "radius": 16, "height": 32, "embers": 0, "cost": 0,
-   "flying": true, "knockback_mult": 0.0, "stun_mult": 0.0, "light_weakness": 0.0, "music": "boss_final", "death_fx": "wisps"}
+   "flying": true, "knockback_mult": 0.0, "stun_mult": 0.0, "light_weakness": 0.0, "music": "boss_final", "death_fx": "wisps", "aura_radius": 70, "aura_energy": 0.45, "aura_color": "#9fe0e6"}
 ]

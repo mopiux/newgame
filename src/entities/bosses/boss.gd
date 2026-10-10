@@ -24,6 +24,15 @@ func _ready() -> void:
 	super._ready()
 	add_to_group("bosses")
 	spawning = 1.2
+	# guardians carry their own glow so they always read against the dark
+	var aura := LightEmitter.new()
+	aura.position = Vector2(0, -body_height * 0.6)
+	aura.radius = float(data.get("aura_radius", 70.0))
+	aura.energy = float(data.get("aura_energy", 0.55))
+	aura.color = Color(str(data.get("aura_color", "#ffd9a8")))
+	aura.flicker = 0.05
+	aura.priority = 95
+	add_child(aura)
 	Audio.music(str(data.get("music", "boss")))
 
 

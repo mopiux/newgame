@@ -12,7 +12,7 @@ func set_level(l: Level) -> void:
 
 func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UITheme.get_theme()
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
@@ -20,14 +20,14 @@ func _init() -> void:
 func dim_background(alpha: float = 0.7) -> void:
 	var bg := ColorRect.new()
 	bg.color = Color(UITheme.INK, alpha)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 
 
 func centered_panel(min_size: Vector2) -> VBoxContainer:
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(center)
 	var panel := PanelContainer.new()

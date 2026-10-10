@@ -35,7 +35,8 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 - 🟡 Pulido de animaciones (babosa y gólem mejorables)
 
 ## Fase F — Pruebas y distribución
-- 🟡 Autopiloto de partidas completas
-- ⬜ Batería de pruebas unitarias headless
+- ✅ Autopiloto de partidas completas (+ capturas)
+- ✅ Batería de pruebas unitarias headless (28 pruebas)
+- ✅ Recorrido automático de pantallas con capturas
 - ⬜ Medición de rendimiento documentada
 - ⬜ Exportación Linux/Windows

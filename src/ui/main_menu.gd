@@ -77,7 +77,7 @@ func _build_ui() -> void:
 	_ui.layer = 10
 	add_child(_ui)
 	var root := Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.theme = UITheme.get_theme()
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(root)
@@ -108,8 +108,9 @@ func _build_ui() -> void:
 	first.grab_focus.call_deferred()
 	var ver := UITheme.label("v%s" % ProjectSettings.get_setting("application/config/version"), 8, UITheme.TEXT_DIM)
 	ver.add_theme_font_override("font", UITheme.font_small())
-	ver.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	ver.position = Vector2(-40, -14)
+	ver.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	ver.offset_left = -44
+	ver.offset_top = -14
 	root.add_child(ver)
 	if SaveManager.last_load_warning != "":
 		var warn := UITheme.label(tr("TOAST_SAVE_RECOVERED"), 12, UITheme.CURSE)

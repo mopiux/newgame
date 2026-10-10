@@ -8,7 +8,7 @@ var root: Control
 var flame_gauge: FlameGauge
 var minimap: Minimap
 var sparks_label: Label
-var relic_row: HBoxContainer
+var relic_row: GridContainer
 var prompt: Label
 var prompt_desc: Label
 var toasts: VBoxContainer
@@ -23,7 +23,7 @@ var _relic_count := -1
 func _ready() -> void:
 	layer = 10
 	root = Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.theme = UITheme.get_theme()
 	add_child(root)
@@ -61,13 +61,16 @@ func _ready() -> void:
 	sparks_label = UITheme.label("0", 12, UITheme.SPECTRAL)
 	sparks_box.add_child(sparks_label)
 
-	relic_row = HBoxContainer.new()
+	relic_row = GridContainer.new()
+	relic_row.columns = 9
 	relic_row.anchor_top = 1.0
 	relic_row.anchor_bottom = 1.0
+	relic_row.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	relic_row.offset_left = 6
-	relic_row.offset_top = -22
+	relic_row.offset_top = -40
 	relic_row.offset_bottom = -4
-	relic_row.add_theme_constant_override("separation", 2)
+	relic_row.add_theme_constant_override("h_separation", 2)
+	relic_row.add_theme_constant_override("v_separation", 2)
 	relic_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(relic_row)
 
@@ -123,7 +126,7 @@ func _ready() -> void:
 
 	banner = UITheme.title_label("", 40, UITheme.FLAME)
 	banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	banner.offset_left = -300
 	banner.offset_right = 300
 	banner.offset_top = 96
@@ -131,7 +134,7 @@ func _ready() -> void:
 	root.add_child(banner)
 	banner_sub = UITheme.label("", 12, UITheme.TEXT_DIM)
 	banner_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	banner_sub.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	banner_sub.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	banner_sub.offset_left = -300
 	banner_sub.offset_right = 300
 	banner_sub.offset_top = 136
@@ -155,6 +158,7 @@ func _ready() -> void:
 	Events.sparks_changed.connect(func(n): sparks_label.text = str(n))
 	Events.map_changed.connect(func(): minimap.queue_redraw())
 	Events.room_cleared.connect(func(_r): show_toast(tr("TOAST_ROOM_CLEAR"), UITheme.FLAME, 1.2))
+	Events.room_entered.connect(func(_r): boss_bar.visible = false)
 
 
 func set_crosshair(v: bool) -> void:
@@ -193,7 +197,7 @@ func _rebuild_relics() -> void:
 	_relic_count = level.run.relics.size()
 	for c in relic_row.get_children():
 		c.queue_free()
-	var shown := level.run.relics.slice(maxi(0, level.run.relics.size() - 14))
+	var shown := level.run.relics.slice(maxi(0, level.run.relics.size() - 18))
 	for id in shown:
 		var t := TextureRect.new()
 		t.texture = RelicIcons.icon(id)

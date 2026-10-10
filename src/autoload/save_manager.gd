@@ -3,15 +3,25 @@ extends Node
 ## in progress. Files are JSON wrapped with a checksum, written atomically
 ## (tmp file + rename) with a .bak copy of the previous good version.
 
-const PROFILE_PATH := "user://profile.json"
-const RUN_PATH := "user://run.json"
 const VERSION := 1
 
+var profile_path := "user://profile.json"
+var run_path := "user://run.json"
 var profile: Dictionary = {}
 var last_load_warning: String = ""
 
 
 func _ready() -> void:
+	# automated play (bot, screen tour, tests) never touches the real profile
+	var args := OS.get_cmdline_user_args()
+	var name := ""
+	if args.has("--profile") and args.find("--profile") + 1 < args.size():
+		name = args[args.find("--profile") + 1]
+	elif args.has("--bot") or args.has("--tour"):
+		name = "test"
+	if name != "":
+		profile_path = "user://profile_%s.json" % name.validate_filename()
+		run_path = "user://run_%s.json" % name.validate_filename()
 	load_profile()
 
 
@@ -90,18 +100,18 @@ func delete_file(path: String) -> void:
 
 func load_profile() -> void:
 	last_load_warning = ""
-	var data = read_json(PROFILE_PATH)
+	var data = read_json(profile_path)
 	profile = sanitize_profile(data if data != null else {})
 
 
 func save_profile() -> bool:
-	return write_json(PROFILE_PATH, profile)
+	return write_json(profile_path, profile)
 
 
 func reset_profile() -> void:
 	profile = default_profile()
-	delete_file(PROFILE_PATH)
-	delete_file(RUN_PATH)
+	delete_file(profile_path)
+	delete_file(run_path)
 	save_profile()
 
 
@@ -169,20 +179,20 @@ func mark_seen(kind: String, id: String) -> void:
 # --- run snapshot -------------------------------------------------------------
 
 func has_run() -> bool:
-	return read_json(RUN_PATH) != null
+	return read_json(run_path) != null
 
 
 func save_run(snapshot: Dictionary) -> bool:
 	snapshot["version"] = VERSION
-	return write_json(RUN_PATH, snapshot)
+	return write_json(run_path, snapshot)
 
 
 func load_run() -> Variant:
-	var data = read_json(RUN_PATH)
+	var data = read_json(run_path)
 	if data == null or int(data.get("version", 0)) != VERSION:
 		return null
 	return data
 
 
 func clear_run() -> void:
-	delete_file(RUN_PATH)
+	delete_file(run_path)

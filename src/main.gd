@@ -4,6 +4,7 @@ extends Node
 ##   --start-run [seed]   jump straight into a new expedition
 ##   --hub                jump to the plaza
 ##   --bot                autopilot plays (see src/debug/autopilot.gd)
+##   --tour DIR           screenshot every screen (see src/debug/screen_tour.gd)
 
 
 var screen_root: Node
@@ -23,11 +24,18 @@ func _ready() -> void:
 	add_child(_fade_layer)
 	_fade = ColorRect.new()
 	_fade.color = Color("0b0a12")
-	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade_layer.add_child(_fade)
 	Game.main = self
 	var args := OS.get_cmdline_user_args() + OS.get_cmdline_args()
+	if args.has("--tour"):
+		var tour := ScreenTour.new()
+		tour.name = "ScreenTour"
+		var ti := args.find("--tour")
+		tour.out_dir = args[ti + 1] if ti + 1 < args.size() else "user://tour"
+		add_child(tour)
+		return
 	if args.has("--bot"):
 		var bot := Autopilot.new()
 		bot.name = "Autopilot"

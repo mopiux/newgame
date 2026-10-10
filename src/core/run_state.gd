@@ -116,6 +116,23 @@ func generate_floor() -> void:
 	room_state(current_room).visited = true
 
 
+## JSON turns integers into floats; index lists must be ints again or
+## Array.has(int) lookups (lit braziers, broken pots) silently fail.
+static func _normalize_room_state(st: Dictionary) -> Dictionary:
+	for key in ["lit", "pots"]:
+		var fixed: Array = []
+		for v in st.get(key, []):
+			if typeof(v) in [TYPE_INT, TYPE_FLOAT]:
+				fixed.append(int(v))
+		st[key] = fixed
+	for key in ["visited", "cleared", "loot_taken", "lit_bonus", "mimic_dead"]:
+		if st.has(key):
+			st[key] = bool(st[key])
+	if typeof(st.get("data")) != TYPE_DICTIONARY:
+		st["data"] = {}
+	return st
+
+
 func rng(tag: String) -> RandomNumberGenerator:
 	return RunRng.make(run_seed, "d%d|%s" % [depth, tag])
 
@@ -161,7 +178,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	if typeof(saved_rooms) == TYPE_DICTIONARY:
 		for k in saved_rooms:
 			if r.floor.rooms.has(k) and typeof(saved_rooms[k]) == TYPE_DICTIONARY:
-				r.rooms[k] = saved_rooms[k]
+				r.rooms[k] = _normalize_room_state(saved_rooms[k])
 	r.current_room = str(d.get("current_room", r.floor.get("start", "0,0")))
 	if not r.floor.rooms.has(r.current_room):
 		r.current_room = r.floor.start

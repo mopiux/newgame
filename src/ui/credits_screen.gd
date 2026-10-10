@@ -4,14 +4,14 @@ extends Control
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme = UITheme.get_theme()
 	var bg := ColorRect.new()
 	bg.color = UITheme.INK
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 	var scroll := ScrollContainer.new()
-	scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	scroll.offset_left = 60
 	scroll.offset_right = -60
 	scroll.offset_top = 20
@@ -29,8 +29,10 @@ func _ready() -> void:
 		box.add_child(l)
 	var back := Button.new()
 	back.text = tr("BACK")
-	back.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	back.position = Vector2(60, -32)
+	back.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	back.offset_left = 60
+	back.offset_top = -32
+	back.offset_bottom = -12
 	back.pressed.connect(func():
 		Audio.ui("ui_back")
 		Game.goto_menu())

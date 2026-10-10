@@ -95,7 +95,7 @@ func _build_ui() -> void:
 	ui.layer = 10
 	add_child(ui)
 	root = Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.theme = UITheme.get_theme()
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(root)
@@ -117,7 +117,7 @@ func _build_ui() -> void:
 	hb.add_child(sparks_label)
 	prompt = UITheme.label("", 12)
 	prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	prompt.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	prompt.offset_left = -220
 	prompt.offset_right = 220
 	prompt.offset_top = -48
@@ -127,7 +127,7 @@ func _build_ui() -> void:
 	prompt_desc = UITheme.label("", 12, UITheme.TEXT_DIM)
 	prompt_desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	prompt_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	prompt_desc.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	prompt_desc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	prompt_desc.offset_left = -200
 	prompt_desc.offset_right = 200
 	prompt_desc.offset_top = -34
@@ -135,7 +135,7 @@ func _build_ui() -> void:
 	prompt_desc.add_theme_constant_override("outline_size", 3)
 	root.add_child(prompt_desc)
 	toasts = VBoxContainer.new()
-	toasts.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	toasts.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	toasts.offset_left = -200
 	toasts.offset_right = 200
 	toasts.offset_top = 40

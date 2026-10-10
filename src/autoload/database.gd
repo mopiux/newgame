@@ -105,7 +105,8 @@ func relic_ids_for_pool(unlocked_tiers: Array, exclude: Array = []) -> Array:
 	var out: Array = []
 	for id in relics:
 		var r: Dictionary = relics[id]
-		if r.get("tier", 0) in unlocked_tiers and not (id in exclude) and not r.get("no_pool", false):
+		# JSON numbers are floats: compare as int or tiers never match
+		if int(r.get("tier", 0)) in unlocked_tiers and not (id in exclude) and not r.get("no_pool", false):
 			out.append(id)
 	out.sort()
 	return out

@@ -11,7 +11,7 @@ func _ready() -> void:
 	dim_background(0.75)
 	Audio.ui("pause")
 	var hb := HBoxContainer.new()
-	hb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	hb.offset_left = 24
 	hb.offset_right = -24
 	hb.offset_top = 20
@@ -106,14 +106,14 @@ class ConfirmBox extends Control:
 
 	func _ready() -> void:
 		process_mode = Node.PROCESS_MODE_ALWAYS
-		set_anchors_preset(Control.PRESET_FULL_RECT)
+		set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		theme = UITheme.get_theme()
 		var bg := ColorRect.new()
 		bg.color = Color(UITheme.INK, 0.6)
-		bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+		bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		add_child(bg)
 		var center := CenterContainer.new()
-		center.set_anchors_preset(Control.PRESET_FULL_RECT)
+		center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		add_child(center)
 		var panel := PanelContainer.new()
 		panel.custom_minimum_size = Vector2(260, 0)

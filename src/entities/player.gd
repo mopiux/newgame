@@ -241,7 +241,9 @@ func _animate() -> void:
 		body.play(anim)
 	# lantern held towards the aim, bobbing with the walk
 	var bob := sin(Time.get_ticks_msec() * 0.012) * (1.0 if moving else 0.4)
-	lantern.position = aim_dir * 8.0 + Vector2(0, bob)
+	# held in the hand on the aiming side, pushed a little towards the aim
+	var side := 1.0 if aim_dir.x >= -0.05 else -1.0
+	lantern.position = Vector2(5.0 * side, 1.0 + bob) + aim_dir * 5.0
 	lantern.z_index = Layers.Z_EMISSIVE if aim_dir.y > -0.3 else Layers.Z_EMISSIVE - 1
 	lantern.play("low" if flame_ratio() < 0.25 else "burn")
 

@@ -26,7 +26,13 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw() -> void:
-	var r := radius * minf(1.0, _age * 4.0)
-	draw_circle(Vector2.ZERO, r, Color("d9b98f"))
-	draw_circle(Vector2(-1, -1), r * 0.7, Color("efdcb8"))
-	draw_circle(Vector2(r * 0.3, r * 0.2), r * 0.25, Color("b58b65"))
+	# flat, pixel-stepped ellipse of wax with a glossy streak
+	var r := roundf(radius * minf(1.0, _age * 4.0))
+	var ry := maxf(2.0, roundf(r * 0.45))
+	for y in range(-int(ry), int(ry) + 1):
+		var w := roundf(r * sqrt(maxf(0.0, 1.0 - float(y * y) / (ry * ry))))
+		if w <= 0.0:
+			continue
+		var col := Color("b58b65") if y > ry * 0.4 else Color("d9b98f")
+		draw_rect(Rect2(-w, y, w * 2.0, 1.0), Color(col, 0.85))
+	draw_rect(Rect2(-r * 0.4, -ry * 0.4, r * 0.5, 1.0), Color("efdcb8"))
