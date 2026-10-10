@@ -3,8 +3,10 @@ extends Node
 ## Visits every screen of the game and saves a screenshot of each one:
 ##   godot --path . -- --tour OUTPUT_DIR
 ## Used for visual review and as a smoke test of the whole UI.
+## Options: --lang es|en, --tour-event ID (event shown in the dialog step).
 
 var out_dir := ""
+var event_id := "black_altar"
 var _steps: Array = []
 var _i := 0
 var _wait := 0.0
@@ -16,6 +18,8 @@ func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	if args.has("--lang") and args.find("--lang") + 1 < args.size():
 		Settings.set_value("game", "language", args[args.find("--lang") + 1])
+	if args.has("--tour-event") and args.find("--tour-event") + 1 < args.size():
+		event_id = args[args.find("--tour-event") + 1]
 	_steps = [
 		["menu", 2.5, func(): Game.goto_menu()],
 		["options", 1.0, func(): _open_options_from_menu()],
@@ -38,7 +42,7 @@ func _ready() -> void:
 			Game.level._open_overlay(MapOverlay.new())],
 		["event", 1.0, func():
 			Game.level.close_overlay()
-			Game.level.show_event("black_altar", null)],
+			Game.level.show_event(event_id, null)],
 		["treasure_room", 2.0, func():
 			Game.level.close_overlay()
 			_jump_to_room_type("treasure")],

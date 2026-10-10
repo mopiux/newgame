@@ -386,4 +386,17 @@ EV_POOL_OPT1,"Bañarte en ella (+30% invulnerabilidad, -6% velocidad)","Bathe in
 EV_POOL_OPT2,"Rellenar el farol (llama completa, -5 llama máx.)","Refill the lantern (full flame, -5 max flame)"
 EV_POOL_RES1,Una costra de cera te cubre como una armadura.,A crust of wax covers you like armour.
 EV_POOL_RES2,"La llama sube, espesa y lenta.","The flame rises, thick and slow."
+EV_BELL_TITLE,La campana ahogada,The drowned bell
+EV_BELL_TEXT,"Una campana de latón asoma del agua negra, cubierta de cera vieja. El badajo todavía cuelga.","A brass bell juts out of the black water, crusted with old wax. Its clapper still hangs."
+EV_BELL_OPT1,Tocarla y escuchar el eco (50%),Ring it and listen to the echo (50%)
+EV_BELL_OPT2,"Arrancar el badajo para tu farol (-15 llama, +30% daño del golpe)","Tear off the clapper for your lantern (-15 flame, +30% strike damage)"
+EV_BELL_WIN,El eco recorre los túneles y te dibuja el camino. Algo tintinea a tus pies.,The echo runs through the tunnels and draws you the way. Something jingles at your feet.
+EV_BELL_LOSE,El eco despierta a quienes duermen en la oscuridad.,The echo wakes those who sleep in the dark.
+EV_BELL_RES2,"Pesa, pero tu farol golpea como un martillo.","It is heavy, but your lantern hits like a hammer."
+EV_COCOON_TITLE,Capullo luminoso,Glowing cocoon
+EV_COCOON_TEXT,"Un capullo enorme late con luz propia, pegado al techo con hilos de cera.","A huge cocoon pulses with its own light, stuck to the ceiling with threads of wax."
+EV_COCOON_OPT1,"Abrirlo con la llama (-20 llama, reliquia rara)","Open it with the flame (-20 flame, rare relic)"
+EV_COCOON_OPT2,Quemarlo entero (ascuas y +2 chispas),Burn it whole (embers and +2 sparks)
+EV_COCOON_RES1,Dentro no hay polilla: solo algo que brilla y te estaba esperando.,There is no moth inside: only something shining that was waiting for you.
+EV_COCOON_RES2,El capullo arde deprisa y deja una lluvia de ascuas.,The cocoon burns fast and leaves a rain of embers.
 LORE_INTRO,Velaluz se apagó. La Penumbra sube desde el subsuelo. Eres el último farolero.,Velaluz has gone dark. The Penumbra rises from below. You are the last lamplighter.
