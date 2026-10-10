@@ -10,6 +10,8 @@ extends Node
 ##        --bot-timeout S  abort a run after S seconds of game time (default 900)
 
 var runs_left := 1
+var bot_ascension := 0
+var bot_lantern := "oil"
 var run_timeout := 900.0
 var results: Array = []
 
@@ -62,6 +64,12 @@ func _ready() -> void:
 	i = args.find("--bot-timeout")
 	if i >= 0 and i + 1 < args.size():
 		run_timeout = float(args[i + 1])
+	i = args.find("--bot-asc")
+	if i >= 0 and i + 1 < args.size():
+		bot_ascension = clampi(int(args[i + 1]), 0, 10)
+	i = args.find("--bot-lantern")
+	if i >= 0 and i + 1 < args.size():
+		bot_lantern = args[i + 1]
 	if args.has("--perf-mode"):
 		Settings.data.video.performance_mode = true
 	if args.has("--no-fx"):
@@ -192,7 +200,7 @@ func _start_next() -> void:
 	tw.tween_interval(0.5)
 	tw.tween_callback(func():
 		_ending = false
-		Game.new_run("oil", "BOT%d" % (randi() % 100000), 0))
+		Game.new_run(bot_lantern, "BOT%d" % (randi() % 100000), bot_ascension))
 
 
 func _after_run() -> void:

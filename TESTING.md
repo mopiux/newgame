@@ -67,6 +67,10 @@ No hay GPU en el entorno: **no se ha medido en un PC real**. Que el render por s
 - Resultado (10 partidas, `bot19.log`): **4 victorias**, 3 muertes en la profundidad 3, 1 en la 2 y 2 en la 1. Guardianes vencidos por el bot en 14–38 s (Madre Polilla, Gran Apagador) y 33–49 s (Penumbra).
 - `tools/test.sh`: **30 pruebas, 39 620 comprobaciones, 0 fallos**.
 
+### 2026-10-10 — variantes: Noches y faroles
+- Autopiloto con `--bot-asc 5` y `--bot-asc 10` (3 partidas cada uno): sin errores; la dificultad sube como se pretende (el bot sin mejoras muere en las profundidades 1–2).
+- Autopiloto con cada farol alternativo (`--bot-lantern mirror|ember|pilgrim`, 2 partidas cada uno): sin errores; los tres llegan a la profundidad 2–3 y la Vela del peregrino consiguió una victoria.
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.

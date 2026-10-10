@@ -46,7 +46,7 @@ func _ready() -> void:
 		bot.name = "Autopilot"
 		add_child(bot)
 		if not args.has("--start-run"):
-			Game.new_run("oil", "BOT1", 0)
+			Game.new_run(bot.bot_lantern, "BOT1", bot.bot_ascension)
 			return
 	if args.has("--start-run"):
 		var i := args.find("--start-run")
