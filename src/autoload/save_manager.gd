@@ -17,7 +17,7 @@ func _ready() -> void:
 	var name := ""
 	if args.has("--profile") and args.find("--profile") + 1 < args.size():
 		name = args[args.find("--profile") + 1]
-	elif args.has("--bot") or args.has("--tour"):
+	elif args.has("--bot") or args.has("--tour") or args.has("--continue-check"):
 		name = "test"
 	if name != "":
 		profile_path = "user://profile_%s.json" % name.validate_filename()

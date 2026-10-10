@@ -29,6 +29,11 @@ func _ready() -> void:
 	_fade_layer.add_child(_fade)
 	Game.main = self
 	var args := OS.get_cmdline_user_args() + OS.get_cmdline_args()
+	if args.has("--continue-check"):
+		var cc := ContinueCheck.new()
+		cc.name = "ContinueCheck"
+		add_child(cc)
+		return
 	if args.has("--tour"):
 		var tour := ScreenTour.new()
 		tour.name = "ScreenTour"

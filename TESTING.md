@@ -6,6 +6,7 @@
 |---|---|---|
 | Importación/compilación | `tools/check.sh` | Que todos los scripts compilan y los recursos se importan sin errores |
 | Autopiloto | `godot --headless --fixed-fps 60 --path . -- --bot --bot-runs N` | Expediciones completas jugadas por un bot: combate, braseros, reliquias, tienda, sucesos, jefes, descenso, fin de partida y vuelta a la plaza. Imprime `BOT_STATUS`, `BOT_RESULT` y cualquier `SCRIPT ERROR` |
+| Continuar (extremo a extremo) | `godot --headless --path . -- --continue-check` (incluido en `tools/test.sh`) | Juega, cambia de sala, enciende un brasero, obtiene una reliquia, guarda, vuelve al menú, pulsa «Continuar» y compara sala, reliquias, llama, chispas, puerta de entrada y braseros encendidos |
 | Pruebas unitarias | `tools/test.sh` | 28 pruebas / ~36 500 comprobaciones: validez y determinismo de la generación (150 semillas × 3 profundidades), salas (>1000 distribuciones), estadísticas y reliquias, guardado (corrupción, copias, saneado), integridad de datos y traducciones, reglas de juego |
 | Recorrido de pantallas | `xvfb-run godot --path . --rendering-driver opengl3 -- --tour DIR` | Visita y captura 19 pantallas (menú, opciones, plaza, paneles, pausa, mapa, sucesos, tesoro, tienda, combate, jefe, biomas, victoria): revisión visual y prueba de humo de la interfaz |
 | Capturas en partida | `xvfb-run godot --path . --rendering-driver opengl3 --fixed-fps 60 -- --bot --shots DIR` | El autopiloto guarda capturas al entrar en cada sala, en los jefes y cada 15 s |
