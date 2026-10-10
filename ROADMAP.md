@@ -25,7 +25,7 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 - ✅ Verificado con autopiloto: expediciones completas hasta la victoria sin errores de script
 
 ## Fase D — Contenido y profundidad
-- ✅ 9 criaturas con comportamientos distintos, 3 jefes, 32 reliquias, 4 faroles, 14 sucesos, 11 farolas, 10 Noches
+- ✅ 9 criaturas con comportamientos distintos, 3 jefes, 36 reliquias, 4 faroles, 14 sucesos, 11 farolas, 10 Noches
 - 🟡 Equilibrio: dos pasadas con datos del autopiloto (bot con puntería perfecta gana ~50%); falta validación con personas
 - ⬜ Más variedad de salas hechas a mano (puzles de luz, salas oscuras especiales)
 

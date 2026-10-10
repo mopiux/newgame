@@ -225,6 +225,8 @@ func _on_brazier_lit(b: Brazier) -> void:
 		lit.append(b.index)
 	state["lit"] = lit
 	_content.on_brazier_lit(b)
+	if player and is_instance_valid(player):
+		player.relic_fx.on_brazier_lit(b)
 	if all_braziers_lit() and braziers.size() > 0 and state.get("cleared", false) and not state.get("lit_bonus", false):
 		_grant_lit_bonus()
 

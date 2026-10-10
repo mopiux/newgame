@@ -89,6 +89,12 @@ Un agente revisor (sin acceso a escribir) leyó los sistemas centrales buscando 
 
 Tras los arreglos: **33 pruebas / 39 670 comprobaciones, 0 fallos**, «Continuar» OK, 10 partidas del bot sin errores (4 victorias), recorrido de pantallas completo.
 
+### 2026-10-10 — cuatro reliquias nuevas
+- Farol de bolsillo, Fósforo blanco, Aceite bendito y Espejo de mano (iconos 32–35).
+- Nueva prueba `test_new_relic_hooks_on_a_live_player`: crea un jugador real en el árbol de escena y comprueba el reembolso de llama al encender braseros (y que se acumula), la quemadura solo en el fogonazo, el suelo de luz y que el espejo devuelve el orbe como disparo propio en sentido contrario.
+- Nueva opción del autopiloto `--bot-relics a,b,…` (empieza cada expedición con esas reliquias). 3 partidas con las cuatro nuevas: sin errores de script, 3 victorias (esperable: empieza con cuatro reliquias extra).
+- `tools/test.sh`: **34 pruebas, 39 714 comprobaciones, 0 fallos**, «Continuar» OK.
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.

@@ -97,6 +97,8 @@ func modify_hit(enemy: Node2D, info: Dictionary) -> void:
 		dmg *= 1.0 + 0.12 * lit * count("tinder")
 	if has("phosphor") and randf() < 0.3 * count("phosphor"):
 		info["burn"] = 7.0
+	if has("white_phosphor") and str(info.get("kind", "")) == "flare":
+		info["burn"] = maxf(float(info.get("burn", 0.0)), 12.0)
 	info["damage"] = dmg
 
 
@@ -128,6 +130,33 @@ func try_revive() -> bool:
 
 func on_flame_gained(_gained: float, _overflow: float) -> void:
 	pass
+
+
+## "Aceite bendito": every brazier you light gives part of its cost back.
+func on_brazier_lit(b: Node2D) -> void:
+	if not has("blessed_oil") or player == null or not player.is_alive():
+		return
+	player.add_flame(6.0 * count("blessed_oil"))
+	Fx.burst(player.get_parent(), b.global_position + Vector2(0, -12), "sparks", 0.6)
+
+
+## "Espejo de mano": a struck enemy shot flies back as one of yours.
+func reflect_shot(shot: Node2D) -> Projectile:
+	if not has("hand_mirror") or not (shot is Projectile):
+		return null
+	var src: Projectile = shot
+	var dir := -src.velocity.normalized() if src.velocity.length() > 1.0 else player.aim_dir
+	var p := Projectile.new()
+	p.team = "player"
+	p.source = player
+	p.kind = bolt_sheet()
+	p.position = src.global_position - player.get_parent().global_position
+	p.velocity = dir * 240.0
+	p.damage = player.stats.get_stat("shot_damage") * 1.5
+	p.radius = 3.0
+	p.max_dist = 220.0
+	player.get_parent().add_child.call_deferred(p)
+	return p
 
 
 # --- event reactions ---------------------------------------------------------------

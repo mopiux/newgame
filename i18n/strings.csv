@@ -249,6 +249,14 @@ RELIC_TINDER,Yesca,Tinder
 RELIC_TINDER_DESC,+12% de daño por cada brasero encendido en la sala.,+12% damage per lit brazier in the room.
 RELIC_GLASS_HEART,Corazón de vidrio,Glass heart
 RELIC_GLASS_HEART_DESC,Maldita: el doble de daño... y recibes el doble.,Cursed: double damage... and you take double.
+RELIC_POCKET_LAMP,Farol de bolsillo,Pocket lamp
+RELIC_POCKET_LAMP_DESC,"Tu luz nunca se encoge tanto, aunque la llama esté baja.","Your light never shrinks as much, even when the flame is low."
+RELIC_WHITE_PHOSPHOR,Fósforo blanco,White phosphor
+RELIC_WHITE_PHOSPHOR_DESC,"El Fogonazo es más grande, golpea más fuerte y prende fuego a las criaturas.","The Flare is bigger, hits harder and sets creatures ablaze."
+RELIC_BLESSED_OIL,Aceite bendito,Blessed oil
+RELIC_BLESSED_OIL_DESC,Cada brasero que enciendes te devuelve 6 de llama.,Every brazier you light gives you back 6 flame.
+RELIC_HAND_MIRROR,Espejo de mano,Hand mirror
+RELIC_HAND_MIRROR_DESC,Los orbes que golpeas con el farol salen despedidos contra quien los lanzó.,Orbs you strike with the lantern fly back at whoever threw them.
 HUB_TITLE,Plaza de Velaluz,Velaluz Plaza
 HUB_INTRO,Las chispas que traigas del subsuelo pueden reencender las farolas de la plaza.,Sparks brought up from below can relight the plaza's lamps.
 EXP_TITLE,Nueva expedición,New expedition

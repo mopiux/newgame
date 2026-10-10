@@ -67,8 +67,8 @@ La ciudad de Velaluz se apagó: la **Penumbra** inunda su subsuelo y se ha traga
 | **Gran Apagador** | Campanazo con anillos (luego queda atascado), apagón + sombras, ráfagas |
 | **La Penumbra** | Espirales; fase 2 «Velo» (solo la hiere la luz de brasero y apaga braseros); fase 3 oscurece la arena |
 
-### Reliquias (32)
-Datos en `data/relics.json`. Rarezas: común, rara, legendaria, maldita. Tres niveles de desbloqueo (farolas). Combinan estadísticas y efectos: rebotes, perforación, división, quemadura, explosiones en cadena, compañero orbital, rastro de fuego, escudo por sala, renacer, disparo grande cada N, daño por braseros encendidos, poder con poca llama… Sinergias deliberadas: Prisma + Espejo roto + Llama azul (lluvia de luz), Vela negra + Brasa viva + Llama hambrienta (cañón de cristal), Fósforo + Ceniza ardiente (reacciones en cadena), Yesca + braseros.
+### Reliquias (36)
+Datos en `data/relics.json`. Rarezas: común, rara, legendaria, maldita. Tres niveles de desbloqueo (farolas). Combinan estadísticas y efectos: rebotes, perforación, división, quemadura, explosiones en cadena, compañero orbital, rastro de fuego, escudo por sala, renacer, disparo grande cada N, daño por braseros encendidos, poder con poca llama… Sinergias deliberadas: Prisma + Espejo roto + Llama azul (lluvia de luz), Vela negra + Brasa viva + Llama hambrienta (cañón de cristal), Fósforo + Ceniza ardiente (reacciones en cadena), Yesca + Aceite bendito + braseros (encender sale casi gratis y cada brasero sube el daño), Espejo de mano + Fragua (el golpe devuelve los orbes), Fósforo blanco + Ascua errante (fogonazos frecuentes que queman).
 
 ### Faroles (4)
 Aceite (equilibrado), Candil de espejos (rebote), Brasero de mano (escopeta + golpe fuerte), Vela del peregrino (perforación, mucha luz, lento).

@@ -49,5 +49,11 @@
    "stats": {"light_mult": ["mul", 1.3], "homing": ["add", 0.8], "shot_damage": ["mul", 1.15]}},
   {"id": "tinder", "name": "RELIC_TINDER", "desc": "RELIC_TINDER_DESC", "rarity": "common", "tier": 2, "icon": 30, "stackable": true},
   {"id": "glass_heart", "name": "RELIC_GLASS_HEART", "desc": "RELIC_GLASS_HEART_DESC", "rarity": "cursed", "tier": 2, "icon": 31,
-   "stats": {"shot_damage": ["mul", 2.0], "damage_taken_mult": ["mul", 2.0]}}
+   "stats": {"shot_damage": ["mul", 2.0], "damage_taken_mult": ["mul", 2.0]}},
+  {"id": "pocket_lamp", "name": "RELIC_POCKET_LAMP", "desc": "RELIC_POCKET_LAMP_DESC", "rarity": "common", "tier": 0, "icon": 32,
+   "stats": {"light_min": ["add", 16], "light_mult": ["mul", 1.1]}},
+  {"id": "white_phosphor", "name": "RELIC_WHITE_PHOSPHOR", "desc": "RELIC_WHITE_PHOSPHOR_DESC", "rarity": "rare", "tier": 1, "icon": 33,
+   "stats": {"flare_damage": ["mul", 1.5], "flare_radius": ["mul", 1.15]}},
+  {"id": "blessed_oil", "name": "RELIC_BLESSED_OIL", "desc": "RELIC_BLESSED_OIL_DESC", "rarity": "common", "tier": 0, "icon": 34, "stackable": true},
+  {"id": "hand_mirror", "name": "RELIC_HAND_MIRROR", "desc": "RELIC_HAND_MIRROR_DESC", "rarity": "rare", "tier": 0, "icon": 35}
 ]

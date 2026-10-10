@@ -333,6 +333,7 @@ func _try_melee() -> void:
 	for p in get_tree().get_nodes_in_group("enemy_shots"):
 		var to2: Vector2 = p.global_position - center
 		if to2.length() <= rng_ + 6.0 and absf(aim_dir.angle_to(to2)) <= arc + 0.35:
+			relic_fx.reflect_shot(p)
 			p.deflect(self)
 			hit_any = true
 	for b in get_tree().get_nodes_in_group("breakables"):

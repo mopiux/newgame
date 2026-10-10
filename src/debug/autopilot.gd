@@ -8,11 +8,14 @@ extends Node
 ## Flags: --bot            enable autopilot
 ##        --bot-runs N     number of expeditions before quitting (default 1)
 ##        --bot-timeout S  abort a run after S seconds of game time (default 900)
+##        --bot-relics a,b start every expedition holding these relics
 
 var runs_left := 1
 var bot_ascension := 0
 var bot_lantern := "oil"
 var run_timeout := 900.0
+var start_relics: PackedStringArray = []
+var _granted_run: RunState = null
 var results: Array = []
 
 var _player: Player
@@ -67,6 +70,9 @@ func _ready() -> void:
 	i = args.find("--bot-asc")
 	if i >= 0 and i + 1 < args.size():
 		bot_ascension = clampi(int(args[i + 1]), 0, 10)
+	i = args.find("--bot-relics")
+	if i >= 0 and i + 1 < args.size():
+		start_relics = args[i + 1].split(",", false)
 	i = args.find("--bot-lantern")
 	if i >= 0 and i + 1 < args.size():
 		bot_lantern = args[i + 1]
@@ -99,6 +105,12 @@ func _process(delta: float) -> void:
 		level.player.bot = self
 		_player = level.player
 		_run_t = 0.0
+	if Game.run != _granted_run and level.player:
+		_granted_run = Game.run
+		for id in start_relics:
+			if not Database.relics.has(id):
+				push_error("BOT: unknown relic " + id)
+			Game.grant_relic(id)
 	if level._overlay is EventDialog:
 		var d := level._overlay as EventDialog
 		if not d._resolved:
