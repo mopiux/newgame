@@ -113,8 +113,9 @@ def plaza():
 
 
 def sewer():
-    s = Song(84, 4, 16)
-    prog = [("A2", "m"), ("F2", "M"), ("D2", "m"), ("E2", "M")] * 4
+    s = Song(84, 4, 32)
+    prog = [("A2", "m"), ("F2", "M"), ("D2", "m"), ("E2", "M")] * 8
+    melody_b = ["E5", "C5", "D5", "B4", "A4", "C5", "F5", "E5", "E5", "G5", "F5", "D5", "C5", "B4", "A4", "G#4"]
     rng = np.random.default_rng(11)
     drips = ["A5", "C6", "E6", "B5", "G5", "E5"]
     for bar, (root, q) in enumerate(prog):
@@ -133,14 +134,19 @@ def sewer():
             s.add(pluck(midi_hz(n(drips[rng.integers(0, len(drips))])), 1.2, 0.7, 0.6) * 0.32, when, pan=float(rng.uniform(-0.7, 0.7)), send=0.7)
         if bar % 4 == 3:
             s.add(bell(midi_hz(n("E5")), 2.5, 1.5, 0.5) * 0.3, b0 + 2, send=0.8)
+        if bar >= 16:
+            note = melody_b[bar - 16]
+            s.add(pluck(midi_hz(n(note)), 2.0, 0.55, 0.7) * 0.34, b0, pan=-0.15, send=0.6)
+            s.add(pluck(midi_hz(n(note) - 12), 2.0, 0.5, 0.7) * 0.18, b0 + 2, pan=0.15, send=0.6)
     return s.render(0.8, 3000, 0.5)
 
 
 def crypt():
-    s = Song(66, 4, 12)
+    s = Song(66, 4, 24)
     prog = [("E2", "m"), ("F2", "M"), ("E2", "m"), ("D2", "m"), ("E2", "m"), ("F2", "M"),
-            ("G2", "M"), ("F2", "M"), ("E2", "m"), ("C2", "M"), ("D2", "m"), ("E2", "sus")]
-    line = ["B4", "C5", "B4", "A4", "G4", "A4", "B4", "C5", "B4", "G4", "A4", "B4"]
+            ("G2", "M"), ("F2", "M"), ("E2", "m"), ("C2", "M"), ("D2", "m"), ("E2", "sus")] * 2
+    line = ["B4", "C5", "B4", "A4", "G4", "A4", "B4", "C5", "B4", "G4", "A4", "B4",
+            "E5", "F5", "E5", "D5", "B4", "C5", "D5", "C5", "B4", "G4", "F4", "E4"]
     for bar, (root, q) in enumerate(prog):
         b0 = bar * 4
         ch = chord(root, q)
@@ -155,8 +161,9 @@ def crypt():
 
 
 def foundry():
-    s = Song(100, 4, 16)
-    prog = [("C#2", "m"), ("C#2", "m"), ("A1", "M"), ("B1", "M")] * 4
+    s = Song(100, 4, 32)
+    prog = [("C#2", "m"), ("C#2", "m"), ("A1", "M"), ("B1", "M")] * 8
+    lead_b = ["G#5", "E5", "C#5", "E5", "F#5", "E5", "D#5", "B4"]
     for bar, (root, q) in enumerate(prog):
         b0 = bar * 4
         ch = chord(root, q)
@@ -175,6 +182,10 @@ def foundry():
             arp = [ch[0] + 24, ch[1] + 24, ch[2] + 24, ch[1] + 24]
             for e in range(8):
                 s.add(pluck(midi_hz(arp[e % 4]), 0.5, 0.8, 0.3) * 0.18, b0 + e * 0.5 + 0.25, pan=0.5 if e % 2 else -0.5, send=0.4)
+        if bar >= 16:
+            note = n(lead_b[bar % len(lead_b)])
+            s.add(lead(midi_hz(note), beats(s, 1.8), 0.3, 1800) * 0.22, b0, send=0.35)
+            s.add(lead(midi_hz(note - 5), beats(s, 1.8), 0.3, 1800) * 0.16, b0 + 2, send=0.35)
     return s.render(0.6, 4000, 0.35)
 
 
