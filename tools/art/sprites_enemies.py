@@ -105,18 +105,18 @@ SLUG = [
     "................",
     "................",
     "................",
-    "................",
-    "...........0.0..",
-    "..........0Y0Y0.",
-    "..........0X0X0.",
-    "........000XXX0.",
-    "......00XXXxxXx0",
-    "....00XXxxxxxxx0",
-    "...0XXxxxNxxxxN0",
-    "..0XxxNxxxxxNxx0",
-    ".0XxNxxxxNxxxxN0",
-    "0NNNNNNNNNNNNNN0",
-    ".00000000000000.",
+    "...........0...0",
+    "..........0Y0.0Y",
+    "...........0x00x",
+    "......0000000xx0",
+    "....00XXXX8XXXX0",
+    "...0XX8XXXXXXxx0",
+    "..0X8XXXXXXxxxN0",
+    ".0XXXXXxxxxxxNN0",
+    "0NxxxxxxxxxNNNN0",
+    "0NNNNNNNNNNNNNb0",
+    ".0bbbbbbbbbbbb0.",
+    "..000000000000..",
 ]
 
 
@@ -214,38 +214,49 @@ def build_snuffer():
 
 # --- Wax golem ----------------------------------------------------------------
 def _golem_frame(bob=0, arms_up=False, lean=0, dazed=False, legs=0):
+    """Hulking candle golem: stout wax torso, a candle-stub head with a dead
+    wick, long dripping arms and glowing ember eyes."""
     from draw import Canvas
     c = Canvas(24, 26)
-    ramp = ["N", "x", "X"]
-    by = 14 + bob
-    # legs
-    for i, lx in enumerate((8, 14)):
-        ly = 22 + (legs if i == 0 else -legs)
-        c.rect(lx, by + 4, lx + 3, min(25, ly + 2), "N")
-        c.rect(lx, by + 4, lx + 1, min(25, ly + 2), "x")
-    # body
-    c.blob(12 + lean, by, 8, 7, ramp)
-    # drips
-    for x, h in ((7, 3), (10, 5), (16, 4)):
+    ramp = ["N", "x", "X", "8"]
+    by = 15 + bob
+    # legs (stubby wax columns)
+    for i, lx in enumerate((7, 14)):
+        ly = 24 + (legs if i == 0 else -legs)
+        c.rect(lx, by + 3, lx + 4, min(26, ly), "N")
+        c.rect(lx, by + 3, lx + 2, min(26, ly), "x")
+    # torso: wide trapezoid shaded left->right
+    torso = [(4 + lean, by - 6), (20 + lean, by - 6), (18 + lean, by + 5), (6 + lean, by + 5)]
+    c.shade_poly(torso, ["N", "x", "X"])
+    # wax drips over the belly
+    for x, h in ((7, 3), (11, 5), (15, 2), (18, 4)):
         c.vline(x + lean, by + 4, by + 4 + h, "x")
-    # head
-    c.blob(12 + lean * 2, by - 8, 5, 4.5, ramp)
-    # wicks
-    for wx in (10, 13, 15):
-        c.vline(wx + lean * 2, by - 14, by - 12, "0")
-    # eyes
+        c.set(x + lean, by + 5 + h, "N")
+    # head: candle stub with melted rim
+    hx = 12 + lean * 2
+    c.rect(hx - 4, by - 13, hx + 4, by - 6, "x")
+    c.rect(hx - 4, by - 13, hx - 2, by - 6, "X")
+    c.hline(hx - 5, hx + 4, by - 13, "8")
+    c.set(hx - 5, by - 12, "X")
+    c.set(hx + 4, by - 11, "N")
+    c.vline(hx, by - 16, by - 14, "0")
+    c.set(hx + 1, by - 16, "2")
     eye = "Y" if dazed else "O"
-    c.set(10 + lean * 2, by - 8, eye)
-    c.set(14 + lean * 2, by - 8, eye)
+    c.set(hx - 2, by - 10, eye)
+    c.set(hx + 2, by - 10, eye)
+    c.set(hx - 2, by - 9, "o")
+    c.set(hx + 2, by - 9, "o")
     # arms
     if arms_up:
-        c.rect(2 + lean, by - 9, 5 + lean, by - 1, "x")
-        c.rect(19 + lean, by - 9, 22 + lean, by - 1, "N")
+        c.rect(1 + lean, by - 14, 4 + lean, by - 3, "X")
+        c.rect(20 + lean, by - 14, 23 + lean, by - 3, "N")
     else:
-        c.rect(2 + lean, by - 3, 5 + lean, by + 5, "x")
-        c.rect(19 + lean, by - 3, 22 + lean, by + 5, "N")
+        c.rect(1 + lean, by - 5, 4 + lean, by + 6, "X")
+        c.rect(20 + lean, by - 5, 23 + lean, by + 6, "N")
+        c.set(2 + lean, by + 7, "x")
+        c.set(21 + lean, by + 7, "N")
     if dazed:
-        for (sx, sy) in ((5, 1), (12, 0), (19, 2)):
+        for (sx, sy) in ((4, 1), (12, 0), (19, 2)):
             c.set(sx, sy, "Y")
             c.set(sx + 1, sy + 1, "l")
     return c.outlined()

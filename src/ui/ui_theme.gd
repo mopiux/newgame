@@ -23,6 +23,12 @@ static var _theme: Theme
 static var _fonts := {}
 
 
+## Drops cached resources (called on exit so nothing leaks).
+static func clear_cache() -> void:
+	_theme = null
+	_fonts.clear()
+
+
 static func _font(path: String) -> FontFile:
 	if _fonts.has(path):
 		return _fonts[path]

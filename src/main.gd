@@ -53,6 +53,12 @@ func _ready() -> void:
 		Game.goto_menu()
 
 
+func _exit_tree() -> void:
+	UITheme.clear_cache()
+	RoomArt.clear_cache()
+	RelicIcons.clear_cache()
+
+
 func show_screen(node: Node) -> void:
 	if _busy:
 		# a transition is already running: swap immediately

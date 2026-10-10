@@ -63,6 +63,7 @@ def collect():
     images["well"] = sprites_props.well()
     images["notice_board"] = sprites_props.notice_board()
     images["icon"] = make_icon()
+    images.update(sprites_props.build_plaza_props())
     return sheets, images, {"tilesets": tile_meta}
 
 

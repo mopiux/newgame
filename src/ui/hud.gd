@@ -17,7 +17,10 @@ var banner: Label
 var banner_sub: Label
 var crosshair: Crosshair
 var fps_label: Label
+var vignette: ColorRect
 var _relic_count := -1
+var _hurt_flash := 0.0
+var _vig_t := 0.0
 
 
 func _ready() -> void:
@@ -146,6 +149,16 @@ func _ready() -> void:
 	fps_label.position = Vector2(6, 340)
 	root.add_child(fps_label)
 
+	vignette = ColorRect.new()
+	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var vm := ShaderMaterial.new()
+	vm.shader = preload("res://assets/shaders/vignette.gdshader")
+	vignette.material = vm
+	root.add_child(vignette)
+	root.move_child(vignette, 0)
+	Events.player_damaged.connect(func(_a, _s): _hurt_flash = 1.0)
+
 	crosshair = Crosshair.new()
 	root.add_child(crosshair)
 	set_crosshair(true)
@@ -191,6 +204,21 @@ func _process(_delta: float) -> void:
 	if fps_label.visible:
 		fps_label.text = "%d FPS" % Engine.get_frames_per_second()
 	crosshair.position = root.get_local_mouse_position()
+	_update_vignette(p, _delta)
+
+
+func _update_vignette(p: Player, delta: float) -> void:
+	_vig_t += delta
+	_hurt_flash = maxf(0.0, _hurt_flash - delta * 2.5)
+	var calm: bool = Settings.get_value("access", "reduce_flashes")
+	var low := 0.0
+	var ratio := p.flame_ratio()
+	if ratio < 0.3 and p.is_alive():
+		var pulse := 0.5 + 0.5 * sin(_vig_t * (5.0 if not calm else 2.0))
+		low = (0.3 - ratio) / 0.3 * (0.55 + 0.25 * pulse)
+	var hurt := _hurt_flash * (0.4 if calm else 0.8)
+	var m := vignette.material as ShaderMaterial
+	m.set_shader_parameter("intensity", clampf(maxf(low, hurt), 0.0, 1.0))
 
 
 func _rebuild_relics() -> void:

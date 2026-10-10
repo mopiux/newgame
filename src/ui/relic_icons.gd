@@ -7,6 +7,10 @@ const GOODS := {"oil": 40, "wick": 41, "map": 42}
 static var _cache := {}
 
 
+static func clear_cache() -> void:
+	_cache.clear()
+
+
 static func _cell(index: int) -> Texture2D:
 	if _cache.has(index):
 		return _cache[index]

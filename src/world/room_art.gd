@@ -13,6 +13,11 @@ static var _tilesets := {}
 static var _rims := {}
 
 
+static func clear_cache() -> void:
+	_tilesets.clear()
+	_rims.clear()
+
+
 static func _tileset(name: String) -> Image:
 	if not _tilesets.has(name):
 		var tex: Texture2D = load("res://assets/gfx/tiles_%s.png" % name)

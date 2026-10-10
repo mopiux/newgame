@@ -269,3 +269,100 @@ def _cerero(frame):
     if frame == 1:
         img = recolor(img, {"Y": "y", "l": "Y"})
     return img
+
+
+WINDOW_DARK = [
+    "................",
+    "..000000000000..",
+    "..0bBBBBBBBBb0..",
+    "..0B12210122B0..",
+    "..0B21120211B0..",
+    "..0B12210122B0..",
+    "..0bBBBBBBBBb0..",
+    "..0B12210122B0..",
+    "..0B21120211B0..",
+    "..0B11110111B0..",
+    "..0bBBBBBBBBb0..",
+    ".0nNNNNNNNNNNn0.",
+    ".00000000000000.",
+    "................",
+    "................",
+    "................",
+]
+
+
+def window(lit):
+    img = grid(WINDOW_DARK)
+    if lit:
+        img = recolor(img, {"1": "y", "2": "Y"})
+    return img
+
+
+BENCH = [
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    ".00000000000000.",
+    "0NNNNNNNNNNNNNN0",
+    "0nnnnnnnnnnnnnn0",
+    "00000000000000000"[:16],
+    "0NNNNNNNNNNNNNN0",
+    "0BBBBBBBBBBBBBB0",
+    ".0b0........0b0.",
+    ".0b0........0b0.",
+    ".000........000.",
+]
+
+PLANTER = [
+    "................",
+    "....M.....m.....",
+    "...MmM...mMm.M..",
+    "..e.M.e.e.m.MmM.",
+    ".eEe.eEe.EeE.M..",
+    "..eEeEeEeEeEe...",
+    ".eEeEeEeEeEeEe..",
+    ".00000000000000.",
+    ".0NNNNNNNNNNNN0.",
+    ".0nNnnnnnnnnnn0.",
+    ".0nnnnnnnnnNnn0.",
+    ".0BBBBBBBBBBBB0.",
+    ".00000000000000.",
+    "................",
+    "................",
+    "................",
+]
+
+
+def statue():
+    c = Canvas(20, 36)
+    # plinth
+    c.rect(2, 26, 18, 35, "4")
+    c.hline(2, 17, 26, "6")
+    c.rect(2, 33, 18, 35, "3")
+    c.rect(4, 28, 16, 31, "5")
+    # cloaked figure in stone
+    c.blob(10, 17, 5, 9, ["4", "5", "6", "7"])
+    c.blob(10, 6, 3.5, 3.5, ["4", "5", "6", "7"])
+    c.blob(10, 7, 2, 1.6, ["2", "3"], dither=False)
+    # raised arm with a real burning lantern
+    c.rect(14, 4, 16, 14, "5")
+    c.rect(14, 0, 17, 4, "k")
+    c.set(15, 1, "Y")
+    c.set(15, 2, "l")
+    c.set(16, 2, "Y")
+    return c.outlined()
+
+
+def build_plaza_props():
+    out = {
+        "window_dark": window(False),
+        "window_lit": window(True),
+        "bench": grid(BENCH),
+        "planter": grid(PLANTER),
+        "statue": statue(),
+    }
+    return out

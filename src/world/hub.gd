@@ -60,6 +60,7 @@ func _ready() -> void:
 		if lp.lit:
 			lit_count += 1
 	Lights.ambient = 0.04 + 0.015 * lit_count
+	_decorate(ents, lit_count)
 	var well := Well.new()
 	well.hub = self
 	well.position = Vector2(19 * 16, 12 * 16)
@@ -88,6 +89,60 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	Lights.ambient = 0.0
 	get_tree().paused = false
+
+
+## Facades, benches, planters and the statue. Each relit lamp lights two
+## windows of the houses around the plaza.
+func _decorate(ents: Node2D, lit_count: int) -> void:
+	var window_x := [2, 5, 8, 11, 14, 24, 27, 30, 33, 36]
+	# light windows in a fixed shuffled order so progress spreads around
+	var order := [4, 5, 0, 9, 2, 7, 1, 8, 3, 6]
+	for i in window_x.size():
+		var lit := order.find(i) < lit_count * 2
+		var w := Sprite2D.new()
+		w.texture = SpriteLib.texture("window_lit" if lit else "window_dark")
+		w.centered = false
+		w.position = Vector2(window_x[i] * 16, 16)
+		w.z_as_relative = false
+		w.z_index = Layers.Z_EMISSIVE if lit else Layers.Z_DECAL
+		add_child(w)
+		if lit:
+			var l := LightEmitter.new()
+			l.position = w.position + Vector2(8, 14)
+			l.radius = 34.0
+			l.energy = 0.55
+			l.is_static = true
+			l.color = Color(1.0, 0.8, 0.5)
+			add_child(l)
+	var props := [
+		["bench", Vector2(10, 7)], ["bench", Vector2(28, 7)], ["bench", Vector2(10, 17)], ["bench", Vector2(28, 17)],
+		["planter", Vector2(16, 6)], ["planter", Vector2(22, 6)], ["planter", Vector2(16, 18)], ["planter", Vector2(22, 18)],
+		["statue", Vector2(34, 10)],
+	]
+	for pr in props:
+		var tex := SpriteLib.texture(pr[0])
+		var sp := Sprite2D.new()
+		sp.texture = tex
+		sp.centered = false
+		sp.offset = Vector2(-tex.get_width() / 2.0, -tex.get_height())
+		sp.position = pr[1] * 16.0 + Vector2(8, 14)
+		ents.add_child(sp)
+		var body := StaticBody2D.new()
+		body.collision_layer = Layers.WORLD
+		var cs := CollisionShape2D.new()
+		var r := RectangleShape2D.new()
+		r.size = Vector2(tex.get_width() - 4, 6)
+		cs.shape = r
+		cs.position = Vector2(0, -3)
+		body.add_child(cs)
+		sp.add_child(body)
+		if pr[0] == "statue":
+			var sl := LightEmitter.new()
+			sl.position = Vector2(6, -34)
+			sl.radius = 40.0
+			sl.energy = 0.6
+			sl.is_static = true
+			sp.add_child(sl)
 
 
 func _build_ui() -> void:

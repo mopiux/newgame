@@ -43,6 +43,15 @@ func _ready() -> void:
 	apply_volumes()
 
 
+func _exit_tree() -> void:
+	# stop every voice so no playback keeps a stream alive at shutdown
+	for p in _voices + [_music_a, _music_b, _ambience]:
+		if p:
+			p.stop()
+			p.stream = null
+	_cache.clear()
+
+
 func _ensure_bus(bus_name: String) -> void:
 	if AudioServer.get_bus_index(bus_name) == -1:
 		AudioServer.add_bus()
