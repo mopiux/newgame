@@ -37,6 +37,22 @@ func _ready() -> void:
 	for r in rows:
 		grid.add_child(UITheme.label(r[0], 12, UITheme.TEXT_DIM))
 		grid.add_child(UITheme.label(r[1], 12))
+	# the build of this expedition, as icons
+	var relics: Array = summary.get("relics", [])
+	if not relics.is_empty():
+		var grid_r := GridContainer.new()
+		grid_r.columns = 12
+		grid_r.add_theme_constant_override("h_separation", 2)
+		grid_r.add_theme_constant_override("v_separation", 2)
+		for id in relics:
+			var icon := TextureRect.new()
+			icon.texture = RelicIcons.icon(str(id))
+			icon.custom_minimum_size = Vector2(16, 16)
+			icon.tooltip_text = tr(str(Database.relics.get(str(id), {}).get("name", id)))
+			grid_r.add_child(icon)
+		var cc := CenterContainer.new()
+		cc.add_child(grid_r)
+		box.add_child(cc)
 	var sparks := UITheme.label(tr("END_SPARKS") % int(summary.get("sparks", 0)), 12, UITheme.SPECTRAL)
 	sparks.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(sparks)
