@@ -2,6 +2,12 @@
 
 Roguelite de acción en pixel art hecho con **Godot 4.5**. Tu llama es tu vida, tu munición y tu luz: cada disparo te debilita y te deja ver menos; las ascuas de las criaturas la reavivan. Enciende braseros para debilitar a la Penumbra, combina reliquias, vence a los tres guardianes del subsuelo y reenciende, chispa a chispa, la plaza de Velaluz.
 
+| | |
+|---|---|
+| ![Menú](docs/screenshots/menu.png) | ![Plaza de Velaluz](docs/screenshots/plaza.png) |
+| ![Combate](docs/screenshots/combate.png) | ![Guardián](docs/screenshots/jefe.png) |
+| ![Tienda del Cerero](docs/screenshots/tienda.png) | ![Suceso](docs/screenshots/suceso.png) |
+
 - Diseño: [GAME_DESIGN.md](GAME_DESIGN.md) · Estado: [ROADMAP.md](ROADMAP.md) · Pruebas: [TESTING.md](TESTING.md) · Decisiones: [DECISIONS.md](DECISIONS.md) · Créditos: [CREDITS.md](CREDITS.md)
 
 ## Requisitos
