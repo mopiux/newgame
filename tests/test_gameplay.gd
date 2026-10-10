@@ -140,3 +140,30 @@ func test_enemy_homing_shots_seek_the_player() -> void:
 	check(orb.velocity.x < -10.0, "enemy orb curves toward the lamplighter (vx=%.1f)" % orb.velocity.x)
 	near(orb.velocity.length(), 60.0, 1.0, "homing keeps the orb's speed")
 	holder.queue_free()
+
+
+func test_echo_puzzle_is_always_solvable() -> void:
+	# every one of the 32 ring states has a solution
+	for mask in 1 << EchoPuzzle.SIZE:
+		var st := []
+		for i in EchoPuzzle.SIZE:
+			st.append(1 if mask & (1 << i) else 0)
+		var sol = EchoPuzzle.solve(st)
+		if check(sol != null, "state %s solvable" % str(st)):
+			for i in sol:
+				st = EchoPuzzle.press(st, i)
+			check(EchoPuzzle.solved(st), "solution lights the ring")
+	# scrambled rooms start unsolved and need at most three stokes
+	for s in 300:
+		var st2 := EchoPuzzle.scramble(RunRng.make(s, "echo"))
+		check(not EchoPuzzle.solved(st2), "scramble %d starts unsolved" % s)
+		var sol2 = EchoPuzzle.solve(st2)
+		check(sol2 != null and (sol2 as Array).size() >= 1 and (sol2 as Array).size() <= 3, "scramble %d solvable in 1-3 stokes" % s)
+	eq(EchoPuzzle.press([1, 1, 1, 1, 1], 0), [0, 0, 1, 1, 0], "stoking wraps around the ring")
+	# a saved ring comes back from JSON as floats: the room must read it as ints
+	var rc := RoomContent.new()
+	rc.data = JSON.parse_string(JSON.stringify({"echo": [1, 0, 1, 1, 0]}))
+	eq(rc.echo_state(), [1, 0, 1, 1, 0], "echo state survives a save round-trip")
+	rc.data = {}
+	eq(rc.echo_state(), [0, 0, 0, 0, 0], "missing echo state reads as unlit")
+	rc.free()

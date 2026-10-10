@@ -117,6 +117,16 @@ El agente revisor (solo lectura) cubrió interfaz, plaza, generación, enemigos,
 - `tools/test.sh`: **37 pruebas, 40 318 comprobaciones, 0 fallos**, `CONTINUE_OK`, `FLOW_OK`. Recorrido de pantallas en español: 20 capturas sin errores.
 - Regresión con el autopiloto (10 partidas, `bot20.log`): **`BOT_ERRORS 0`** en todo el lote; **4 victorias**, 3 muertes en la profundidad 3 y 3 en la 2 (antes 4/10: el equilibrio se mantiene aunque los orbes del espectro y de la Penumbra ahora sí persiguen al jugador). Guardianes vencidos en 17–34 s (Madre Polilla, Gran Apagador) y 36–54 s (Penumbra). Lógica de juego: 0,34 ms de media por fotograma, p99 1,49 ms (sin renderizado; el máximo de 182 ms coincide con cargas de planta).
 
+### 2026-10-10 — Cámara de los ecos y cuatro estilos de sala nuevos
+- **Cámara de los ecos** (puzle de luz): cinco braseros en anillo; avivar uno (2 de llama) enciende o apaga también a sus dos vecinos. Reglas puras en `EchoPuzzle`; ocupa el hueco de la cámara de braseros en la mitad de las plantas.
+- Pruebas nuevas: `test_echo_puzzle_is_always_solvable` (los 32 estados del anillo tienen solución; 300 salas barajadas empiezan sin resolver y se resuelven en 1–3 movimientos; el estado sobrevive al guardado JSON), `test_echo_chambers_place_five_braziers_clear_of_doors` (120 distribuciones) y apariciones en `test_special_rooms_appear` (120 plantas).
+- Revisión visual: en la primera captura los braseros apagados y el relicario no se veían en la oscuridad → llama piloto en los apagados, brillo en el relicario y anillo de tiza visible sobre la oscuridad. El recorrido de pantallas incluye ahora la sala (21 capturas, sin errores) y puede convertir un callejón en el tipo pedido si la semilla no lo tiene.
+- El autopiloto resuelve el anillo (siempre la solución mínima) y lo registra con `BOT_ECHO`: en las dos tandas, cada cámara visitada se resolvió en 2 movimientos (4 de llama) y unos 2 s.
+- Cuatro estilos de obstáculos nuevos para salas de combate (cruz, columnata, hornacinas, diagonal), revisados en ASCII y validados por `test_layouts_validate`.
+- La versión de las partidas guardadas pasa a 2 (`RUN_VERSION`, separada de la del perfil): las plantas se regeneran desde la semilla y el generador ha cambiado, así que una expedición antigua no se continúa en un mapa distinto.
+- Encontrado al probar en paralelo: `--continue-check` compartía el perfil de pruebas con el autopiloto y leía su partida → cada comprobación usa ahora su propio perfil.
+- Resultados: `tools/test.sh` **39 pruebas, 43 271 comprobaciones, 0 fallos**, `CONTINUE_OK`, `FLOW_OK`. Autopiloto 10 partidas (`bot21.log`): **`BOT_ERRORS 0`**, 4 victorias, 5 muertes en la profundidad 3 y 1 en la 1.
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.

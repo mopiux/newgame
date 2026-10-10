@@ -27,7 +27,8 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 ## Fase D — Contenido y profundidad
 - ✅ 9 criaturas con comportamientos distintos, 3 jefes, 36 reliquias, 4 faroles, 16 sucesos, 11 farolas, 10 Noches
 - 🟡 Equilibrio: dos pasadas con datos del autopiloto (bot con puntería perfecta gana ~50%); falta validación con personas
-- ⬜ Más variedad de salas hechas a mano (puzles de luz, salas oscuras especiales)
+- ✅ Salas especiales: cámara de braseros, salas sin luz y **cámara de los ecos** (puzle de luz con solución garantizada)
+- ⬜ Más puzles de luz y más estilos de sala hechos a mano
 
 ## Fase E — Arte, audio y pulido
 - ✅ Arte pixel definitivo generado por código para todo el contenido
@@ -36,7 +37,7 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 
 ## Fase F — Pruebas y distribución
 - ✅ Autopiloto de partidas completas (+ capturas)
-- ✅ Batería de pruebas unitarias headless (28 pruebas)
+- ✅ Batería de pruebas unitarias headless (39 pruebas) + comprobaciones extremo a extremo de «Continuar» y de flujos de pantallas
 - ✅ Recorrido automático de pantallas con capturas
 - ✅ Medición de rendimiento documentada (CPU y render por software; falta GPU real)
 - ✅ Exportación Linux (probada) y Windows (generada, sin probar)

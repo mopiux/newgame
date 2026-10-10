@@ -14,7 +14,8 @@ const SIZES := {
 	"big": Vector2i(36, 18),
 	"boss": Vector2i(32, 18),
 }
-const STYLES := ["open", "pillars4", "grid", "center", "scatter", "lanes", "ring", "corners"]
+const STYLES := ["open", "pillars4", "grid", "center", "scatter", "lanes", "ring", "corners",
+	"cross", "colonnade", "alcoves", "diagonal"]
 
 var width: int
 var height: int
@@ -22,6 +23,7 @@ var cells: Array = []        # Array[PackedByteArray]? kept as Array of Strings 
 var doors: Dictionary = {}   # dir -> Array[Vector2i] door cells
 var door_spawn: Dictionary = {}  # dir -> Vector2 (tile coords where the player appears)
 var braziers: Array[Vector2i] = []
+var echoes: Array[Vector2i] = []   # tiles under the echo-chamber braziers
 var pots: Array[Vector2i] = []
 var style: String = "open"
 
@@ -98,6 +100,13 @@ func _build(size_id: String, room_type: String, door_dirs: Array, secret_dirs: A
 			braziers.append(Vector2i(cx - 4, cy - 2))
 			set_cell(cx + 3, cy - 2, "B")
 			braziers.append(Vector2i(cx + 3, cy - 2))
+		"echo":
+			style = "echo"
+			for p in echo_positions():
+				var c := Vector2i(int(p.x) / Room.T, int(p.y) / Room.T)
+				set_cell(c.x, c.y, "B")
+				echoes.append(c)
+			_place_pots(rng, rng.randi_range(1, 3))
 		"treasure", "shop", "event", "secret":
 			style = room_type
 			var r2 := interior_rect()
@@ -108,6 +117,18 @@ func _build(size_id: String, room_type: String, door_dirs: Array, secret_dirs: A
 				_place_pots(rng, rng.randi_range(1, 3))
 		_:
 			style = "plain"
+
+
+## Pixel positions of the five echo braziers: a pentagon around the room
+## centre (the sealed reliquary), first one on top, clockwise.
+func echo_positions() -> Array[Vector2]:
+	var r := interior_rect()
+	var c := (Vector2(r.position) + Vector2(r.size) * 0.5) * Room.T + Vector2(0, 8)
+	var out: Array[Vector2] = []
+	for k in EchoPuzzle.SIZE:
+		var a := TAU * k / EchoPuzzle.SIZE
+		out.append((c + Vector2(sin(a) * 88.0, -cos(a) * 56.0)).round())
+	return out
 
 
 func _cut_doors(dirs: Array, secret: bool) -> void:
@@ -204,6 +225,28 @@ func _obstacles(kind: String, rng: RandomNumberGenerator) -> void:
 				_mirror_block(x0 + 1 + dx, y0 + 1)
 			for dy in 2:
 				_mirror_block(x0 + 1, y0 + 2 + dy)
+		"cross":
+			# a plus of low walls around an open heart: fights flow around it
+			var gap := 2
+			for x in range(x0 + w / 4, x0 + w / 2 - gap):
+				_mirror_block(x, y0 + h / 2 - 1)
+			for y in range(y0 + 2, y0 + h / 2 - gap):
+				_mirror_block(x0 + w / 2 - 1, y)
+		"colonnade":
+			# two rows of columns: cover to duck behind, lanes to shoot along
+			var step := 3 if w < 30 else 4
+			for x in range(x0 + 3, x0 + w / 2 - 1, step):
+				_mirror_block(x, y0 + h / 4)
+		"alcoves":
+			# wall stubs out of the side and top walls make nooks to hide in
+			for i in 3:
+				_mirror_block(x0 + i, y0 + 2)
+			for i in 2:
+				_mirror_block(x0 + w / 4 + 1, y0 + i)
+		"diagonal":
+			# staggered blocks: broken sight lines in a slanted pattern
+			for i in 4:
+				_mirror_block(x0 + 3 + i * 2, y0 + 1 + i)
 		_:
 			pass
 
@@ -272,7 +315,7 @@ func validate() -> bool:
 		var s2: Vector2 = door_spawn[d]
 		if not seen.has(Vector2i(int(s2.x), int(s2.y))):
 			return false
-	for b in braziers:
+	for b in braziers + echoes:
 		var touch := false
 		for n in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 			if seen.has(b + n):

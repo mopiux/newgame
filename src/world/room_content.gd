@@ -27,6 +27,8 @@ func setup(r: Room) -> void:
 			_setup_secret()
 		"trial":
 			_setup_trial()
+		"echo":
+			_setup_echo()
 		"boss":
 			if room.state.get("cleared", false):
 				_spawn_boss_rewards(false)
@@ -261,6 +263,138 @@ func _trial_reward() -> void:
 	p.position = center() + Vector2(0, 30)
 	p.taken.connect(func(_t): room.state["loot_taken"] = true)
 	room.entities.add_child(p)
+
+
+# --- echo chamber -------------------------------------------------------------
+# Five braziers on a ring around a sealed reliquary. Stoking one (2 flame)
+# toggles it and both neighbours; light all five and the reliquary opens.
+# Chalk lines on the floor show which braziers answer each other.
+
+var echoes: Array[EchoBrazier] = []
+
+
+func _setup_echo() -> void:
+	_reliquary = Sprite2D.new()
+	_reliquary.centered = false
+	_reliquary.offset = Vector2(-12, -20)
+	_reliquary.position = center()
+	room.entities.add_child(_reliquary)
+	var body := StaticBody2D.new()
+	body.collision_layer = Layers.WORLD
+	var cs := CollisionShape2D.new()
+	var r := RectangleShape2D.new()
+	r.size = Vector2(20, 8)
+	cs.shape = r
+	cs.position = Vector2(0, -3)
+	body.add_child(cs)
+	_reliquary.add_child(body)
+	var glow := LightEmitter.new()
+	glow.position = Vector2(0, -14)
+	glow.radius = 30.0
+	glow.energy = 0.5
+	glow.color = EchoBrazier.LIGHT_COLOR
+	_reliquary.add_child(glow)
+	if not data.has("echo"):
+		data["echo"] = EchoPuzzle.scramble(_rng("echo"))
+	var state := echo_state()
+	var done := bool(data.get("echo_done", false))
+	var points := room.layout.echo_positions()
+	var chalk := EchoChalk.new()
+	chalk.points = points
+	add_child(chalk)
+	for i in points.size():
+		var b := EchoBrazier.new()
+		b.index = i
+		b.is_lit = state[i] == 1
+		b.locked = done
+		b.position = points[i]
+		b.stoked.connect(_on_echo_stoked)
+		room.entities.add_child(b)
+		echoes.append(b)
+	if done:
+		_reliquary.texture = SpriteLib.texture("reliquary_open")
+		if not room.state.get("loot_taken", false):
+			_echo_reward()
+	else:
+		_reliquary.texture = SpriteLib.texture("reliquary")
+		_chalk_line(tr("HINT_ECHO"), center() + Vector2(0, 58))
+
+
+## Current ring as 0/1 ints (JSON may have turned them into floats).
+func echo_state() -> Array:
+	var out := []
+	for v in data.get("echo", []):
+		out.append(1 if int(v) == 1 else 0)
+	while out.size() < EchoPuzzle.SIZE:
+		out.append(0)
+	return out
+
+
+func _on_echo_stoked(b: EchoBrazier) -> void:
+	if data.get("echo_done", false):
+		return
+	var state := EchoPuzzle.press(echo_state(), b.index)
+	data["echo"] = state
+	for e in echoes:
+		e.set_lit(state[e.index] == 1, true)
+	if EchoPuzzle.solved(state):
+		data["echo_done"] = true
+		for e in echoes:
+			e.locked = true
+		_reliquary.texture = SpriteLib.texture("reliquary_open")
+		Fx.burst(room.entities, _reliquary.position + Vector2(0, -12), "cold", 3.0)
+		Fx.shake(3.0, 0.3)
+		Audio.sfx("secret", -2.0, 0.0)
+		Events.toast.emit(tr("TOAST_ECHO_DONE"), UITheme.SPECTRAL)
+		_echo_reward()
+
+
+func _echo_reward() -> void:
+	if not data.has("offer"):
+		data["offer"] = RelicPool.roll(room.run, _rng("echo_relic"), 1, ["rare"])
+	var p := Interactables.RelicPedestal.new()
+	p.relic_id = data.offer[0] if not (data.offer as Array).is_empty() else "lens"
+	p.position = center() + Vector2(0, 30)
+	p.taken.connect(func(_t): room.state["loot_taken"] = true)
+	room.entities.add_child(p)
+
+
+func _chalk_line(text: String, pos: Vector2) -> void:
+	var l := Label.new()
+	l.text = text
+	l.add_theme_font_override("font", UITheme.font_body())
+	l.add_theme_font_size_override("font_size", 12)
+	l.add_theme_color_override("font_color", Color(0.79, 0.86, 0.9, 0.6))
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l.size = Vector2(320, 14)
+	l.position = Vector2(pos.x - 160, pos.y)
+	l.z_as_relative = false
+	l.z_index = Layers.Z_EMISSIVE - 5
+	l.modulate.a = 0.0
+	add_child(l)
+	var tw := l.create_tween()
+	tw.tween_interval(1.0)
+	tw.tween_property(l, "modulate:a", 1.0, 0.6)
+
+
+## Dotted chalk ring linking each echo brazier with its two neighbours.
+class EchoChalk extends Node2D:
+	var points: Array[Vector2] = []
+
+	func _ready() -> void:
+		# faint chalk above the darkness, like the hints: the ring must read
+		z_as_relative = false
+		z_index = Layers.Z_EMISSIVE - 6
+
+	func _draw() -> void:
+		var col := Color(0.79, 0.86, 0.92, 0.3)
+		for i in points.size():
+			var a: Vector2 = points[i] + Vector2(0, -2)
+			var b: Vector2 = points[(i + 1) % points.size()] + Vector2(0, -2)
+			var n := int(a.distance_to(b) / 6.0)
+			for k in range(1, n):
+				var p := a.lerp(b, float(k) / n).round()
+				draw_rect(Rect2(p, Vector2(2, 1)), col)
 
 
 # --- elite ---------------------------------------------------------------------

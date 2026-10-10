@@ -53,3 +53,19 @@ func test_real_floor_rooms_have_all_doors() -> void:
 					check(l.door_spawn.has(d), "seed %d depth %d room %s (%s) missing door %s; spawns %s" % [s, depth, k, info.type, d, str(l.door_spawn.keys())])
 				for d in info.secret_doors:
 					check(l.door_spawn.has(d), "room %s missing secret door %s" % [k, d])
+
+
+func test_echo_chambers_place_five_braziers_clear_of_doors() -> void:
+	var all_dirs := [["n"], ["s"], ["e"], ["w"], ["n", "s"], ["e", "w"]]
+	for dirs in all_dirs:
+		for s in 20:
+			var l := RoomLayout.create("std", "echo", dirs, [], RunRng.make(s, "echo-layout"))
+			eq(l.style, "echo", "echo layout kept (no fallback) %s seed %d" % [str(dirs), s])
+			eq(l.echoes.size(), EchoPuzzle.SIZE, "five echo braziers")
+			var r := l.interior_rect()
+			for c in l.echoes:
+				check(r.has_point(c), "echo brazier inside the room %s" % str(c))
+				eq(l.get_cell(c.x, c.y), "B", "echo tile blocks paths")
+			for p in l.echo_positions():
+				for d in l.door_spawn:
+					check(p.distance_to(l.door_spawn[d] * Room.T) > 40.0, "echo brazier clear of door %s" % d)

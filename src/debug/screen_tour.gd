@@ -49,6 +49,7 @@ func _ready() -> void:
 		["shop_room", 2.0, func(): _jump_to_room_type("shop")],
 		["combat_room", 4.0, func(): _jump_to_room_type("combat")],
 		["trial_room", 2.0, func(): _jump_to_room_type("trial")],
+		["echo_room", 2.0, func(): _jump_to_room_type("echo")],
 		["boss_room", 5.0, func():
 			Game.run.flame = 100
 			_jump_to_room_type("boss")],
@@ -119,7 +120,21 @@ func _close_hub_panel() -> void:
 
 func _jump_to_room_type(t: String) -> void:
 	var level: Level = Game.level
-	for k in level.run.floor.rooms:
-		if level.run.floor.rooms[k].type == t:
-			level._enter_room(k, "s" if (level.run.floor.rooms[k].doors as Array).has("s") else str(level.run.floor.rooms[k].doors[0]))
-			return
+	var rooms: Dictionary = level.run.floor.rooms
+	var target := ""
+	for k in rooms:
+		if rooms[k].type == t:
+			target = k
+			break
+	if target == "":
+		# this seed's floor has none: turn a spare dead end into one (tour only)
+		for k in rooms:
+			if (rooms[k].doors as Array).size() == 1 and not (rooms[k].type in ["boss", "start", "secret"]) and k != level.run.current_room:
+				rooms[k].type = t
+				level.run.rooms.erase(k)
+				target = k
+				break
+	if target == "":
+		print("TOUR no room for type ", t)
+		return
+	level._enter_room(target, "s" if (rooms[target].doors as Array).has("s") else str(rooms[target].doors[0]))

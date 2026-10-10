@@ -4,6 +4,9 @@ extends Node
 ## (tmp file + rename) with a .bak copy of the previous good version.
 
 const VERSION := 1
+## Saved expeditions are regenerated from their seed: bump this whenever floor
+## generation changes, so an old run is not continued on a different map.
+const RUN_VERSION := 2
 
 var profile_path := "user://profile.json"
 var run_path := "user://run.json"
@@ -19,7 +22,9 @@ func _ready() -> void:
 		name = args[args.find("--profile") + 1]
 	elif args.has("--flow-check"):
 		name = "flowcheck"
-	elif args.has("--bot") or args.has("--tour") or args.has("--continue-check"):
+	elif args.has("--continue-check"):
+		name = "continuecheck"
+	elif args.has("--bot") or args.has("--tour"):
 		name = "test"
 	if name != "":
 		profile_path = "user://profile_%s.json" % name.validate_filename()
@@ -185,13 +190,13 @@ func has_run() -> bool:
 
 
 func save_run(snapshot: Dictionary) -> bool:
-	snapshot["version"] = VERSION
+	snapshot["version"] = RUN_VERSION
 	return write_json(run_path, snapshot)
 
 
 func load_run() -> Variant:
 	var data = read_json(run_path)
-	if data == null or int(data.get("version", 0)) != VERSION:
+	if data == null or int(data.get("version", 0)) != RUN_VERSION:
 		return null
 	return data
 

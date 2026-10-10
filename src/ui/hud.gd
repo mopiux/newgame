@@ -418,6 +418,8 @@ class Minimap extends Control:
 					icon_col = Color("d9622b")
 				"trial":
 					icon_col = Color("4f9bb0")
+				"echo":
+					icon_col = Color("c9b8f0")
 			if icon_col.a > 0.0:
 				ci.draw_rect(Rect2(rect.get_center() - Vector2(1.5, 1.5), Vector2(3, 3)), icon_col)
 			if st.get("cleared", false) and big:

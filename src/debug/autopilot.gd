@@ -48,6 +48,7 @@ var _spent := {"shots": 0.0, "braziers": 0}
 
 
 var _catcher: ErrorCatcher
+var _echo_reported := {}
 
 
 func _ready() -> void:
@@ -259,9 +260,16 @@ func _decide(p: Player) -> Dictionary:
 	if level == null or level.room == null:
 		return out
 	var room := level.room
+	var echo_id := "%s|%d|%s" % [room.run.seed_text, room.depth, room.key]
+	if room.room_type == "echo" and not _echo_reported.has(echo_id) and bool(room._content.data.get("echo_done", false)):
+		_echo_reported[echo_id] = true
+		print("BOT_ECHO solved depth=%d after %.1fs flame=%.0f" % [room.depth, _room_t, p.run.flame])
 	if room.key != _room_key:
 		_room_key = room.key
 		_room_t = 0.0
+		if room.room_type == "echo":
+			var st: Array = room._content.echo_state()
+			print("BOT_ECHO enter depth=%d state=%s solution=%s flame=%.0f" % [room.depth, str(st), str(EchoPuzzle.solve(st)), p.run.flame])
 		_goal_tile = Vector2i(-1, -1)
 		_given_up.clear()
 	_room_t += get_physics_process_delta_time()
@@ -355,6 +363,13 @@ func _nearest_unlit_brazier(room: Room, pos: Vector2) -> Brazier:
 
 
 func _wants(n: Node) -> bool:
+	if n is EchoBrazier:
+		# stoke only the braziers of the (unique) solution of the ring
+		var er: Room = Game.level.room if Game.level else null
+		if er == null or _player.run.flame < 20.0:
+			return false
+		var sol = EchoPuzzle.solve(er._content.echo_state())
+		return sol != null and (sol as Array).has((n as EchoBrazier).index)
 	if n is Brazier:
 		var r: Room = Game.level.room if Game.level else null
 		if r and r.room_type == "trial":

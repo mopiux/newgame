@@ -85,7 +85,8 @@ static func _try(rng: RandomNumberGenerator, depth: int, cfg: Dictionary) -> Dic
 	RunRng.shuffle(rng, rest)
 	types[rest[0]] = "treasure"
 	types[rest[1]] = "shop"
-	var specials := ["event", "trial", "elite", "event"]
+	# the second special is a brazier trial or an echo chamber (light puzzle)
+	var specials := ["event", "trial" if rng.randf() < 0.5 else "echo", "elite", "event"]
 	for i in range(2, rest.size()):
 		types[rest[i]] = specials[(i - 2) % specials.size()]
 	# an extra event somewhere along the main path on larger floors
