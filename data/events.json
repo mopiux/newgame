@@ -1,0 +1,55 @@
+[
+  {"id": "black_altar", "tier": 0, "weight": 2, "title": "EV_ALTAR_TITLE", "text": "EV_ALTAR_TEXT",
+   "options": [
+     {"text": "EV_ALTAR_OPT1", "requires": {"max_flame": 40}, "effects": [{"type": "max_flame", "value": -15}, {"type": "relic", "rarity": ["rare", "legendary"]}], "result": "EV_ALTAR_RES1"},
+     {"text": "EV_ALTAR_OPT2", "effects": [{"type": "relic", "rarity": ["cursed"]}, {"type": "sparks", "value": 3}], "result": "EV_ALTAR_RES2"},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]},
+  {"id": "wax_fountain", "tier": 0, "weight": 2, "title": "EV_FOUNTAIN_TITLE", "text": "EV_FOUNTAIN_TEXT",
+   "options": [
+     {"text": "EV_FOUNTAIN_OPT1", "effects": [{"type": "flame_full"}], "result": "EV_FOUNTAIN_RES1"},
+     {"text": "EV_FOUNTAIN_OPT2", "effects": [{"type": "max_flame", "value": 10}], "result": "EV_FOUNTAIN_RES2"}
+   ]},
+  {"id": "sleeping_moth", "tier": 0, "weight": 1.5, "max_depth": 2, "title": "EV_MOTH_TITLE", "text": "EV_MOTH_TEXT",
+   "options": [
+     {"text": "EV_MOTH_OPT1", "gamble": {"chance": 0.55, "win": [{"type": "relic", "rarity": ["common", "rare"]}], "lose": [{"type": "spawn", "id": "moth", "count": 6}], "win_text": "EV_MOTH_WIN", "lose_text": "EV_MOTH_LOSE"}},
+     {"text": "EV_MOTH_OPT2", "effects": [{"type": "embers", "value": 4}], "result": "EV_MOTH_RES2"}
+   ]},
+  {"id": "lost_lamplighter", "tier": 0, "weight": 1.5, "title": "EV_LOST_TITLE", "text": "EV_LOST_TEXT",
+   "options": [
+     {"text": "EV_LOST_OPT1", "requires": {"flame": 25}, "effects": [{"type": "flame", "value": -20}, {"type": "sparks", "value": 4}], "result": "EV_LOST_RES1"},
+     {"text": "EV_LOST_OPT2", "effects": [{"type": "reveal_map"}], "result": "EV_LOST_RES2"},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]},
+  {"id": "chandler_ghost", "tier": 0, "weight": 1, "title": "EV_GHOST_TITLE", "text": "EV_GHOST_TEXT",
+   "options": [
+     {"text": "EV_GHOST_OPT1", "requires": {"sparks": 3}, "effects": [{"type": "sparks", "value": -3}, {"type": "relic", "rarity": ["rare"]}], "result": "EV_GHOST_RES1"},
+     {"text": "EV_GHOST_OPT2", "requires": {"relics": 1}, "effects": [{"type": "remove_relic"}, {"type": "flame_full"}, {"type": "sparks", "value": 5}], "result": "EV_GHOST_RES2"},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]},
+  {"id": "ember_pit", "tier": 0, "weight": 1.5, "title": "EV_PIT_TITLE", "text": "EV_PIT_TEXT",
+   "options": [
+     {"text": "EV_PIT_OPT1", "gamble": {"chance": 0.6, "win": [{"type": "sparks", "value": 5}], "lose": [{"type": "flame", "value": -25}], "win_text": "EV_PIT_WIN", "lose_text": "EV_PIT_LOSE"}},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]},
+  {"id": "mirror_hall", "tier": 1, "weight": 1, "min_depth": 2, "title": "EV_MIRROR_TITLE", "text": "EV_MIRROR_TEXT",
+   "options": [
+     {"text": "EV_MIRROR_OPT1", "effects": [{"type": "stat", "stat": "shot_damage", "op": "mul", "value": 1.15}, {"type": "stat", "stat": "light_mult", "op": "mul", "value": 0.85}], "result": "EV_MIRROR_RES1"},
+     {"text": "EV_MIRROR_OPT2", "effects": [{"type": "stat", "stat": "light_mult", "op": "mul", "value": 1.2}], "result": "EV_MIRROR_RES2"}
+   ]},
+  {"id": "golem_forge", "tier": 1, "weight": 1, "min_depth": 2, "title": "EV_FORGE_TITLE", "text": "EV_FORGE_TEXT",
+   "options": [
+     {"text": "EV_FORGE_OPT1", "effects": [{"type": "spawn", "id": "golem", "count": 2, "elite": false}, {"type": "relic", "rarity": ["rare", "legendary"]}], "result": "EV_FORGE_RES1"},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]},
+  {"id": "whispering_dark", "tier": 1, "weight": 1, "min_depth": 2, "title": "EV_WHISPER_TITLE", "text": "EV_WHISPER_TEXT",
+   "options": [
+     {"text": "EV_WHISPER_OPT1", "effects": [{"type": "stat", "stat": "fire_rate", "op": "mul", "value": 1.2}, {"type": "stat", "stat": "damage_taken_mult", "op": "mul", "value": 1.15}], "result": "EV_WHISPER_RES1"},
+     {"text": "EV_WHISPER_OPT2", "requires": {"flame": 15}, "effects": [{"type": "flame", "value": -10}, {"type": "embers", "value": 2}, {"type": "sparks", "value": 2}], "result": "EV_WHISPER_RES2"}
+   ]},
+  {"id": "old_cache", "tier": 1, "weight": 1, "title": "EV_CACHE_TITLE", "text": "EV_CACHE_TEXT",
+   "options": [
+     {"text": "EV_CACHE_OPT1", "effects": [{"type": "spawn", "id": "mimic", "count": 1}, {"type": "sparks", "value": 6}], "result": "EV_CACHE_RES1"},
+     {"text": "EV_LEAVE", "effects": [], "result": "EV_LEFT"}
+   ]}
+]

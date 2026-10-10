@@ -1,0 +1,76 @@
+{
+  "player": {
+    "max_flame": 100,
+    "move_speed": 108,
+    "shot_damage": 10,
+    "shot_cost": 1.0,
+    "fire_rate": 4.0,
+    "shot_speed": 250,
+    "shot_range": 230,
+    "shot_count": 1,
+    "shot_spread": 9,
+    "shot_size": 1.0,
+    "pierce": 0,
+    "bounce": 0,
+    "homing": 0.0,
+    "melee_damage": 16,
+    "melee_cooldown": 0.42,
+    "melee_range": 26,
+    "melee_arc": 120,
+    "melee_knockback": 230,
+    "dash_speed": 300,
+    "dash_time": 0.16,
+    "dash_cooldown": 0.75,
+    "flare_cost": 22,
+    "flare_cooldown": 5.0,
+    "flare_damage": 22,
+    "flare_radius": 96,
+    "light_min": 46,
+    "light_max": 132,
+    "light_mult": 1.0,
+    "ember_mult": 1.0,
+    "magnet_radius": 44,
+    "iframes": 0.9,
+    "damage_taken_mult": 1.0,
+    "crit_chance": 0.05
+  },
+  "brazier": {"cost": 8, "radius": 84},
+  "drops": {
+    "ember_value": 3.0,
+    "spark_chance": 0.04,
+    "pot_ember": 0.6,
+    "pot_spark": 0.06
+  },
+  "shop": {"oil": 2, "wick": 3, "map": 2},
+  "rooms": {
+    "budget_base": 5.0,
+    "budget_per_depth": 3.0,
+    "budget_per_dist": 0.6,
+    "elite_budget_mult": 1.4,
+    "two_waves_at": 8.5,
+    "three_waves_at": 16.0,
+    "clear_embers": 2,
+    "size_mult": {"std": 1.0, "wide": 1.25, "tall": 1.2, "big": 1.45}
+  },
+  "difficulty": {
+    "hp_per_depth": 0.35,
+    "damage_per_depth": 0.15,
+    "elite_hp": 1.8
+  },
+  "lamp_bonuses": {
+    "max_flame_15": {"max_flame": ["add", 15]},
+    "ember_bonus": {"ember_mult": ["mul", 1.1]}
+  },
+  "ascension": {
+    "1": {"desc": "ASC_1", "mults": {"enemy_hp": 1.15}},
+    "2": {"desc": "ASC_2", "mults": {"enemy_damage": 1.2}},
+    "3": {"desc": "ASC_3", "mults": {"budget": 1.15}},
+    "4": {"desc": "ASC_4", "mults": {"enemy_shot_speed": 1.15}},
+    "5": {"desc": "ASC_5", "mults": {"prices": 1.3}, "player": {"ember_mult": ["mul", 0.85]}},
+    "6": {"desc": "ASC_6", "mults": {"enemy_speed": 1.12}},
+    "7": {"desc": "ASC_7", "mults": {"boss_tempo": 0.8, "enemy_hp": 1.1}},
+    "8": {"desc": "ASC_8", "mults": {}, "player": {"light_mult": ["mul", 0.85]}},
+    "9": {"desc": "ASC_9", "mults": {"budget": 1.15, "enemy_damage": 1.1}},
+    "10": {"desc": "ASC_10", "mults": {"enemy_hp": 1.15}, "player": {"max_flame": ["add", -20]}}
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "oil",
+    "order": 0,
+    "name": "LANTERN_OIL",
+    "desc": "LANTERN_OIL_DESC",
+    "unlock": "",
+    "stats": {}
+  },
+  {
+    "id": "mirror",
+    "order": 1,
+    "name": "LANTERN_MIRROR",
+    "desc": "LANTERN_MIRROR_DESC",
+    "unlock": "lantern_mirror",
+    "stats": {"bounce": ["add", 1], "shot_damage": ["mul", 0.85], "light_mult": ["mul", 1.1]}
+  },
+  {
+    "id": "ember",
+    "order": 2,
+    "name": "LANTERN_EMBER",
+    "desc": "LANTERN_EMBER_DESC",
+    "unlock": "lantern_ember",
+    "stats": {"shot_count": ["add", 2], "shot_spread": ["mul", 1.6], "shot_damage": ["mul", 0.6], "shot_range": ["mul", 0.55], "fire_rate": ["mul", 0.7], "melee_damage": ["mul", 1.5], "max_flame": ["add", 10]}
+  },
+  {
+    "id": "pilgrim",
+    "order": 3,
+    "name": "LANTERN_PILGRIM",
+    "desc": "LANTERN_PILGRIM_DESC",
+    "unlock": "lantern_pilgrim",
+    "stats": {"pierce": ["add", 3], "shot_speed": ["mul", 0.75], "fire_rate": ["mul", 0.75], "shot_damage": ["mul", 1.3], "light_mult": ["mul", 1.35], "move_speed": ["mul", 0.92]}
+  }
+]

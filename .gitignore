@@ -1,0 +1,14 @@
+# Godot
+.godot/
+*.translation
+/build/
+/export_credentials.cfg
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editors
+.DS_Store
+Thumbs.db
+*.swp

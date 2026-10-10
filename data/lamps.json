@@ -1,0 +1,13 @@
+[
+  {"id": "market", "name": "LAMP_MARKET", "desc": "LAMP_MARKET_DESC", "cost": 8, "unlock": "relic_tier_1", "pos": [8, 6]},
+  {"id": "fountain", "name": "LAMP_FOUNTAIN", "desc": "LAMP_FOUNTAIN_DESC", "cost": 12, "unlock": "max_flame_15", "pos": [30, 6]},
+  {"id": "workshop", "name": "LAMP_WORKSHOP", "desc": "LAMP_WORKSHOP_DESC", "cost": 18, "unlock": "lantern_mirror", "pos": [8, 16]},
+  {"id": "chapel", "name": "LAMP_CHAPEL", "desc": "LAMP_CHAPEL_DESC", "cost": 22, "unlock": "events_2", "pos": [30, 16]},
+  {"id": "bridge", "name": "LAMP_BRIDGE", "desc": "LAMP_BRIDGE_DESC", "cost": 28, "unlock": "lantern_ember", "pos": [14, 4]},
+  {"id": "tower", "name": "LAMP_TOWER", "desc": "LAMP_TOWER_DESC", "cost": 34, "unlock": "start_relic", "pos": [24, 4]},
+  {"id": "archive", "name": "LAMP_ARCHIVE", "desc": "LAMP_ARCHIVE_DESC", "cost": 42, "unlock": "relic_tier_2", "pos": [14, 18]},
+  {"id": "harbor", "name": "LAMP_HARBOR", "desc": "LAMP_HARBOR_DESC", "cost": 50, "unlock": "lantern_pilgrim", "pos": [24, 18]},
+  {"id": "guild", "name": "LAMP_GUILD", "desc": "LAMP_GUILD_DESC", "cost": 30, "unlock": "shop_extra", "pos": [4, 14]},
+  {"id": "bakery", "name": "LAMP_BAKERY", "desc": "LAMP_BAKERY_DESC", "cost": 26, "unlock": "ember_bonus", "pos": [34, 14]},
+  {"id": "lighthouse", "name": "LAMP_LIGHTHOUSE", "desc": "LAMP_LIGHTHOUSE_DESC", "cost": 60, "unlock": "lighthouse", "pos": [19, 3], "big": true, "requires_boss": "penumbra"}
+]

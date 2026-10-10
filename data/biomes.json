@@ -1,0 +1,53 @@
+[
+  {
+    "id": "sewer",
+    "name": "BIOME_SEWER",
+    "tileset": "sewer",
+    "pot": "sewer",
+    "dark_color": "#100f22",
+    "ambient": 0.0,
+    "music": "sewer",
+    "ambience": "amb_drips",
+    "enemies": ["moth", "slug", "shade", "nest"],
+    "weights": [5, 3, 2, 1],
+    "mimic_chance": 0.0,
+    "boss": "moth_mother",
+    "boss_sparks": 8,
+    "layout": {"rooms_min": 8, "rooms_max": 10, "extra_event_chance": 0.5,
+               "combat_sizes": {"std": 6, "wide": 2, "tall": 2, "big": 1}}
+  },
+  {
+    "id": "crypt",
+    "name": "BIOME_CRYPT",
+    "tileset": "crypt",
+    "pot": "crypt",
+    "dark_color": "#170f1c",
+    "ambient": 0.0,
+    "music": "crypt",
+    "ambience": "amb_wind",
+    "enemies": ["moth", "slug", "shade", "snuffer", "golem", "nest"],
+    "weights": [3, 2, 3, 3, 2, 1],
+    "mimic_chance": 0.18,
+    "boss": "great_snuffer",
+    "boss_sparks": 12,
+    "layout": {"rooms_min": 10, "rooms_max": 12, "extra_event_chance": 0.6,
+               "combat_sizes": {"std": 5, "wide": 2, "tall": 2, "big": 2}}
+  },
+  {
+    "id": "foundry",
+    "name": "BIOME_FOUNDRY",
+    "tileset": "foundry",
+    "pot": "foundry",
+    "dark_color": "#0a1020",
+    "ambient": 0.0,
+    "music": "foundry",
+    "ambience": "amb_hum",
+    "enemies": ["shade", "snuffer", "golem", "eye", "wraith", "moth"],
+    "weights": [3, 2, 2, 2, 3, 2],
+    "mimic_chance": 0.25,
+    "boss": "penumbra",
+    "boss_sparks": 20,
+    "layout": {"rooms_min": 11, "rooms_max": 13, "extra_event_chance": 0.6,
+               "combat_sizes": {"std": 4, "wide": 2, "tall": 2, "big": 3}}
+  }
+]

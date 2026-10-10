@@ -1,0 +1,892 @@
+{
+ "bolt": {
+  "anims": {
+   "fly": {
+    "fps": 14,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "bolt.png",
+  "frame_h": 8,
+  "frame_w": 8,
+  "glow": "",
+  "origin": [
+   4,
+   4
+  ]
+ },
+ "bolt_blue": {
+  "anims": {
+   "fly": {
+    "fps": 14,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "bolt_blue.png",
+  "frame_h": 8,
+  "frame_w": 8,
+  "glow": "",
+  "origin": [
+   4,
+   4
+  ]
+ },
+ "brazier": {
+  "anims": {
+   "lit": {
+    "fps": 10,
+    "frames": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "loop": true
+   },
+   "unlit": {
+    "fps": 1,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 5,
+  "file": "brazier.png",
+  "frame_h": 20,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   16
+  ]
+ },
+ "cerero": {
+  "anims": {
+   "idle": {
+    "fps": 2,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "cerero.png",
+  "frame_h": 26,
+  "frame_w": 24,
+  "glow": "cerero_glow.png",
+  "origin": [
+   12,
+   24
+  ]
+ },
+ "ember": {
+  "anims": {
+   "idle": {
+    "fps": 8,
+    "frames": [
+     0,
+     1,
+     2
+    ],
+    "loop": true
+   }
+  },
+  "columns": 3,
+  "file": "ember.png",
+  "frame_h": 6,
+  "frame_w": 6,
+  "glow": "",
+  "origin": [
+   3,
+   3
+  ]
+ },
+ "eye": {
+  "anims": {
+   "charge": {
+    "fps": 12,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   },
+   "closed": {
+    "fps": 1,
+    "frames": [
+     6
+    ],
+    "loop": true
+   },
+   "open": {
+    "fps": 3,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 7,
+  "file": "eye.png",
+  "frame_h": 18,
+  "frame_w": 18,
+  "glow": "eye_glow.png",
+  "origin": [
+   9,
+   15
+  ]
+ },
+ "golem": {
+  "anims": {
+   "charge": {
+    "fps": 12,
+    "frames": [
+     6,
+     7
+    ],
+    "loop": true
+   },
+   "dazed": {
+    "fps": 4,
+    "frames": [
+     8,
+     9
+    ],
+    "loop": true
+   },
+   "walk": {
+    "fps": 5,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   },
+   "windup": {
+    "fps": 8,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   }
+  },
+  "columns": 10,
+  "file": "golem.png",
+  "frame_h": 26,
+  "frame_w": 24,
+  "glow": "golem_glow.png",
+  "origin": [
+   12,
+   24
+  ]
+ },
+ "great_snuffer": {
+  "anims": {
+   "cast": {
+    "fps": 6,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   },
+   "raise": {
+    "fps": 1,
+    "frames": [
+     2
+    ],
+    "loop": true
+   },
+   "slam": {
+    "fps": 1,
+    "frames": [
+     3
+    ],
+    "loop": true
+   },
+   "walk": {
+    "fps": 3,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 6,
+  "file": "great_snuffer.png",
+  "frame_h": 48,
+  "frame_w": 40,
+  "glow": "great_snuffer_glow.png",
+  "origin": [
+   20,
+   45
+  ]
+ },
+ "impact": {
+  "anims": {
+   "cold": {
+    "fps": 24,
+    "frames": [
+     8,
+     9,
+     10,
+     11
+    ],
+    "loop": false
+   },
+   "dark": {
+    "fps": 24,
+    "frames": [
+     4,
+     5,
+     6,
+     7
+    ],
+    "loop": false
+   },
+   "warm": {
+    "fps": 24,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": false
+   }
+  },
+  "columns": 12,
+  "file": "impact.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   8
+  ]
+ },
+ "lamp_post": {
+  "anims": {
+   "lit": {
+    "fps": 4,
+    "frames": [
+     1,
+     2
+    ],
+    "loop": true
+   },
+   "unlit": {
+    "fps": 1,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 3,
+  "file": "lamp_post.png",
+  "frame_h": 34,
+  "frame_w": 16,
+  "glow": "lamp_post_glow.png",
+  "origin": [
+   8,
+   31
+  ]
+ },
+ "lantern": {
+  "anims": {
+   "burn": {
+    "fps": 6,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   },
+   "low": {
+    "fps": 3,
+    "frames": [
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "lantern.png",
+  "frame_h": 8,
+  "frame_w": 8,
+  "glow": "",
+  "origin": [
+   4,
+   1
+  ]
+ },
+ "lighthouse": {
+  "anims": {
+   "lit": {
+    "fps": 3,
+    "frames": [
+     1,
+     2
+    ],
+    "loop": true
+   },
+   "unlit": {
+    "fps": 1,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 3,
+  "file": "lighthouse.png",
+  "frame_h": 60,
+  "frame_w": 32,
+  "glow": "lighthouse_glow.png",
+  "origin": [
+   16,
+   56
+  ]
+ },
+ "mimic": {
+  "anims": {
+   "awake": {
+    "fps": 10,
+    "frames": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "loop": true
+   },
+   "dormant": {
+    "fps": 1,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 5,
+  "file": "mimic.png",
+  "frame_h": 20,
+  "frame_w": 16,
+  "glow": "mimic_glow.png",
+  "origin": [
+   8,
+   16
+  ]
+ },
+ "moth": {
+  "anims": {
+   "fly": {
+    "fps": 14,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "moth.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "moth_glow.png",
+  "origin": [
+   8,
+   9
+  ]
+ },
+ "moth_mother": {
+  "anims": {
+   "cast": {
+    "fps": 8,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   },
+   "fly": {
+    "fps": 9,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 5,
+  "file": "moth_mother.png",
+  "frame_h": 40,
+  "frame_w": 48,
+  "glow": "moth_mother_glow.png",
+  "origin": [
+   24,
+   34
+  ]
+ },
+ "nest": {
+  "anims": {
+   "pulse": {
+    "fps": 4,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "nest.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "nest_glow.png",
+  "origin": [
+   8,
+   12
+  ]
+ },
+ "orb": {
+  "anims": {
+   "fly": {
+    "fps": 10,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "orb.png",
+  "frame_h": 8,
+  "frame_w": 8,
+  "glow": "",
+  "origin": [
+   4,
+   4
+  ]
+ },
+ "orb_ember": {
+  "anims": {
+   "fly": {
+    "fps": 10,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "orb_ember.png",
+  "frame_h": 8,
+  "frame_w": 8,
+  "glow": "",
+  "origin": [
+   4,
+   4
+  ]
+ },
+ "penumbra": {
+  "anims": {
+   "cast": {
+    "fps": 8,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   },
+   "idle": {
+    "fps": 5,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "penumbra.png",
+  "frame_h": 56,
+  "frame_w": 56,
+  "glow": "penumbra_glow.png",
+  "origin": [
+   28,
+   48
+  ]
+ },
+ "player": {
+  "anims": {
+   "dash_down": {
+    "fps": 1,
+    "frames": [
+     22
+    ],
+    "loop": false
+   },
+   "dash_side": {
+    "fps": 1,
+    "frames": [
+     21
+    ],
+    "loop": false
+   },
+   "dash_up": {
+    "fps": 1,
+    "frames": [
+     23
+    ],
+    "loop": false
+   },
+   "dead": {
+    "fps": 8,
+    "frames": [
+     24,
+     25,
+     26,
+     27,
+     28
+    ],
+    "loop": false
+   },
+   "hurt_down": {
+    "fps": 1,
+    "frames": [
+     6
+    ],
+    "loop": false
+   },
+   "hurt_side": {
+    "fps": 1,
+    "frames": [
+     20
+    ],
+    "loop": false
+   },
+   "hurt_up": {
+    "fps": 1,
+    "frames": [
+     13
+    ],
+    "loop": false
+   },
+   "idle_down": {
+    "fps": 2.5,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   },
+   "idle_side": {
+    "fps": 2.5,
+    "frames": [
+     14,
+     15
+    ],
+    "loop": true
+   },
+   "idle_up": {
+    "fps": 2.5,
+    "frames": [
+     7,
+     8
+    ],
+    "loop": true
+   },
+   "run_down": {
+    "fps": 10,
+    "frames": [
+     2,
+     3,
+     4,
+     5
+    ],
+    "loop": true
+   },
+   "run_side": {
+    "fps": 10,
+    "frames": [
+     16,
+     17,
+     18,
+     19
+    ],
+    "loop": true
+   },
+   "run_up": {
+    "fps": 10,
+    "frames": [
+     9,
+     10,
+     11,
+     12
+    ],
+    "loop": true
+   }
+  },
+  "columns": 16,
+  "file": "player.png",
+  "frame_h": 20,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   17
+  ]
+ },
+ "pot_crypt": {
+  "anims": {
+   "broken": {
+    "fps": 1,
+    "frames": [
+     1
+    ],
+    "loop": false
+   },
+   "idle": {
+    "fps": 8.0,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "pot_crypt.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   13
+  ]
+ },
+ "pot_foundry": {
+  "anims": {
+   "broken": {
+    "fps": 1,
+    "frames": [
+     1
+    ],
+    "loop": false
+   },
+   "idle": {
+    "fps": 8.0,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "pot_foundry.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   13
+  ]
+ },
+ "pot_sewer": {
+  "anims": {
+   "broken": {
+    "fps": 1,
+    "frames": [
+     1
+    ],
+    "loop": false
+   },
+   "idle": {
+    "fps": 8.0,
+    "frames": [
+     0
+    ],
+    "loop": true
+   }
+  },
+  "columns": 2,
+  "file": "pot_sewer.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "",
+  "origin": [
+   8,
+   13
+  ]
+ },
+ "shade": {
+  "anims": {
+   "float": {
+    "fps": 7,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   },
+   "lunge": {
+    "fps": 10,
+    "frames": [
+     4,
+     5
+    ],
+    "loop": true
+   }
+  },
+  "columns": 6,
+  "file": "shade.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "shade_glow.png",
+  "origin": [
+   8,
+   12
+  ]
+ },
+ "slug": {
+  "anims": {
+   "crawl": {
+    "fps": 6,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   },
+   "crawl_small": {
+    "fps": 8,
+    "frames": [
+     4,
+     5,
+     6,
+     7
+    ],
+    "loop": true
+   }
+  },
+  "columns": 8,
+  "file": "slug.png",
+  "frame_h": 16,
+  "frame_w": 16,
+  "glow": "slug_glow.png",
+  "origin": [
+   8,
+   13
+  ]
+ },
+ "snuffer": {
+  "anims": {
+   "attack": {
+    "fps": 8,
+    "frames": [
+     2,
+     3
+    ],
+    "loop": true
+   },
+   "idle": {
+    "fps": 3,
+    "frames": [
+     0,
+     1
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "snuffer.png",
+  "frame_h": 20,
+  "frame_w": 16,
+  "glow": "snuffer_glow.png",
+  "origin": [
+   7,
+   18
+  ]
+ },
+ "spark": {
+  "anims": {
+   "idle": {
+    "fps": 6,
+    "frames": [
+     0,
+     1,
+     2
+    ],
+    "loop": true
+   }
+  },
+  "columns": 3,
+  "file": "spark.png",
+  "frame_h": 7,
+  "frame_w": 7,
+  "glow": "",
+  "origin": [
+   3,
+   3
+  ]
+ },
+ "wraith": {
+  "anims": {
+   "float": {
+    "fps": 5,
+    "frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "loop": true
+   }
+  },
+  "columns": 4,
+  "file": "wraith.png",
+  "frame_h": 22,
+  "frame_w": 18,
+  "glow": "wraith_glow.png",
+  "origin": [
+   9,
+   20
+  ]
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "crypt": {
+  "edge": "#b58b65",
+  "rim": "#d9b98f"
+ },
+ "foundry": {
+  "edge": "#4a4766",
+  "rim": "#2d5b73"
+ },
+ "plaza": {
+  "edge": "#b58b65",
+  "rim": "#d9b98f"
+ },
+ "sewer": {
+  "edge": "#6b6a86",
+  "rim": "#9493a8"
+ }
+}
