@@ -13,6 +13,9 @@ var _wait := 0.0
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	DirAccess.make_dir_recursive_absolute(out_dir)
+	var args := OS.get_cmdline_user_args()
+	if args.has("--lang") and args.find("--lang") + 1 < args.size():
+		Settings.set_value("game", "language", args[args.find("--lang") + 1])
 	_steps = [
 		["menu", 2.5, func(): Game.goto_menu()],
 		["options", 1.0, func(): _open_options_from_menu()],

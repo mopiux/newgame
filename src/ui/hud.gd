@@ -141,6 +141,7 @@ func _ready() -> void:
 	banner_sub.offset_left = -300
 	banner_sub.offset_right = 300
 	banner_sub.offset_top = 136
+	banner_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	banner_sub.modulate.a = 0.0
 	root.add_child(banner_sub)
 
@@ -209,14 +210,14 @@ func _process(_delta: float) -> void:
 
 func _update_vignette(p: Player, delta: float) -> void:
 	_vig_t += delta
-	_hurt_flash = maxf(0.0, _hurt_flash - delta * 2.5)
+	_hurt_flash = maxf(0.0, _hurt_flash - delta * 3.5)
 	var calm: bool = Settings.get_value("access", "reduce_flashes")
 	var low := 0.0
 	var ratio := p.flame_ratio()
 	if ratio < 0.3 and p.is_alive():
 		var pulse := 0.5 + 0.5 * sin(_vig_t * (5.0 if not calm else 2.0))
 		low = (0.3 - ratio) / 0.3 * (0.55 + 0.25 * pulse)
-	var hurt := _hurt_flash * (0.4 if calm else 0.8)
+	var hurt := _hurt_flash * (0.25 if calm else 0.5)
 	var m := vignette.material as ShaderMaterial
 	m.set_shader_parameter("intensity", clampf(maxf(low, hurt), 0.0, 1.0))
 
@@ -290,7 +291,11 @@ func show_banner(title: String, sub: String, color: Color = UITheme.FLAME) -> vo
 
 func show_depth_banner(depth: int) -> void:
 	var b := Database.biome_for_depth(depth)
-	show_banner(tr(str(b.get("name", ""))), tr("DEPTH_N") % depth)
+	var sub := tr("DEPTH_N") % depth
+	# the premise, told once in a single line on the very first descent
+	if depth == 1 and int(SaveManager.profile.stats.runs) <= 1:
+		sub += "\n" + tr("LORE_INTRO")
+	show_banner(tr(str(b.get("name", ""))), sub)
 
 
 class FlameGauge extends Control:
@@ -341,7 +346,7 @@ class FlameGauge extends Control:
 		draw_rect(Rect2(pos, Vector2(30, 7)), UITheme.INK)
 		draw_rect(Rect2(pos + Vector2(1, 1), Vector2(28 * clampf(r, 0.0, 1.0), 5)), col if r >= 1.0 else Color(col, 0.45))
 		var font := UITheme.font_small()
-		var label := key.left(5)
+		var label := key if key.length() <= 5 else key.left(3) + "."
 		draw_string_outline(font, pos + Vector2(1, 16), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, 2, UITheme.INK)
 		draw_string(font, pos + Vector2(1, 16), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, UITheme.TEXT_DIM)
 

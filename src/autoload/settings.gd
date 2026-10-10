@@ -146,6 +146,16 @@ func apply_all() -> void:
 
 # --- Input ------------------------------------------------------------------
 
+func _unhandled_input(event: InputEvent) -> void:
+	# F11 or Alt+Enter toggles fullscreen anywhere
+	if event is InputEventKey and event.pressed and not event.echo:
+		var k := event as InputEventKey
+		if k.keycode == KEY_F11 or (k.keycode == KEY_ENTER and k.alt_pressed):
+			set_value("video", "fullscreen", not bool(get_value("video", "fullscreen")))
+			save_settings()
+			get_viewport().set_input_as_handled()
+
+
 func _rebuild_input_map() -> void:
 	for action in ACTIONS:
 		if InputMap.has_action(action):
@@ -227,7 +237,10 @@ func binding_label(action: String) -> String:
 		var code := int(d.key)
 		if DisplayServer.get_name() not in ["headless", "dummy"]:
 			code = DisplayServer.keyboard_get_keycode_from_physical(code)
-		return OS.get_keycode_string(code)
+		var key_name := OS.get_keycode_string(code)
+		var loc_key := "KEYNAME_" + key_name.to_upper().replace(" ", "_")
+		var localized := tr(loc_key)
+		return localized if localized != loc_key else key_name
 	match int(d.mouse):
 		MOUSE_BUTTON_LEFT:
 			return tr("KEY_MOUSE_LEFT")

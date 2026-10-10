@@ -9,6 +9,7 @@ var _buttons: VBoxContainer
 var _options: OptionsMenu
 var _room_layout: RoomLayout
 var _t := 0.0
+var _title: Label
 
 
 func _ready() -> void:
@@ -81,10 +82,15 @@ func _build_ui() -> void:
 	root.theme = UITheme.get_theme()
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(root)
-	var title := UITheme.title_label("LUMBRE", 80, UITheme.FLAME)
-	title.position = Vector2(36, 40)
-	title.add_theme_constant_override("outline_size", 4)
-	root.add_child(title)
+	_title = UITheme.title_label("LUMBRE", 80, UITheme.FLAME)
+	_title.position = Vector2(36, 40)
+	_title.add_theme_constant_override("outline_size", 4)
+	root.add_child(_title)
+	# a brazier burning beside the title
+	var flame := SpriteLib.make_sprite("brazier", "lit")
+	flame.position = Vector2(254, 100)
+	flame.scale = Vector2(2, 2)
+	root.add_child(flame)
 	var sub := UITheme.label(tr("GAME_SUBTITLE"), 12, UITheme.TEXT_DIM)
 	sub.position = Vector2(40, 116)
 	root.add_child(sub)
@@ -151,6 +157,9 @@ func _open_options() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if _title:
+		var f := 0.88 + 0.12 * sin(_t * 7.0) * sin(_t * 3.1 + 1.0)
+		_title.add_theme_color_override("font_color", UITheme.FLAME * Color(1.0, f, f * 0.9))
 	var target := get_global_mouse_position()
 	if Input.get_last_mouse_velocity().length() < 1.0 and _t > 0.5:
 		target = Vector2(470, 220) + Vector2(cos(_t * 0.5) * 60.0, sin(_t * 0.7) * 30.0)
