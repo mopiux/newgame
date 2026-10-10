@@ -50,12 +50,33 @@ MOTH_HALF = [
 ]
 
 
+def _moth_frame(wing):
+    """Ash moth drawn with shaded blobs: rounded forewings with ember
+    eyespots, smaller hindwings, a fuzzy body and glowing eyes."""
+    from draw import Canvas
+    c = Canvas(16, 16)
+    lift = 1.0 - wing  # 0 = wings spread, 1 = folded
+    for side in (-1, 1):
+        cx = 8 + side * (4.2 - lift * 1.5)
+        c.blob(cx, 6.0 + lift * 1.5, 3.6 - lift * 0.8, 3.4 * (0.45 + 0.55 * wing), ["3", "4", "5", "6"])
+        c.blob(8 + side * 2.6, 10.5, 2.2, 2.0 * (0.5 + 0.5 * wing), ["3", "4", "5"])
+        c.set(int(round(cx)), int(round(6.0 + lift * 1.5)), "O")
+    c.blob(8, 8.5, 1.4, 4.2, ["2", "3", "4"], dither=False)
+    c.set(7, 5, "Y")
+    c.set(8, 5, "Y")
+    c.set(6, 3, "N")
+    c.set(9, 3, "N")
+    c.set(5, 2, "N")
+    c.set(10, 2, "N")
+    return c.outlined()
+
+
 def build_moth():
     sb = SheetBuilder("moth", 16, 16, origin=(8, 9), emissive="YO")
-    a = grid(mirror(MOTH_HALF))
-    b = squash_wings(a, 0.7, 6, (6, 10))
-    c = squash_wings(a, 0.45, 6, (6, 10))
-    sb.add("fly", [a, b, c, b], fps=14)
+    a = _moth_frame(1.0)
+    b = _moth_frame(0.65)
+    cc = _moth_frame(0.3)
+    sb.add("fly", [a, b, cc, b], fps=14)
     return sb
 
 
