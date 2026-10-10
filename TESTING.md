@@ -115,6 +115,7 @@ El agente revisor (solo lectura) cubrió interfaz, plaza, generación, enemigos,
 - Nuevo `ErrorCatcher` (API `Logger` de Godot 4.5): el flujo de pantallas falla si se registra cualquier error y el autopiloto imprime `BOT_ERRORS`.
 - Comprobación inversa: con el código anterior, `--flow-check` falla en los nº 1, 2 y 8 (incluidos los dos errores del nº 8).
 - `tools/test.sh`: **37 pruebas, 40 318 comprobaciones, 0 fallos**, `CONTINUE_OK`, `FLOW_OK`. Recorrido de pantallas en español: 20 capturas sin errores.
+- Regresión con el autopiloto (10 partidas, `bot20.log`): **`BOT_ERRORS 0`** en todo el lote; **4 victorias**, 3 muertes en la profundidad 3 y 3 en la 2 (antes 4/10: el equilibrio se mantiene aunque los orbes del espectro y de la Penumbra ahora sí persiguen al jugador). Guardianes vencidos en 17–34 s (Madre Polilla, Gran Apagador) y 36–54 s (Penumbra). Lógica de juego: 0,34 ms de media por fotograma, p99 1,49 ms (sin renderizado; el máximo de 182 ms coincide con cargas de planta).
 
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
