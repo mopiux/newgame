@@ -128,15 +128,31 @@ func _physics_process(delta: float) -> void:
 func _home(delta: float) -> void:
 	var best: Node2D = null
 	var best_d := 140.0
+	if team == "enemy":
+		# creature shots seek the lamplighter, never their own caster
+		var pl := get_tree().get_first_node_in_group("player") as Player
+		if pl and pl.is_alive() and not pl.hub_mode:
+			best = pl
+	else:
+		best = _nearest_enemy(best_d)
+	if best:
+		# turn without losing speed (a plain lerp shortens the vector)
+		var speed := velocity.length()
+		var desired := (best.global_position + Vector2(0, -4) - global_position).normalized() * speed
+		var turned := velocity.lerp(desired, clampf(homing * delta * 4.0, 0.0, 1.0))
+		if turned.length() > 0.001:
+			velocity = turned.normalized() * speed
+
+
+func _nearest_enemy(best_d: float) -> Node2D:
+	var best: Node2D = null
 	for e in get_tree().get_nodes_in_group("enemies"):
 		if e is Enemy and e.is_targetable() and not hit_list.has(e):
 			var d := global_position.distance_to(e.global_position)
 			if d < best_d:
 				best_d = d
 				best = e
-	if best:
-		var desired := (best.global_position + Vector2(0, -4) - global_position).normalized() * velocity.length()
-		velocity = velocity.lerp(desired, clampf(homing * delta * 4.0, 0.0, 1.0))
+	return best
 
 
 func _hit_enemies() -> void:

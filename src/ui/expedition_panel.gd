@@ -32,21 +32,31 @@ func _ready() -> void:
 	hb.add_child(_desc)
 	var ids: Array = Database.lanterns.keys()
 	ids.sort_custom(func(a, b): return int(Database.lanterns[a].get("order", 0)) < int(Database.lanterns[b].get("order", 0)))
+	var group := ButtonGroup.new()
 	for id in ids:
 		var l: Dictionary = Database.lanterns[id]
 		var b := Button.new()
 		var unlocked := SaveManager.lantern_unlocked(id)
 		b.text = tr(str(l.get("name", id))) if unlocked else "? ? ?"
 		b.disabled = not unlocked
+		if not unlocked:
+			# disabled buttons can still take keyboard/pad focus in Godot
+			b.focus_mode = Control.FOCUS_NONE
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		# the pressed (brass) look marks the chosen lantern; focus only previews
+		b.toggle_mode = true
+		b.button_group = group
+		b.button_pressed = id == _lantern
 		b.pressed.connect(func():
+			if not SaveManager.lantern_unlocked(id):
+				return
 			Audio.ui("ui_select")
 			_lantern = id
 			_refresh())
 		b.focus_entered.connect(func():
 			Audio.ui("ui_move")
-			_lantern = id
-			_refresh())
+			_refresh(id))
+		b.focus_exited.connect(func(): _refresh())
 		_lantern_box.add_child(b)
 	if int(SaveManager.profile.ascension_unlocked) > 0:
 		var row := HBoxContainer.new()
@@ -96,9 +106,10 @@ func _ready() -> void:
 	_start.grab_focus.call_deferred()
 
 
-func _refresh() -> void:
-	var l: Dictionary = Database.lanterns.get(_lantern, {})
-	var text := tr(str(l.get("name", _lantern))) + "\n" + tr(str(l.get("desc", "")))
+func _refresh(preview: String = "") -> void:
+	var shown := preview if preview != "" else _lantern
+	var l: Dictionary = Database.lanterns.get(shown, {})
+	var text := tr(str(l.get("name", shown))) + "\n" + tr(str(l.get("desc", "")))
 	if _asc > 0:
 		text += "\n\n" + tr("ASCENSION_N") % _asc + ":"
 		for i in _asc:
@@ -110,6 +121,8 @@ func _refresh() -> void:
 
 
 func _go() -> void:
+	if not SaveManager.lantern_unlocked(_lantern):
+		_lantern = "oil"
 	Audio.ui("ui_select")
 	SaveManager.profile.ascension_selected = _asc
 	get_tree().paused = false

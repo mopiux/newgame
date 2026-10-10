@@ -204,6 +204,12 @@ func _input(event: InputEvent) -> void:
 			_refresh_bindings()
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_XBUTTON1, MOUSE_BUTTON_XBUTTON2]:
+		var btn: Button = _bind_buttons[_waiting_action]
+		if event.button_index == MOUSE_BUTTON_LEFT and not btn.get_global_rect().has_point(btn.get_global_mouse_position()):
+			# a left click elsewhere (Back, a tab...) cancels instead of binding
+			_waiting_action = ""
+			_refresh_bindings()
+			return
 		Settings.rebind(_waiting_action, event)
 		_waiting_action = ""
 		_refresh_bindings.call_deferred()

@@ -17,6 +17,8 @@ func _ready() -> void:
 	var name := ""
 	if args.has("--profile") and args.find("--profile") + 1 < args.size():
 		name = args[args.find("--profile") + 1]
+	elif args.has("--flow-check"):
+		name = "flowcheck"
 	elif args.has("--bot") or args.has("--tour") or args.has("--continue-check"):
 		name = "test"
 	if name != "":

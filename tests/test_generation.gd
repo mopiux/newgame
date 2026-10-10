@@ -113,3 +113,22 @@ func test_wave_builder() -> void:
 					if e.get("elite", false):
 						elites += 1
 				eq(elites, 1, "elite rooms have exactly one elite")
+
+
+func test_minimap_shows_every_neighbour_of_a_visited_room() -> void:
+	for i in 40:
+		var r := RunState.create("MINI%d" % i, "oil", 0)
+		r.generate_floor()
+		var start := r.current_room
+		var info: Dictionary = r.floor.rooms[start]
+		var p := Vector2i(info.pos[0], info.pos[1])
+		for d in info.doors:
+			var nk := DungeonGenerator.key(p + DungeonGenerator.DIRS[d])
+			check(HUD.Minimap.room_known(r, nk, false), "neighbour %s of the start room is drawn (seed %d)" % [nk, i])
+		for k in r.floor.rooms:
+			var room: Dictionary = r.floor.rooms[k]
+			if room.type == "secret":
+				check(not HUD.Minimap.room_known(r, k, true), "unvisited secret room stays hidden even when revealed")
+			elif k != start and not (info.doors as Array).any(func(d): return DungeonGenerator.key(p + DungeonGenerator.DIRS[d]) == k):
+				check(not HUD.Minimap.room_known(r, k, false), "far room %s hidden before the map is revealed" % k)
+				check(HUD.Minimap.room_known(r, k, true), "far room %s shown once revealed" % k)

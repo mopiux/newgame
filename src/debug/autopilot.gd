@@ -47,8 +47,12 @@ var _boss_t0 := {}
 var _spent := {"shots": 0.0, "braziers": 0}
 
 
+var _catcher: ErrorCatcher
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_catcher = ErrorCatcher.install()
 	Events.player_damaged.connect(func(amount: float, source: Node):
 		var k := "?"
 		if is_instance_valid(source) and source is Enemy:
@@ -219,6 +223,7 @@ func _after_run() -> void:
 	runs_left -= 1
 	if runs_left <= 0:
 		print(perf_report())
+		print("BOT_ERRORS %d %s" % [_catcher.count(), _catcher.summary(8)])
 		print("BOT_DONE runs=%d" % results.size())
 		get_tree().quit(0)
 		return

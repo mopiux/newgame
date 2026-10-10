@@ -78,3 +78,27 @@ func test_incompatible_run_is_not_offered() -> void:
 	check(not SaveManager.has_run(), "a run from another save version is not continuable")
 	SaveManager.clear_run()
 	check(not SaveManager.has_run(), "cleared")
+
+
+func test_rebinding_never_shares_a_key() -> void:
+	var saved: Dictionary = Settings.bindings.duplicate(true)
+	Settings.bindings.clear()
+	var q := InputEventKey.new()
+	q.physical_keycode = KEY_Q
+	check(Settings.rebind("interact", q), "rebind accepted")
+	eq(Settings.effective_kbm("interact"), [{"key": KEY_Q}], "interact moved to Q")
+	eq(Settings.effective_kbm("flare"), [{"key": KEY_E}], "flare (default Q) takes interact's old key")
+	check(InputMap.event_is_action(q, "interact"), "Q triggers interact")
+	check(not InputMap.event_is_action(q, "flare"), "Q no longer triggers flare")
+	var w := InputEventKey.new()
+	w.physical_keycode = KEY_W
+	Settings.rebind("dash", w)
+	eq(Settings.effective_kbm("move_up"), [{"key": KEY_UP}], "move up keeps its second default key")
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	Settings.rebind("melee", click)
+	check(not Settings.effective_kbm("shoot").has({"mouse": MOUSE_BUTTON_LEFT}), "left click leaves shoot")
+	eq(Settings.effective_kbm("shoot"), [{"mouse": MOUSE_BUTTON_RIGHT}], "shoot takes melee's old button")
+	Settings.bindings = saved
+	Settings._rebuild_input_map()
+	Settings.save_settings()

@@ -201,16 +201,38 @@ static func event_to_dict(ev: InputEvent) -> Dictionary:
 	return {}
 
 
+## Keyboard/mouse bindings an action really uses: its override, or else the
+## keyboard/mouse entries of its defaults.
+func effective_kbm(action: String) -> Array:
+	var custom: Array = bindings.get(action, [])
+	if not custom.is_empty():
+		return custom.duplicate(true)
+	var out := []
+	for d in ACTIONS.get(action, []):
+		if d.has("key") or d.has("mouse"):
+			out.append(d)
+	return out
+
+
 func rebind(action: String, ev: InputEvent) -> bool:
 	var d := event_to_dict(ev)
 	if d.is_empty() or not (action in REBINDABLE):
 		return false
-	# free the key from any other action so two actions never share it
+	var previous := effective_kbm(action)
+	# two actions never share a key: take it from whoever had it (defaults
+	# included); an action left without keys gets this action's old one
 	for other in REBINDABLE:
-		if other != action and bindings.get(other, []).has(d):
-			bindings[other].erase(d)
-			if bindings[other].is_empty():
-				bindings.erase(other)
+		if other == action:
+			continue
+		var eff := effective_kbm(other)
+		if not eff.has(d):
+			continue
+		eff.erase(d)
+		if eff.is_empty():
+			for p in previous:
+				if p != d:
+					eff.append(p)
+		bindings[other] = eff
 	bindings[action] = [d]
 	_rebuild_input_map()
 	save_settings()

@@ -5,12 +5,15 @@ extends Node
 ##   --hub                jump to the plaza
 ##   --bot                autopilot plays (see src/debug/autopilot.gd)
 ##   --tour DIR           screenshot every screen (see src/debug/screen_tour.gd)
+##   --continue-check     end-to-end save / Continue check
+##   --flow-check         end-to-end screen-flow check (see src/debug/flow_check.gd)
 
 
 var screen_root: Node
 var _fade: ColorRect
 var _fade_layer: CanvasLayer
 var _current: Node = null
+var _pending: Node = null      # screen waiting for the fade-out to finish
 var _busy := false
 
 
@@ -29,6 +32,11 @@ func _ready() -> void:
 	_fade_layer.add_child(_fade)
 	Game.main = self
 	var args := OS.get_cmdline_user_args() + OS.get_cmdline_args()
+	if args.has("--flow-check"):
+		var fc := FlowCheck.new()
+		fc.name = "FlowCheck"
+		add_child(fc)
+		return
 	if args.has("--continue-check"):
 		var cc := ContinueCheck.new()
 		cc.name = "ContinueCheck"
@@ -66,10 +74,18 @@ func _exit_tree() -> void:
 
 func show_screen(node: Node) -> void:
 	if _busy:
-		# a transition is already running: swap immediately
-		_swap(node)
+		if _pending != null:
+			# still fading out: the newest request replaces the queued screen,
+			# so what is shown always matches Game.level / Game.run
+			_pending.queue_free()
+			_pending = node
+		else:
+			# already fading in: swap immediately
+			_swap(node)
 		return
 	_busy = true
+	_pending = node
+	_fade.mouse_filter = Control.MOUSE_FILTER_STOP
 	get_tree().paused = false
 	var tw := create_tween()
 	tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
@@ -77,9 +93,14 @@ func show_screen(node: Node) -> void:
 		tw.tween_property(_fade, "color:a", 1.0, 0.25)
 	else:
 		_fade.color.a = 1.0
-	tw.tween_callback(func(): _swap(node))
+	tw.tween_callback(func():
+		var next := _pending
+		_pending = null
+		_swap(next))
 	tw.tween_property(_fade, "color:a", 0.0, 0.35)
-	tw.tween_callback(func(): _busy = false)
+	tw.tween_callback(func():
+		_busy = false
+		_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE)
 
 
 func _swap(node: Node) -> void:

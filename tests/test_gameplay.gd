@@ -117,3 +117,26 @@ func test_new_relic_hooks_on_a_live_player() -> void:
 		check(back.damage > 0.0, "reflected shot deals damage")
 	orb.free()
 	holder.queue_free()
+
+
+func test_enemy_homing_shots_seek_the_player() -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	var holder := Node2D.new()
+	holder.process_mode = Node.PROCESS_MODE_DISABLED
+	tree.root.add_child(holder)
+	var p := Player.new()
+	p.setup(RunState.create("HOME", "oil", 0))
+	holder.add_child(p)
+	p.global_position = Vector2.ZERO
+	var orb := Projectile.new()
+	orb.team = "enemy"
+	orb.kind = "orb"
+	orb.homing = 0.8
+	orb.velocity = Vector2(0, 60)
+	holder.add_child(orb)
+	orb.global_position = Vector2(100, 0)
+	for i in 10:
+		orb._home(0.1)
+	check(orb.velocity.x < -10.0, "enemy orb curves toward the lamplighter (vx=%.1f)" % orb.velocity.x)
+	near(orb.velocity.length(), 60.0, 1.0, "homing keeps the orb's speed")
+	holder.queue_free()

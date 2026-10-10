@@ -5,6 +5,7 @@ extends Overlay
 
 var _list: VBoxContainer
 var _options: OptionsMenu
+var _options_btn: Button
 
 
 func _ready() -> void:
@@ -26,7 +27,8 @@ func _ready() -> void:
 	left.add_child(UITheme.title_label(tr("PAUSE_TITLE"), 30))
 	var resume := make_button(tr("PAUSE_RESUME"), func(): level.close_overlay())
 	left.add_child(resume)
-	left.add_child(make_button(tr("MENU_OPTIONS"), _open_options))
+	_options_btn = make_button(tr("MENU_OPTIONS"), _open_options)
+	left.add_child(_options_btn)
 	left.add_child(make_button(tr("PAUSE_SAVE_QUIT"), func():
 		Game.save_run_snapshot()
 		Game.goto_menu()))
@@ -84,7 +86,9 @@ func _ready() -> void:
 
 func _open_options() -> void:
 	_options = OptionsMenu.new()
-	_options.closed.connect(func(): _options = null)
+	_options.closed.connect(func():
+		_options = null
+		_options_btn.grab_focus())
 	add_child(_options)
 
 
@@ -103,8 +107,10 @@ func _confirm_abandon() -> void:
 class ConfirmBox extends Control:
 	signal confirmed()
 	var text := ""
+	var _return_focus: Control = null
 
 	func _ready() -> void:
+		_return_focus = get_viewport().gui_get_focus_owner()
 		process_mode = Node.PROCESS_MODE_ALWAYS
 		set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		theme = UITheme.get_theme()
@@ -139,7 +145,7 @@ class ConfirmBox extends Control:
 		no.text = tr("NO")
 		no.pressed.connect(func():
 			Audio.ui("ui_back")
-			queue_free())
+			_cancel())
 		hb.add_child(no)
 		hb.add_child(yes)
 		no.grab_focus.call_deferred()
@@ -147,4 +153,10 @@ class ConfirmBox extends Control:
 	func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
 			get_viewport().set_input_as_handled()
-			queue_free()
+			_cancel()
+
+	## Closing without confirming hands keyboard/pad focus back to the menu.
+	func _cancel() -> void:
+		if is_instance_valid(_return_focus) and _return_focus.is_visible_in_tree():
+			_return_focus.grab_focus()
+		queue_free()

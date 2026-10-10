@@ -236,7 +236,9 @@ func open_panel(c: Control) -> void:
 	c.tree_exited.connect(func():
 		if _panel == c:
 			_panel = null
-			get_tree().paused = false)
+			# when the whole plaza is being freed the tree is already gone
+			if is_inside_tree():
+				get_tree().paused = false)
 	ui.add_child(c)
 	get_tree().paused = true
 

@@ -5,10 +5,11 @@
 | Herramienta | Comando | Qué verifica |
 |---|---|---|
 | Importación/compilación | `tools/check.sh` | Que todos los scripts compilan y los recursos se importan sin errores |
-| Autopiloto | `godot --headless --fixed-fps 60 --path . -- --bot --bot-runs N` | Expediciones completas jugadas por un bot: combate, braseros, reliquias, tienda, sucesos, jefes, descenso, fin de partida y vuelta a la plaza. Imprime `BOT_STATUS`, `BOT_RESULT` y cualquier `SCRIPT ERROR` |
+| Autopiloto | `godot --headless --fixed-fps 60 --path . -- --bot --bot-runs N` | Expediciones completas jugadas por un bot: combate, braseros, reliquias, tienda, sucesos, jefes, descenso, fin de partida y vuelta a la plaza. Imprime `BOT_STATUS`, `BOT_RESULT`, `BOT_BOSS` y al final `BOT_ERRORS` (errores de motor o de script registrados durante todo el lote, capturados con `ErrorCatcher`). `--bot-relics a,b` empieza con esas reliquias |
 | Continuar (extremo a extremo) | `godot --headless --path . -- --continue-check` (incluido en `tools/test.sh`) | Juega, cambia de sala, enciende un brasero, obtiene una reliquia, guarda, vuelve al menú, pulsa «Continuar» y compara sala, reliquias, llama, chispas, puerta de entrada y braseros encendidos |
-| Pruebas unitarias | `tools/test.sh` | 28 pruebas / ~36 500 comprobaciones: validez y determinismo de la generación (150 semillas × 3 profundidades), salas (>1000 distribuciones), estadísticas y reliquias, guardado (corrupción, copias, saneado), integridad de datos y traducciones, reglas de juego |
-| Recorrido de pantallas | `xvfb-run godot --path . --rendering-driver opengl3 -- --tour DIR [--lang es] [--tour-event ID]` | Visita y captura 19 pantallas (menú, opciones, plaza, paneles, pausa, mapa, sucesos, tesoro, tienda, combate, jefe, biomas, victoria): revisión visual y prueba de humo de la interfaz |
+| Flujos de pantallas (extremo a extremo) | `godot --headless --path . -- --flow-check` (incluido en `tools/test.sh`) | Doble pulsación de Empezar durante el fundido, cambiar de pantalla a mitad de fundido, empezar expedición desde el panel del pozo, faroles bloqueados, foco tras Opciones y tras cancelar una confirmación. **Falla si se registra cualquier error** de motor o de script |
+| Pruebas unitarias | `tools/test.sh` | 37 pruebas / ~40 300 comprobaciones: validez y determinismo de la generación (150 semillas × 3 profundidades), salas (>1000 distribuciones), estadísticas y reliquias, guardado (corrupción, copias, saneado), integridad de datos y traducciones, reglas de juego, efectos de reliquias sobre un jugador real, reasignación de teclas, minimapa, proyectiles teledirigidos |
+| Recorrido de pantallas | `xvfb-run godot --path . --rendering-driver opengl3 -- --tour DIR [--lang es] [--tour-event ID]` | Visita y captura 20 pantallas (menú, opciones, plaza, paneles, pausa, mapa, sucesos, tesoro, tienda, combate, cámara de braseros, jefe, biomas, victoria): revisión visual y prueba de humo de la interfaz |
 | Capturas en partida | `xvfb-run godot --path . --rendering-driver opengl3 --fixed-fps 60 -- --bot --shots DIR` | El autopiloto guarda capturas al entrar en cada sala, en los jefes y cada 15 s |
 
 ## Registro de resultados
@@ -95,6 +96,25 @@ Tras los arreglos: **33 pruebas / 39 670 comprobaciones, 0 fallos**, «Continuar
 - Nueva opción del autopiloto `--bot-relics a,b,…` (empieza cada expedición con esas reliquias). 3 partidas con las cuatro nuevas: sin errores de script, 3 victorias (esperable: empieza con cuatro reliquias extra).
 - `tools/test.sh`: **34 pruebas, 39 714 comprobaciones, 0 fallos**, «Continuar» OK.
 - Dos sucesos nuevos (La campana ahogada, Capullo luminoso). El recorrido acepta `--tour-event ID`; captura del diálogo de la campana en español revisada (el texto cabe). `tools/test.sh`: 34 pruebas, 39 741 comprobaciones, 0 fallos.
+
+### 2026-10-10 — segunda revisión de código independiente
+El agente revisor (solo lectura) cubrió interfaz, plaza, generación, enemigos, props, audio, luces, proyectiles y shaders. Cada hallazgo se comprobó contra el código; el nº 8 se reprodujo antes de arreglarlo. **8 errores reales, todos corregidos**, más uno encontrado al escribir la prueba del nº 3:
+
+| # | Gravedad | Error | Corrección | Prueba |
+|---|---|---|---|---|
+| 1 | Alta | Doble pulsación de Empezar (o Continuar y luego Jugar) durante el fundido: se veía una expedición y el juego seguía otra (guardado, descenso y muerte rotos) | La última petición sustituye a la pantalla en cola; el fundido bloquea clics; `new_run`/`continue_run` ignoran una segunda pulsación | `--flow-check` |
+| 2 | Alta | Los faroles bloqueados se podían elegir con teclado o mando, y pasar el foco por un farol lo seleccionaba | Bloqueados sin foco; la elección solo cambia al pulsar (botón de grupo, resaltado en latón) | `--flow-check` |
+| 3 | Media | Los orbes teledirigidos de criaturas (espectro, manos de la Penumbra) buscaban a su propio lanzador | Los disparos enemigos persiguen al jugador | `test_enemy_homing_shots_seek_the_player` |
+| 3b | Media | Todo proyectil teledirigido (también los del jugador) perdía velocidad al girar | Giro conservando la velocidad | misma prueba |
+| 4 | Media | Reasignar una acción a la tecla por defecto de otra dejaba las dos en la misma tecla; un clic en «Volver» mientras se esperaba una tecla se asignaba como botón izquierdo | Conflictos contra las asignaciones reales (por defecto incluidas) con intercambio; un clic izquierdo fuera del botón cancela | `test_rebinding_never_shares_a_key` |
+| 5 | Media-baja | El minimapa usaba la dirección de puerta opuesta: los callejones vecinos (tesoro, tienda, jefe…) nunca aparecían como silueta | Dirección correcta, lógica extraída a `Minimap.room_known` | `test_minimap_shows_every_neighbour_of_a_visited_room` |
+| 6 | Baja-media | Las polillas que rodean un brasero creaban un número de daño y un sonido por fotograma | Usan el estado de quemadura (ticks de 0,5 s) | — |
+| 7 | Baja-media | Tras cerrar Opciones o cancelar una confirmación se perdía el foco de teclado/mando | El foco vuelve al botón del menú | `--flow-check` |
+| 8 | Baja | Error de script al empezar expedición desde el panel del pozo (la plaza ya no estaba en el árbol) | Comprobación `is_inside_tree()` | `--flow-check` (reproducido antes del arreglo) |
+
+- Nuevo `ErrorCatcher` (API `Logger` de Godot 4.5): el flujo de pantallas falla si se registra cualquier error y el autopiloto imprime `BOT_ERRORS`.
+- Comprobación inversa: con el código anterior, `--flow-check` falla en los nº 1, 2 y 8 (incluidos los dos errores del nº 8).
+- `tools/test.sh`: **37 pruebas, 40 318 comprobaciones, 0 fallos**, `CONTINUE_OK`, `FLOW_OK`. Recorrido de pantallas en español: 20 capturas sin errores.
 
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.

@@ -366,6 +366,22 @@ class Minimap extends Control:
 			return
 		Minimap.draw_map(self, run, size, CELL, false)
 
+	## Visited rooms, every room once the map is revealed, and the silhouettes
+	## of rooms with a door to a visited one. Secret rooms only once visited.
+	static func room_known(r: RunState, k: String, revealed: bool) -> bool:
+		var info: Dictionary = r.floor.rooms[k]
+		var visited := bool(r.rooms.get(k, {}).get("visited", false))
+		if info.type == "secret":
+			return visited
+		if visited or revealed:
+			return true
+		var p := Vector2i(info.pos[0], info.pos[1])
+		for d in (info.get("doors", []) as Array):
+			var nk := DungeonGenerator.key(p + DungeonGenerator.DIRS[d])
+			if bool(r.rooms.get(nk, {}).get("visited", false)):
+				return true
+		return false
+
 	static func draw_map(ci: CanvasItem, r: RunState, area: Vector2, cell: Vector2, big: bool) -> void:
 		var cur := DungeonGenerator.parse_key(r.current_room)
 		var center := area * 0.5
@@ -376,17 +392,7 @@ class Minimap extends Control:
 			var p := Vector2i(info.pos[0], info.pos[1])
 			var st: Dictionary = r.rooms.get(k, {})
 			var visited := bool(st.get("visited", false))
-			var known := visited or revealed
-			if not known and info.type != "secret":
-				# rooms adjacent to visited ones are known as silhouettes
-				for d in DungeonGenerator.DIRS:
-					var np: Vector2i = p + DungeonGenerator.DIRS[d]
-					var nk := DungeonGenerator.key(np)
-					if r.rooms.get(nk, {}).get("visited", false) and (info.get("doors", []) as Array).has(DungeonGenerator.OPPOSITE[d]):
-						known = true
-			if info.type == "secret" and not visited:
-				continue
-			if not known:
+			if not Minimap.room_known(r, k, revealed):
 				continue
 			var off := Vector2(p - cur) * (cell + Vector2(2, 2))
 			var rect := Rect2(center + off - cell * 0.5, cell)

@@ -39,7 +39,15 @@ func goto_credits() -> void:
 	main.show_screen(CreditsScreen.new())
 
 
+## True while an expedition is already queued behind the screen fade, so a
+## double press of Start / Continue does not create a second one.
+func level_pending() -> bool:
+	return level != null and is_instance_valid(level) and not level.is_inside_tree()
+
+
 func new_run(lantern: String, seed_text: String = "", ascension: int = 0) -> void:
+	if level_pending():
+		return
 	SaveManager.clear_run()
 	run = RunState.create(seed_text, lantern, ascension)
 	run.generate_floor()
@@ -55,6 +63,8 @@ func new_run(lantern: String, seed_text: String = "", ascension: int = 0) -> voi
 
 
 func continue_run() -> bool:
+	if level_pending():
+		return true
 	var data = SaveManager.load_run()
 	if data == null:
 		SaveManager.clear_run()
