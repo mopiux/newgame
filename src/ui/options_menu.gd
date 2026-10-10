@@ -165,6 +165,20 @@ func _build_controls() -> void:
 	var pad := UITheme.label(tr("OPT_PAD_NOTE"), 12, UITheme.TEXT_DIM)
 	pad.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.add_child(pad)
+	# wiping progress is only offered outside an expedition
+	if Game.level == null:
+		b.add_child(HSeparator.new())
+		var wipe := Button.new()
+		wipe.text = tr("OPT_RESET_PROGRESS")
+		wipe.add_theme_color_override("font_color", UITheme.CURSE)
+		wipe.pressed.connect(func():
+			var c := PauseMenu.ConfirmBox.new()
+			c.text = tr("OPT_RESET_PROGRESS_CONFIRM")
+			c.confirmed.connect(func():
+				SaveManager.reset_profile()
+				Game.goto_menu())
+			add_child(c))
+		b.add_child(wipe)
 
 
 func _start_rebind(action: String) -> void:

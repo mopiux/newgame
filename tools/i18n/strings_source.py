@@ -80,6 +80,8 @@ S = {
     "OPT_RESET_KEYS": ("Restablecer teclas", "Reset keys"),
     "OPT_PAD_NOTE": ("Mando: stick izq. mover, stick der. apuntar, RT/RB disparar, X golpe, A esquivar, Y fogonazo, B interactuar, Start pausa.", "Gamepad: left stick move, right stick aim, RT/RB shoot, X swing, A dodge, Y flare, B interact, Start pause."),
     "OPT_PRESS_KEY": ("Pulsa una tecla...", "Press a key..."),
+    "OPT_RESET_PROGRESS": ("Borrar todo el progreso", "Erase all progress"),
+    "OPT_RESET_PROGRESS_CONFIRM": ("¿Borrar farolas, chispas, códice y expedición guardada? No se puede deshacer.", "Erase lamps, sparks, codex and saved expedition? This cannot be undone."),
     # --- pause / end ---------------------------------------------------------------
     "PAUSE_TITLE": ("Pausa", "Paused"),
     "PAUSE_RESUME": ("Reanudar", "Resume"),
