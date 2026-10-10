@@ -26,12 +26,12 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 
 ## Fase D — Contenido y profundidad
 - ✅ 9 criaturas con comportamientos distintos, 3 jefes, 32 reliquias, 4 faroles, 10 sucesos, 11 farolas, 10 Noches
-- 🟡 Equilibrio: primera pasada con datos del autopiloto (ver TESTING.md); falta ajuste con más partidas
+- 🟡 Equilibrio: dos pasadas con datos del autopiloto (bot con puntería perfecta gana ~50%); falta validación con personas
 - ⬜ Más variedad de salas hechas a mano (puzles de luz, salas oscuras especiales)
 
 ## Fase E — Arte, audio y pulido
 - ✅ Arte pixel definitivo generado por código para todo el contenido
-- ⬜ Audio: efectos y música sintetizados (pendiente — el juego avisa de sonidos ausentes)
+- ✅ Audio: 47 efectos, 9 pistas musicales y 3 ambientes sintetizados e integrados (no escuchados: sin dispositivo de audio)
 - 🟡 Pulido de animaciones (babosa y gólem mejorables)
 
 ## Fase F — Pruebas y distribución

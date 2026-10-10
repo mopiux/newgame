@@ -30,15 +30,31 @@ func _ready() -> void:
 		tmin = tmin.min(Vector2(c) * 16.0)
 		tmax = tmax.max(Vector2(c) * 16.0 + Vector2(16, 16))
 	var r := Rect2(tmin, tmax - tmin)
+	# the trigger covers the outer part of the opening; an always-on wall just
+	# outside the room keeps the lamplighter from walking past it
+	var outer := Rect2()
 	match dir:
 		"n":
-			_trigger_rect = Rect2(r.position.x, r.position.y, r.size.x, 12)
+			_trigger_rect = Rect2(r.position.x, r.position.y - 8, r.size.x, 22)
+			outer = Rect2(r.position.x - 8, r.position.y - 16, r.size.x + 16, 16)
 		"s":
-			_trigger_rect = Rect2(r.position.x, r.end.y - 6, r.size.x, 6)
+			_trigger_rect = Rect2(r.position.x, r.end.y - 12, r.size.x, 20)
+			outer = Rect2(r.position.x - 8, r.end.y, r.size.x + 16, 16)
 		"w":
-			_trigger_rect = Rect2(r.position.x, r.position.y, 6, r.size.y)
+			_trigger_rect = Rect2(r.position.x - 8, r.position.y, 20, r.size.y)
+			outer = Rect2(r.position.x - 16, r.position.y - 8, 16, r.size.y + 16)
 		"e":
-			_trigger_rect = Rect2(r.end.x - 6, r.position.y, 6, r.size.y)
+			_trigger_rect = Rect2(r.end.x - 12, r.position.y, 20, r.size.y)
+			outer = Rect2(r.end.x, r.position.y - 8, 16, r.size.y + 16)
+	var edge := StaticBody2D.new()
+	edge.collision_layer = Layers.WORLD
+	var es := CollisionShape2D.new()
+	var er := RectangleShape2D.new()
+	er.size = outer.size
+	es.shape = er
+	es.position = outer.get_center()
+	edge.add_child(es)
+	add_child(edge)
 	blocker = StaticBody2D.new()
 	blocker.collision_layer = Layers.WORLD
 	var shape := CollisionShape2D.new()

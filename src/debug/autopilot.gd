@@ -33,8 +33,24 @@ var _target_t := 0.0
 var _given_up: Array = []
 
 
+var _damage_by := {}
+var _boss_t0 := {}
+var _spent := {"shots": 0.0, "braziers": 0}
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Events.player_damaged.connect(func(amount: float, source: Node):
+		var k := "?"
+		if is_instance_valid(source) and source is Enemy:
+			k = (source as Enemy).id
+		elif is_instance_valid(source) and source is Projectile:
+			k = "shot"
+		_damage_by[k] = float(_damage_by.get(k, 0.0)) + amount)
+	Events.boss_started.connect(func(b: Node): _boss_t0[str(b.get("id"))] = _run_t)
+	Events.boss_defeated.connect(func(b: Node):
+		var id := str(b.get("id"))
+		print("BOT_BOSS %s defeated in %.0fs flame=%.0f" % [id, _run_t - float(_boss_t0.get(id, _run_t)), Game.run.flame if Game.run else 0.0]))
 	var args := OS.get_cmdline_user_args()
 	var i := args.find("--bot-runs")
 	if i >= 0 and i + 1 < args.size():
@@ -109,6 +125,11 @@ func _after_run() -> void:
 
 func record(summary: Dictionary) -> void:
 	results.append(summary)
+	var parts := []
+	for k in _damage_by:
+		parts.append("%s=%.0f" % [k, _damage_by[k]])
+	print("BOT_DAMAGE " + " ".join(parts))
+	_damage_by.clear()
 	print("BOT_RESULT victory=%s depth=%d time=%.0f kills=%d rooms=%d sparks=%d relics=%d seed=%s" % [
 		str(summary.victory), summary.depth, summary.time, summary.kills, summary.rooms,
 		summary.sparks, (summary.relics as Array).size(), summary.seed])

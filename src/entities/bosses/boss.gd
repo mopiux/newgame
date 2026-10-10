@@ -11,6 +11,7 @@ var attack := ""
 var attack_t := 0.0
 var idle_t := 1.2
 var display_name := ""
+var _ember_acc := 0.0
 
 
 func setup(enemy_id: String, depth: int, _is_elite: bool = false) -> void:
@@ -64,6 +65,12 @@ func _attack_process(_a: String, _delta: float) -> bool:
 
 func _apply_damage(dmg: float, kind: String, info) -> void:
 	super._apply_damage(dmg, kind, info)
+	# guardians shed embers as they are wounded: accurate fire pays for itself
+	_ember_acc += dmg
+	var step := max_hp * float(data.get("ember_every", 0.04))
+	while _ember_acc >= step and room and not dead:
+		_ember_acc -= step
+		room.drop_embers(global_position + Vector2(0, -body_height * 0.5), 1)
 	Events.boss_health_changed.emit(clampf(hp / max_hp, 0.0, 1.0))
 	var ratio := hp / max_hp
 	while phase - 1 < phase_thresholds.size() and ratio <= float(phase_thresholds[phase - 1]) and not dead:

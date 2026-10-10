@@ -16,10 +16,10 @@ func _ai(delta: float) -> void:
 		Mode.STALK:
 			var d := dist_to_target()
 			velocity = path_dir() * speed
-			if d < 72.0 and room and room.has_line_of_sight(global_position, target.global_position) and ai_time > 0.6:
+			if d < 88.0 and room and room.has_line_of_sight(global_position, target.global_position) and ai_time > 0.6:
 				mode = Mode.WINDUP
-				_t = 0.45
-				telegraph(0.45)
+				_t = 0.38
+				telegraph(0.38)
 				Audio.sfx("shade_hiss", -6.0)
 		Mode.WINDUP:
 			velocity = -dir_to_target() * 12.0

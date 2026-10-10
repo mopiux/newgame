@@ -43,18 +43,18 @@
   },
   "shop": {"oil": 2, "wick": 3, "map": 2},
   "rooms": {
-    "budget_base": 5.0,
-    "budget_per_depth": 3.0,
-    "budget_per_dist": 0.6,
+    "budget_base": 7.0,
+    "budget_per_depth": 4.0,
+    "budget_per_dist": 0.8,
     "elite_budget_mult": 1.4,
-    "two_waves_at": 8.5,
-    "three_waves_at": 16.0,
+    "two_waves_at": 9.0,
+    "three_waves_at": 17.0,
     "clear_embers": 2,
     "size_mult": {"std": 1.0, "wide": 1.25, "tall": 1.2, "big": 1.45}
   },
   "difficulty": {
-    "hp_per_depth": 0.35,
-    "damage_per_depth": 0.15,
+    "hp_per_depth": 0.4,
+    "damage_per_depth": 0.3,
     "elite_hp": 1.8
   },
   "lamp_bonuses": {

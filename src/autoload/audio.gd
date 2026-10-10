@@ -7,6 +7,8 @@ const SFX_DIR := "res://assets/audio/sfx/"
 const MUSIC_DIR := "res://assets/audio/music/"
 const VOICES := 24
 const MIN_INTERVAL := 0.045  # same sound can't retrigger faster than this
+const MUSIC_DB := -7.0       # music sits under the effects
+const AMBIENCE_DB := -12.0
 
 var _voices: Array[AudioStreamPlayer] = []
 var _next_voice := 0
@@ -36,7 +38,7 @@ func _ready() -> void:
 	_music_current = _music_a
 	_ambience = AudioStreamPlayer.new()
 	_ambience.bus = "Music"
-	_ambience.volume_db = -8.0
+	_ambience.volume_db = AMBIENCE_DB
 	add_child(_ambience)
 	apply_volumes()
 
@@ -125,7 +127,7 @@ func music(id: String, fade: float = 1.2) -> void:
 		next.stream = stream
 		next.volume_db = -40.0
 		next.play()
-		tw.tween_property(next, "volume_db", 0.0, fade)
+		tw.tween_property(next, "volume_db", MUSIC_DB, fade)
 	var old := _music_current
 	tw.chain().tween_callback(func(): if old != _music_current: old.stop())
 	_music_current = next
