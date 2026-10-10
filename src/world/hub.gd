@@ -88,7 +88,6 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
-	Lights.ambient = 0.0
 	get_tree().paused = false
 
 

@@ -52,7 +52,7 @@ func _apply() -> void:
 		if b.global_position.distance_to(center) <= radius * 0.8 and b.has_method("ignite"):
 			b.ignite(false)
 	for w in get_tree().get_nodes_in_group("secret_walls"):
-		if w.global_position.distance_to(center) <= radius + 8.0:
+		if (w.global_position + w.rect.get_center()).distance_to(center) <= radius + 8.0:
 			w.reveal()
 	for br in get_tree().get_nodes_in_group("breakables"):
 		if br.global_position.distance_to(center) <= radius * 0.6:

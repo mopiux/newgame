@@ -25,6 +25,14 @@ func get_int(key: String) -> int:
 	return int(round(get_stat(key)))
 
 
+## Clears every modifier and replaces the base values, keeping this object
+## (the Player holds a reference to it for the whole run).
+func reset(base_values: Dictionary) -> void:
+	base = base_values.duplicate()
+	_mods.clear()
+	recompute()
+
+
 func set_base(key: String, value: float) -> void:
 	base[key] = value
 	recompute()

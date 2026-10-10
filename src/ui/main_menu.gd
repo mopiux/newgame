@@ -69,8 +69,6 @@ func _ready() -> void:
 	_build_ui()
 
 
-func _exit_tree() -> void:
-	Lights.ambient = 0.0
 
 
 func _build_ui() -> void:

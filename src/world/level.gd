@@ -38,7 +38,6 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	Lights.ambient = 0.0
 
 
 func load_floor(with_fade: bool) -> void:
@@ -119,6 +118,8 @@ func _notification(what: int) -> void:
 
 
 func open_pause() -> void:
+	if player and not player.is_alive():
+		return
 	_open_overlay(PauseMenu.new())
 
 

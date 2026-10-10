@@ -75,6 +75,7 @@ static func _apply_effects(effects: Array, run: RunState, player: Player, room: 
 					for i in int(e.get("count", 1)):
 						wave.append({"id": str(e.id), "elite": bool(e.get("elite", false))})
 					room.waves = [wave]
+					room.state["pending_waves"] = [wave]
 					room.combat_active = true
 					room._wave_delay = 0.5
 					room._set_doors_locked(true)

@@ -86,3 +86,17 @@ func test_run_state_rejects_garbage() -> void:
 	eq(r.lantern_id, "oil", "unknown lantern falls back")
 	eq(r.relics, ["lens"], "unknown relics dropped")
 	check(r.flame >= 1.0, "flame clamped to >= 1")
+
+
+func test_rebuilding_stats_keeps_the_same_object() -> void:
+	# the Player holds run.stats for the whole run (removing a relic in an
+	# event rebuilds the stats and must not leave the Player on a stale copy)
+	var r := RunState.create("REBUILD", "oil", 0)
+	var held := r.stats
+	var base_dmg := held.get_stat("shot_damage")
+	r.add_relic("lens")
+	check(held.get_stat("shot_damage") > base_dmg, "relic visible through the held reference")
+	r.relics.erase("lens")
+	r.build_stats()
+	check(r.stats == held, "build_stats rebuilds in place")
+	near(held.get_stat("shot_damage"), base_dmg, 0.001, "removed relic no longer applies")

@@ -191,8 +191,10 @@ func _setup_secret() -> void:
 		data["cache_taken"] = true
 		var rng := _rng("secret")
 		var c := center()
-		for i in rng.randi_range(3, 5):
-			room.drop_spark(room.global_position + c + Vector2(rng.randf_range(-30, 30), rng.randf_range(-10, 20)))
+		var n := rng.randi_range(3, 5)
+		Game.add_sparks(n)
+		Events.toast.emit(tr("TOAST_SECRET_CACHE") % n, UITheme.SPECTRAL)
+		Fx.burst(room.entities, c, "cold", 3.0)
 		room.drop_embers(room.global_position + c, 4)
 	if room.state.get("loot_taken", false):
 		_place_empty_pedestals(1)
@@ -263,9 +265,13 @@ func _trial_reward() -> void:
 
 # --- elite ---------------------------------------------------------------------
 
+var _elite_spawned := false
+
+
 func spawn_elite_reward() -> void:
-	if data.get("elite_taken", false):
+	if data.get("elite_taken", false) or _elite_spawned:
 		return
+	_elite_spawned = true
 	if not data.has("elite_offer"):
 		data["elite_offer"] = RelicPool.roll(room.run, _rng("elite"), 1, ["rare", "common"])
 	var p := Interactables.RelicPedestal.new()

@@ -179,7 +179,7 @@ func mark_seen(kind: String, id: String) -> void:
 # --- run snapshot -------------------------------------------------------------
 
 func has_run() -> bool:
-	return read_json(run_path) != null
+	return load_run() != null
 
 
 func save_run(snapshot: Dictionary) -> bool:

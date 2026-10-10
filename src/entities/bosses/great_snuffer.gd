@@ -30,7 +30,7 @@ func _idle_move(delta: float) -> void:
 func _choose_attack() -> String:
 	var options := ["slam", "volley", "slam", "snuff"] if phase == 1 else ["slam", "volley", "snuff", "slam", "volley"]
 	if dist_to_target() > 140.0:
-		options.erase("slam")
+		options = options.filter(func(o): return o != "slam")
 	return options[randi() % options.size()]
 
 

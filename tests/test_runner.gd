@@ -23,7 +23,9 @@ func _ready() -> void:
 
 
 func _run() -> void:
-	# tests must not touch the player's real profile
+	# tests must not touch the player's real profile or saved run
+	SaveManager.profile_path = "user://profile_unittest.json"
+	SaveManager.run_path = "user://run_unittest.json"
 	SaveManager.profile = SaveManager.default_profile()
 	var total_checks := 0
 	var failures: Array[String] = []

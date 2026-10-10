@@ -71,7 +71,7 @@ O desde el editor: *Proyecto → Exportar* (perfiles «Linux» y «Windows» ya 
 
 ## Pruebas automáticas
 ```bash
-tools/test.sh                                                           # 30 pruebas unitarias sin pantalla
+tools/test.sh                                                           # 33 pruebas unitarias + comprobación de «Continuar»
 tools/check.sh                                                          # compila e importa todo
 godot --headless --fixed-fps 60 --path . -- --bot --bot-runs 5         # 5 expediciones con autopiloto
 xvfb-run godot --path . -- --tour capturas/                             # captura todas las pantallas

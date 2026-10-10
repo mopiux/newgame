@@ -280,6 +280,12 @@ func enter(p: Player, from_dir: String) -> void:
 		_start_combat()
 	elif room_type == "boss" and not state.get("cleared", false):
 		_content.start_boss()
+	elif state.has("pending_waves"):
+		# a fight started by an event was interrupted (save & quit): resume it
+		waves = (state.pending_waves as Array).duplicate(true)
+		combat_active = true
+		_wave_delay = 0.8
+		_set_doors_locked(true)
 	Events.room_entered.emit(self)
 
 
@@ -351,9 +357,15 @@ func add_enemy(e: Enemy) -> void:
 
 func _on_cleared() -> void:
 	combat_active = false
+	_set_doors_locked(false)
+	state.erase("pending_waves")
+	if state.get("cleared", false):
+		# re-cleared (e.g. a mimic woke up later): no second payout
+		for p in get_tree().get_nodes_in_group("pickups"):
+			p.magnet = true
+		return
 	state["cleared"] = true
 	run.rooms_cleared += 1
-	_set_doors_locked(false)
 	var center := player.global_position if player else global_position + pixel_size() * 0.5
 	if room_type in ["combat", "elite"]:
 		drop_embers(center + Vector2(0, -20), int(Database.balance_value("rooms.clear_embers", 2)) + (2 if room_type == "elite" else 0))

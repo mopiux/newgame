@@ -57,6 +57,7 @@ func new_run(lantern: String, seed_text: String = "", ascension: int = 0) -> voi
 func continue_run() -> bool:
 	var data = SaveManager.load_run()
 	if data == null:
+		SaveManager.clear_run()
 		return false
 	var r := RunState.from_dict(data)
 	if r == null or r.floor.is_empty():
@@ -76,6 +77,9 @@ func _start_level() -> void:
 
 func save_run_snapshot() -> void:
 	if run == null or level == null:
+		return
+	# a snuffed-out lamplighter is never saved: the run is already lost
+	if level.player and not level.player.is_alive():
 		return
 	var d := run.to_dict()
 	d["map_revealed"] = map_revealed_depth == run.depth
@@ -176,8 +180,10 @@ func pick_event(rng: RandomNumberGenerator) -> String:
 		if run and (run.depth < dmin or run.depth > dmax):
 			continue
 		ids.append(id)
-		weights.append(float(e.get("weight", 1.0)))
+	# sort for determinism, then build weights in the same order
 	ids.sort()
+	for id in ids:
+		weights.append(float(Database.events[id].get("weight", 1.0)))
 	if ids.is_empty():
 		return Database.events.keys()[0] if not Database.events.is_empty() else ""
 	return RunRng.weighted_pick(rng, ids, weights)
@@ -206,7 +212,10 @@ func enemy_shot_speed_mult() -> float:
 
 func quit_game() -> void:
 	if run and level:
-		save_run_snapshot()
+		if level.player and not level.player.is_alive():
+			finish_run(false)
+		else:
+			save_run_snapshot()
 	SaveManager.profile.stats.play_time += _play_time_accum
 	_play_time_accum = 0.0
 	SaveManager.save_profile()

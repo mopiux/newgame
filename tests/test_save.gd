@@ -71,3 +71,10 @@ func test_settings_sanitise() -> void:
 	eq(Settings._sanitize("audio", "music", "loud"), 0.7, "bad type -> default")
 	eq(Settings._sanitize("video", "fullscreen", 1), true, "int to bool")
 	eq(Settings._sanitize("game", "language", "xx"), "", "unknown language")
+
+
+func test_incompatible_run_is_not_offered() -> void:
+	SaveManager.write_json(SaveManager.run_path, {"version": 999, "seed_text": "OLD"})
+	check(not SaveManager.has_run(), "a run from another save version is not continuable")
+	SaveManager.clear_run()
+	check(not SaveManager.has_run(), "cleared")

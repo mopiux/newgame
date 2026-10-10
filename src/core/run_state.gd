@@ -43,7 +43,10 @@ static func create(seed_text_in: String, lantern: String, asc: int) -> RunState:
 
 func build_stats() -> void:
 	var base: Dictionary = Database.balance_value("player", {}).duplicate()
-	stats = Stats.new(base)
+	if stats == null:
+		stats = Stats.new(base)
+	else:
+		stats.reset(base)
 	var lantern: Dictionary = Database.lanterns.get(lantern_id, {})
 	if lantern.has("stats"):
 		stats.add_source("lantern", lantern.stats)

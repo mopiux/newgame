@@ -54,3 +54,18 @@ func test_prices_are_positive() -> void:
 		check(RelicPool.price(id) > 0, "price for " + id)
 	for l in Database.lamps:
 		check(int(l.cost) > 0, "lamp cost " + str(l.id))
+
+
+func test_event_weights_follow_their_events() -> void:
+	var saved_run = Game.run
+	Game.run = RunState.create("WEIGHTS", "oil", 0)
+	Game.run.depth = 1
+	var counts := {}
+	for i in 4000:
+		var id := Game.pick_event(RunRng.make(i, "w"))
+		counts[id] = int(counts.get(id, 0)) + 1
+	Game.run = saved_run
+	# wax_fountain (weight 2) must show up about twice as often as chandler_ghost (weight 1)
+	var ratio := float(counts.get("wax_fountain", 0)) / maxf(1.0, float(counts.get("chandler_ghost", 0)))
+	check(ratio > 1.6 and ratio < 2.5, "weight ratio fountain/ghost ~2 (got %.2f)" % ratio)
+	check(not counts.has("mirror_hall"), "locked tier-1 events never picked")

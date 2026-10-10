@@ -71,6 +71,24 @@ No hay GPU en el entorno: **no se ha medido en un PC real**. Que el render por s
 - Autopiloto con `--bot-asc 5` y `--bot-asc 10` (3 partidas cada uno): sin errores; la dificultad sube como se pretende (el bot sin mejoras muere en las profundidades 1–2).
 - Autopiloto con cada farol alternativo (`--bot-lantern mirror|ember|pilgrim`, 2 partidas cada uno): sin errores; los tres llegan a la profundidad 2–3 y la Vela del peregrino consiguió una victoria.
 
+### 2026-10-10 — revisión de código independiente
+Un agente revisor (sin acceso a escribir) leyó los sistemas centrales buscando errores que ni las pruebas ni el bot detectan. Cada hallazgo se verificó contra el código antes de corregirlo. **10 errores reales, todos corregidos**:
+
+| # | Gravedad | Error | Corrección | Prueba |
+|---|---|---|---|---|
+| 1 | Alta | Perder una reliquia en un suceso dejaba al jugador con estadísticas antiguas para el resto de la partida | `Stats.reset()` reconstruye en el mismo objeto | `test_rebuilding_stats_keeps_the_same_object` |
+| 2 | Alta | Se podía «escapar de la muerte» guardando o cerrando durante la animación de muerte | No se guarda con el jugador apagado; cerrar en ese momento cierra la expedición; no se puede pausar muerto | manual |
+| 3 | Alta | Despertar un farol falso en una sala ya despejada volvía a pagar la sala (reliquia élite duplicada) | Una segunda limpieza solo reabre puertas | manual |
+| 4 | Media | Los pesos de los sucesos se desordenaban al ordenar los ids | Pesos construidos tras ordenar | `test_event_weights_follow_their_events` |
+| 5 | Media | El fogonazo revelaba muros secretos según la esquina de la sala | Distancia al centro del muro | — |
+| 6 | Media | Las peleas iniciadas por sucesos no se guardaban (Guardar y salir = recompensa sin pelea) | `pending_waves` guardado y reanudado | — |
+| 7 | Baja | La pantalla anterior ponía a 0 la luz ambiente después de que la nueva la fijara | Cada pantalla fija la suya al entrar | — |
+| 8 | Baja | El alijo secreto se marcaba como cogido antes de recogerlo | Chispas acreditadas directamente | — |
+| 9 | Baja | El Gran Apagador podía embestir desde lejos | Filtrar todas las opciones de «campanazo» | — |
+| 10 | Baja | Una partida de otra versión de guardado mostraba «Continuar» para siempre | `has_run()` valida versión; se limpia si no carga | `test_incompatible_run_is_not_offered` |
+
+Tras los arreglos: **33 pruebas / 39 670 comprobaciones, 0 fallos**, «Continuar» OK, 10 partidas del bot sin errores (4 victorias), recorrido de pantallas completo.
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.
