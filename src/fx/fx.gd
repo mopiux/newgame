@@ -15,12 +15,15 @@ const PRESETS := {
 }
 
 
+static var disabled := false  # benchmarking switch (autopilot --no-fx)
+
+
 static func perf_scale() -> float:
 	return 0.5 if Settings.get_value("video", "performance_mode") else 1.0
 
 
 static func burst(parent: Node, pos: Vector2, preset: String, amount_mult: float = 1.0, direction: Vector2 = Vector2.ZERO) -> void:
-	if parent == null or not is_instance_valid(parent):
+	if parent == null or not is_instance_valid(parent) or disabled:
 		return
 	var p: Dictionary = PRESETS.get(preset, PRESETS.dust)
 	var cp := CPUParticles2D.new()

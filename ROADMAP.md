@@ -38,5 +38,5 @@ Leyenda: ✅ hecho y verificado · 🟡 en progreso / parcial · ⬜ pendiente
 - ✅ Autopiloto de partidas completas (+ capturas)
 - ✅ Batería de pruebas unitarias headless (28 pruebas)
 - ✅ Recorrido automático de pantallas con capturas
-- ⬜ Medición de rendimiento documentada
-- ⬜ Exportación Linux/Windows
+- ✅ Medición de rendimiento documentada (CPU y render por software; falta GPU real)
+- ✅ Exportación Linux (probada) y Windows (generada, sin probar)

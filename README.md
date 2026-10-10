@@ -55,10 +55,20 @@ python3 tools/i18n/strings_source.py  # i18n/strings.csv
 tools/check.sh                        # reimporta en Godot y lista errores
 ```
 
+## Compilar ejecutables
+1. Instala las plantillas de exportación de Godot 4.5 (*Editor → Gestionar plantillas de exportación → Descargar*), o extrae el `.tpz` oficial en `~/.local/share/godot/export_templates/4.5.stable/`.
+2. Ejecuta:
+```bash
+tools/export.sh            # build/linux/Lumbre.x86_64 y build/windows/Lumbre.exe
+```
+O desde el editor: *Proyecto → Exportar* (perfiles «Linux» y «Windows» ya configurados en `export_presets.cfg`). El ejecutable incluye todos los datos (un solo fichero, ~77 MB en Linux, ~103 MB en Windows).
+
 ## Pruebas automáticas
 ```bash
+tools/test.sh                                                           # 28 pruebas unitarias sin pantalla
 tools/check.sh                                                          # compila e importa todo
 godot --headless --fixed-fps 60 --path . -- --bot --bot-runs 5         # 5 expediciones con autopiloto
+xvfb-run godot --path . -- --tour capturas/                             # captura todas las pantallas
 ```
 Detalles y resultados en [TESTING.md](TESTING.md).
 

@@ -62,6 +62,10 @@ func _ready() -> void:
 	i = args.find("--bot-timeout")
 	if i >= 0 and i + 1 < args.size():
 		run_timeout = float(args[i + 1])
+	if args.has("--perf-mode"):
+		Settings.data.video.performance_mode = true
+	if args.has("--no-fx"):
+		Fx.disabled = true
 	i = args.find("--shots")
 	if i >= 0 and i + 1 < args.size():
 		shots_dir = args[i + 1]
@@ -75,6 +79,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_screenshots(delta)
+	if not get_tree().paused:
+		_sample_perf(delta)
 	var level: Level = Game.level
 	if level == null:
 		if Game.main and Game.run == null and not _ending and runs_left > 0 and get_tree().current_scene != null:
@@ -117,6 +123,52 @@ func _process(delta: float) -> void:
 			Game.finish_run(false)
 
 
+var _perf_t := 0.0
+var _last_frame_us := 0
+var _bot_us := 0
+var _frame_samples: Array[float] = []
+var _fps_samples: Array[float] = []
+var _perf := {"frames": 0, "proc_sum": 0.0, "phys_sum": 0.0, "proc_max": 0.0, "phys_max": 0.0, "nodes_max": 0, "shots_max": 0, "enemies_max": 0}
+
+
+## Game cost per frame = wall time between frames (engine runs flat out with
+## --fixed-fps) minus the time the autopilot itself spent deciding.
+func _sample_perf(_delta: float) -> void:
+	var now := Time.get_ticks_usec()
+	if _last_frame_us > 0:
+		var ms := (now - _last_frame_us - _bot_us) / 1000.0
+		_frame_samples.append(ms)
+		_perf.frames += 1
+		_perf.proc_sum += ms
+		_perf.proc_max = maxf(_perf.proc_max, ms)
+	_last_frame_us = now
+	_bot_us = 0
+	_perf_t += _delta
+	if _perf_t < 0.25:
+		return
+	_perf_t = 0.0
+	_fps_samples.append(Engine.get_frames_per_second())
+	_perf.nodes_max = maxi(_perf.nodes_max, int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)))
+	_perf.shots_max = maxi(_perf.shots_max, get_tree().get_nodes_in_group("enemy_shots").size() + get_tree().get_nodes_in_group("player_shots").size())
+	_perf.enemies_max = maxi(_perf.enemies_max, get_tree().get_nodes_in_group("enemies").size())
+
+
+func perf_report() -> String:
+	var n := maxi(1, int(_perf.frames))
+	var sorted := _frame_samples.duplicate()
+	sorted.sort()
+	var p99: float = sorted[int(sorted.size() * 0.99)] if not sorted.is_empty() else 0.0
+	var p50: float = sorted[int(sorted.size() * 0.5)] if not sorted.is_empty() else 0.0
+	var fps_avg := 0.0
+	var fps_min := 9999.0
+	for f in _fps_samples.slice(8):
+		fps_avg += f
+		fps_min = minf(fps_min, f)
+	fps_avg /= maxf(1.0, _fps_samples.size() - 8)
+	return "BOT_PERF fps_avg=%.1f fps_min=%.0f frames=%d frame_avg=%.2fms p50=%.2fms p99=%.2fms max=%.2fms nodes_max=%d projectiles_max=%d enemies_max=%d" % [
+		fps_avg, fps_min, n, _perf.proc_sum / n, p50, p99, _perf.proc_max, _perf.nodes_max, _perf.shots_max, _perf.enemies_max]
+
+
 func _screenshots(delta: float) -> void:
 	if shots_dir == "" or DisplayServer.get_name() == "headless":
 		return
@@ -146,6 +198,7 @@ func _start_next() -> void:
 func _after_run() -> void:
 	runs_left -= 1
 	if runs_left <= 0:
+		print(perf_report())
 		print("BOT_DONE runs=%d" % results.size())
 		get_tree().quit(0)
 		return
@@ -169,6 +222,13 @@ func record(summary: Dictionary) -> void:
 # --- control ---------------------------------------------------------------------
 
 func get_input(p: Player) -> Dictionary:
+	var t0 := Time.get_ticks_usec()
+	var res := _decide(p)
+	_bot_us += Time.get_ticks_usec() - t0
+	return res
+
+
+func _decide(p: Player) -> Dictionary:
 	var out := {"move": Vector2.ZERO, "shoot": false, "melee": false, "dash": false, "flare": false, "interact": false}
 	var level: Level = Game.level
 	if level == null or level.room == null:

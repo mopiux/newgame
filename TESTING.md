@@ -44,6 +44,20 @@
 - El bot y el recorrido usan un perfil de pruebas separado (`profile_test.json`) para no alterar el progreso real.
 - `tools/test.sh`: **28 pruebas, 36 520 comprobaciones, 0 fallos**.
 
+### 2026-10-10 — rendimiento y exportación
+Medido con el autopiloto (`BOT_PERF`): tiempo real por fotograma descontando el coste del propio bot.
+
+| Escenario | Medida | Resultado |
+|---|---|---|
+| Lógica de juego sin renderizar (CPU, 2 expediciones, 63 000 fotogramas) | media / p50 / p99 / máx | **0,60 / 0,41 / 2,85 / 32,6 ms** (el máximo es la construcción de una sala, oculta tras el fundido) |
+| Render **por software** (llvmpipe, Xeon 2,8 GHz, 4 núcleos, sin GPU), 640×360 escalado a 1280×720 | FPS medio / mínimo | **80 / 54 FPS** |
+| Sala en reposo | coste por fotograma | 0,20 ms (0,14 ms de interfaz) |
+| Picos de entidades | nodos / proyectiles / criaturas | ~410 / 87 / 8 |
+
+No hay GPU en el entorno: **no se ha medido en un PC real**. Que el render por software ya supere 60 FPS de media es una buena señal para equipos modestos con GPU integrada, pero no sustituye a una medición real. El modo rendimiento (opciones) reduce partículas y limita las luces a 24.
+
+**Exportación**: `tools/export.sh` genera `build/linux/Lumbre.x86_64` (77 MB) y `build/windows/Lumbre.exe` (103 MB). El ejecutable de Linux se probó: el autopiloto completó una expedición hasta la profundidad 3 y el recorrido de pantallas capturó las 19 pantallas sin errores. El de Windows se generó pero **no se ha podido ejecutar** aquí (no hay Windows/Wine).
+
 ## Limitaciones conocidas de las pruebas
 - El contenedor no tiene GPU: los tiempos de fotograma medidos son de CPU + render por software y **no** representan un PC real.
 - No hay dispositivo de audio: el sonido se verifica por análisis de ficheros, no escuchándolo.
